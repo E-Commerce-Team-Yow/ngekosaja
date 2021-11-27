@@ -1,2 +1,2 @@
 # ngekosaja
-Proyek Ecommerce Ngekos
+Proyek Ecommerce Kos-kosan
