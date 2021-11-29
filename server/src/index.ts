@@ -19,7 +19,7 @@ import { Provinsi } from "./Entities/Provinsi";
 const main = async () => {
   await createConnection({
     type: "mysql",
-    database: "ngekos",
+    database: "ngekosaja",
     username: "root",
     password: "",
     logging: true,
