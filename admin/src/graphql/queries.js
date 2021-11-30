@@ -95,6 +95,24 @@ export const GET_ALL_TESTIMONI = gql`
     }
   }
 `;
+export const GET_ALL_MEDIA = gql`
+  query getAllMedia {
+    getAllMedia{
+      id 
+      path
+      status
+    }
+  }
+`;
 
+export const GET_ONE_MEDIA = gql`
+  query getOneMedia($id: String!){
+    getOneMedia(id: $id){
+      id
+      path 
+      status
+    }
+  }
+`;
 
 

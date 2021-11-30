@@ -12,6 +12,8 @@ import { DELRES_TESTIMONI } from "./Mutations/Testimoni";
 import { GET_ALL_KEPER } from "./Queries/Ketentuan_peraturan";
 import { GET_ALL_TESTIMONI } from "./Queries/Testimoni";
 import { GET_ALL_Role } from "./Queries/Role";
+import { ADD_MEDIA, DELRES_MEDIA, UPDATE_MEDIA } from "./Mutations/Media";
+import { GET_ALL_MEDIA, GET_ONE_MEDIA, } from "./Queries/Media";
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -25,7 +27,10 @@ const RootQuery = new GraphQLObjectType({
     getAllTestimoni: GET_ALL_TESTIMONI,
     getAllRumahKos: GET_ALL_RUMAH_KOS,
     getOneRumahKos: GET_ONE_RUMAH_KOS,
-    getAllRole : GET_ALL_Role
+    getAllRole : GET_ALL_Role,
+    //MEDIA
+    getAllMedia: GET_ALL_MEDIA,
+    getOneMedia: GET_ONE_MEDIA,
   },
 });
 
@@ -48,10 +53,15 @@ const Mutation = new GraphQLObjectType({
     delresFasilitas: DELRES_FASILITAS,
     delresListing: DELRES_LISTING,
     delresKeper: DELRES_KEPER,
-    delresTestimoni: DELRES_TESTIMONI
+    delresTestimoni: DELRES_TESTIMONI,
     
     //deleteUser: DELETE_USER,
     //updatePassword: UPDATE_PASSWORD,
+
+    //MEDIA
+    addMedia: ADD_MEDIA,
+    updateMedia: UPDATE_MEDIA,
+    delresMedia: DELRES_MEDIA,
   },
 });
 

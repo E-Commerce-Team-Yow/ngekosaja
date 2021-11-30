@@ -13,6 +13,9 @@ import Edit from './form/Edit';
 import { NotFound } from './NotFound';
 import Add from './form/Add';
 import { PrivateRouter } from './PrivateRouter';
+import AddMedia from './form/AddMedia';
+import MediaTable from './table/mediaTable';
+import EditMedia from './form/EditMedia';
 
 export default function RouterPage() {
     const client = new ApolloClient({
@@ -39,6 +42,15 @@ export default function RouterPage() {
                                         <Route path={`${url}`} exact component={FasilitasTable} />
                                         <Route path={`${url}/action`} exact component={Edit} />
                                         <Route path={`${url}/add`} exact component={Add} />
+                                    </>
+                                )}
+                            />
+                            <Route path={`${url}/mediaTable`}
+                                render={({ match: { url } }) => (
+                                    <> 
+                                        <Route path={`${url}`} exact component={MediaTable} />
+                                        <Route path={`${url}/actionMedia`} exact component={EditMedia} />
+                                        <Route path={`${url}/addMedia`} exact component={AddMedia} />
                                     </>
                                 )}
                             />

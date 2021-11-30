@@ -49,6 +49,12 @@ const SideNav = () => {
                     <li className="nav-item">
                         <div className="nav-link">
                             <i className="nav-icon fas fa-table" />
+                            <Link to="/admin/mediaTable"><p>Tabel Media</p></Link>
+                        </div>
+                    </li>
+                    <li className="nav-item">
+                        <div className="nav-link">
+                            <i className="nav-icon fas fa-table" />
                             <Link to="/admin/rumahTable"><p>Tabel Rumah Kos</p></Link>
                         </div>
                     </li>

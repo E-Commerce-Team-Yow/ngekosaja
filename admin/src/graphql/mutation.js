@@ -92,3 +92,31 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const DELRES_MEDIA = gql`
+  mutation delresMedia($id: String!){
+    delresMedia(id: $id){
+      successful
+      message
+    }
+  }
+`;
+
+export const ADD_MEDIA = gql`
+  mutation addMedia($path: String!){
+    addMedia(path: $path){
+      id
+      successful
+      message
+    }
+  }
+`;
+
+export const UPDATE_MEDIA = gql`
+  mutation updateMedia($id: String!, $path: String!){
+    updateMedia(id: $id, path: $path){
+      successful
+      message
+    }
+  }
+`;

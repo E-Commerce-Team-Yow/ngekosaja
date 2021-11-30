@@ -15,6 +15,7 @@ import { Tagihan } from "./Entities/Tagihan";
 import { Role } from "./Entities/Role";
 import { Kota } from "./Entities/Kota";
 import { Provinsi } from "./Entities/Provinsi";
+import { truncate } from "fs/promises";
 
 const main = async () => {
   await createConnection({
