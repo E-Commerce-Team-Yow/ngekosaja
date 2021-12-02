@@ -20,7 +20,7 @@ import { Promo } from "./Entities/Promo";
 const main = async () => {
   await createConnection({
     type: "mysql",
-    database: "ngekos",
+    database: "ngekosaja",
     username: "root",
     password: "",
     logging: true,

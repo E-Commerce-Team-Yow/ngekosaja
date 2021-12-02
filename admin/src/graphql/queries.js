@@ -71,6 +71,17 @@ export const GET_ALL_KEPER = gql`
   }
 `;
 
+export const GET_ONE_KEPER = gql`
+  query getOneKeper($id: String!){
+    getOneKeper(id: $id){
+      id
+      isi
+      tipe
+      listingID
+    }
+  }
+`
+
 export const GET_ALL_RUMAH_KOS = gql`
   query getAllRumahKos {
     getAllRumahKos{
