@@ -15,18 +15,18 @@ import { Tagihan } from "./Entities/Tagihan";
 import { Role } from "./Entities/Role";
 import { Kota } from "./Entities/Kota";
 import { Provinsi } from "./Entities/Provinsi";
-import { truncate } from "fs/promises";
+import { Promo } from "./Entities/Promo";
 
 const main = async () => {
   await createConnection({
     type: "mysql",
-    database: "ngekosaja",
+    database: "ngekos",
     username: "root",
     password: "",
     logging: true,
     synchronize: false,
     entities: [Listing, Fasilitas_kos, Ketentuan_peraturan, Media, 
-      Rumah_kos, User, Testimoni, Penyewaan, Tagihan, Role, Kota, Provinsi],
+      Rumah_kos, User, Testimoni, Penyewaan, Tagihan, Role, Promo, Kota, Provinsi],
   });
 
   const app = express();

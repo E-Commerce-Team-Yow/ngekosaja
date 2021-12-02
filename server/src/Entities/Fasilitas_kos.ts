@@ -9,10 +9,6 @@ export class Fasilitas_kos extends BaseEntity {
   @Column()
   nama!: string;
 
-  @ManyToMany(() => Listing)
-  @JoinTable()
-  listings!: Listing[];
-
   @Column()
   keterangan!: string;
 

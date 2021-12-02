@@ -67,15 +67,21 @@ export const UPDATE_USER = {
     id: { type: GraphQLNonNull(GraphQLString) },
     nama_depan: { type: GraphQLNonNull(GraphQLString) },
     nama_belakang: { type: GraphQLNonNull(GraphQLString) },
+    nik : { type: GraphQLString},
+    no_tlp : {type: GraphQLNonNull(GraphQLString)},
+    no_rek : {type : GraphQLString},
+   // password : {type: GraphQLNonNull(GraphQLString)},
+
   },
 
   async resolve(parent: any, args: any) {
-    const { id, nama_depan, nama_belakang} = args;
+     const { id, nama_depan, nama_belakang, no_tlp, no_rek, nik} = args;
+    //const { id, nama_depan, nama_belakang} = args;
 
-    await getConnection()
+   await getConnection()
     .createQueryBuilder()
     .update('user')
-    .set({ nama_depan: nama_depan, nama_belakang: nama_belakang })
+    .set({ nama_depan: nama_depan, nama_belakang: nama_belakang, no_tlp: no_tlp, no_rek : no_rek, nik:nik})
     .where("id = :id", { id: id })
     .execute()
 
@@ -84,9 +90,12 @@ export const UPDATE_USER = {
     .select("user")      
     .from(User, "user")    
     .leftJoinAndSelect("user.role","role")     
-    .where("user.id = :id", { id: id })      
+    .where("user.id = :id", { id: id})      
     .getOne();
-    return user;
+
+    console.log(user);
+
+    return user
   },
 };
 

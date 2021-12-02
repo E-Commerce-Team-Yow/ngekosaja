@@ -1,8 +1,8 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn,JoinTable, ManyToMany, } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn,JoinTable, ManyToMany, OneToMany, } from "typeorm";
 import { Listing } from "./Listing";
 
 @Entity()
-export class Media extends BaseEntity {
+export class Promo extends BaseEntity {
   @PrimaryColumn()
   id !: string;
 
@@ -30,8 +30,7 @@ export class Media extends BaseEntity {
   @Column()
   besaran !: number;
 
-  @ManyToMany(() => Listing)
-  @JoinTable()
+  @OneToMany(() => Listing, listing => listing.promo)
   listings!: Listing[];
 
   @Column({

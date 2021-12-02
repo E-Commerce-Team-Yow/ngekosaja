@@ -1,4 +1,4 @@
-import { GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLString } from "graphql";
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLString } from "graphql";
 import { UserType } from "../TypeDefs/User";
 import {createQueryBuilder, getConnection} from "typeorm";
 import { User } from "../../Entities/User";

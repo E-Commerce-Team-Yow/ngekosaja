@@ -11,8 +11,5 @@ export const FasilitaskosType = new GraphQLObjectType({
     status: { type: GraphQLInt },
     successful: { type: GraphQLBoolean },
     message: { type: GraphQLString },
-    listings:{
-      type: GraphQLList(ListingType)
-    }
   }),
 });

@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLNonNull, GraphQLList } from "graphql";
+import { KotaType } from "./Kota";
 import { ListingType } from "./Listing";
 
 export const RumahkosType = new GraphQLObjectType({
@@ -9,7 +10,6 @@ export const RumahkosType = new GraphQLObjectType({
     id_user: { type: GraphQLString },
     nama: { type: GraphQLString },
     alamat: { type: GraphQLString },
-    kota: { type: GraphQLString },
     provinsi: { type: GraphQLString },
     kode_pos: { type: GraphQLString },
     total_kamar: { type: GraphQLInt },
@@ -19,6 +19,9 @@ export const RumahkosType = new GraphQLObjectType({
     message: { type: GraphQLString },
     listingRumahKos:{
       type: GraphQLList(ListingType)
+    },
+    kota:{
+      type: KotaType
     }
   }),
 });

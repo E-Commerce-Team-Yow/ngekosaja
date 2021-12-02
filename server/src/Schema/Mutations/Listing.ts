@@ -65,14 +65,14 @@ export const APPEND_LISTING_FASILITAS_KOS = {
      ])
     .execute();
 
-    await getConnection()
-    .createQueryBuilder()
-    .insert()
-    .into("fasilitas_kos_listings_listing")
-    .values([
-        { fasilitasKosId: id_fasilitas_kos, listingId: id_listing}, 
-     ])
-    .execute();
+    // await getConnection()
+    // .createQueryBuilder()
+    // .insert()
+    // .into("fasilitas_kos_listings_listing")
+    // .values([
+    //     { fasilitasKosId: id_fasilitas_kos, listingId: id_listing}, 
+    //  ])
+    // .execute();
      return {successful: true, message: "Berhasil menghubungkan listing dan fasilitas"}
   },
 };
@@ -92,7 +92,6 @@ export const DELRES_LISTING = {
     .from(Listing, "listing")      
     .where("id = :id", { id: id })      
     .getOne();
-    console.log(stat?.status);
     if(stat?.status == 1){
       await getConnection()
       .createQueryBuilder()

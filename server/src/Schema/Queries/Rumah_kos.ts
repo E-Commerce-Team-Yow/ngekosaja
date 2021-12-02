@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
 import {getConnection} from "typeorm";
+import { Kota } from "../../Entities/Kota";
 import { Rumah_kos } from "../../Entities/Rumah_kos";
 import { RumahkosType } from "../TypeDefs/Rumah_kos";
 
@@ -15,15 +16,17 @@ export const GET_ALL_RUMAH_KOS = {
       .createQueryBuilder()      
       .select("rumah_kos")      
       .from(Rumah_kos, "rumah_kos")      
-      .where("alamat LIKE :search", { search:`%${search}%` })
-      .orWhere("kota LIKE :search", { search:`%${search}%` })      
+      .leftJoinAndSelect("rumah_kos.kota", "kota")
+      .where("alamat LIKE :search", { search:`%${search}%` })  
       .getMany();
+      console.log(rmh_kos);
       return rmh_kos;
     }else{
       const rmh_kos = await getConnection()
       .getRepository(Rumah_kos)
       .createQueryBuilder("rumah_kos")
       .leftJoinAndSelect("rumah_kos.listingRumahKos", "listingRumahKos")
+      .leftJoinAndSelect("rumah_kos.kota", "kota")
       .getMany();
       return rmh_kos;
     }

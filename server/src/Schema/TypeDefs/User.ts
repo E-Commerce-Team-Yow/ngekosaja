@@ -20,7 +20,6 @@ export const UserType = new GraphQLObjectType({
     status: { type: GraphQLInt },
     successful: { type: GraphQLBoolean },
     message: { type: GraphQLString },
-    count: {type: GraphQLInt},
     rumah_kos:{
       type: GraphQLList(RumahkosType)
     },

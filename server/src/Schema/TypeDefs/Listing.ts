@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLBoolean } from "graphql";
+import { FasilitaskosType } from "./Fasilitas_kos";
 
 export const ListingType = new GraphQLObjectType({
   name: "Listing",
@@ -15,5 +16,8 @@ export const ListingType = new GraphQLObjectType({
     status: { type: GraphQLInt },
     successful: { type: GraphQLBoolean },
     message: { type: GraphQLString },
+    fasilitas_koss:{
+      type: GraphQLList(FasilitaskosType)
+    }
   }),
 });

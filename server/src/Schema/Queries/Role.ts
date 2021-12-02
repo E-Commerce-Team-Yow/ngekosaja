@@ -3,13 +3,13 @@ import {getConnection} from "typeorm";
 import { Role } from "../../Entities/Role";
 import { RoleType } from "../TypeDefs/Role";
 
-export const GET_ALL_Role = {
+export const GET_ALL_ROLE = {
   type: new GraphQLList(RoleType),
   
   async resolve() {
     const role = await getConnection()
     .getRepository(Role)
-    .createQueryBuilder("fasilitas_kos")
+    .createQueryBuilder("role")
     .getMany();
     return role;
   },

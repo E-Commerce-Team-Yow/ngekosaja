@@ -22,7 +22,6 @@ export const GET_ALL_FASILITAS_KOS = {
       const fas_kos = await getConnection()
       .getRepository(Fasilitas_kos)
       .createQueryBuilder("fasilitas_kos")
-      .leftJoinAndSelect("fasilitas_kos.listings", "listings")
       .getMany();
       return fas_kos;
 

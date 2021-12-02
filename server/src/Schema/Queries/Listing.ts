@@ -24,6 +24,7 @@ export const GET_ALL_LISTING = {
       .createQueryBuilder("listing")
       .leftJoinAndSelect("listing.fasilitas_koss", "fasilitas_koss")
       .getMany();
+      console.log(listing);
       return listing;
     }
   },
