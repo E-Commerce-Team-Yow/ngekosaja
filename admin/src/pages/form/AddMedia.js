@@ -58,7 +58,7 @@ const AddMedia = () => {
           console.log(namafoto);
           axios
             .post(
-              "http://localhost:3002/upload/"+ namafoto,
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ namafoto,
               formData,
               {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -91,6 +91,9 @@ const AddMedia = () => {
         if(!data.loading && data.data?.addMedia){
             console.log(data.data?.addMedia.id);
           NotificationManager.success('', data.data?.addMedia.message, 2000);
+          setTimeout(() => {
+              window.location.replace("/admin/mediaTable")
+          }, 2000);
         }
       }, [!data.loading])
     const {loading, data: dataGetAll, error} = useQuery(GET_ALL_MEDIA);
@@ -163,9 +166,7 @@ const AddMedia = () => {
                             onSubmit={ e =>{
                                 e.preventDefault();
                                 doUploadImage();
-                                setTimeout(() => {
-                                    window.location.replace("/admin/mediaTable")
-                                }, 1000);
+                                
                             }}
                             >
                         <div className="card-body">

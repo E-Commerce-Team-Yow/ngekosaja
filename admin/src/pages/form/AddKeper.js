@@ -9,7 +9,7 @@ import SideNav from '../SideNav';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-const temp;
+// const temp;
 const Add = () => {
     const [formState, setFormState] = useState({
         isi: '',
@@ -38,7 +38,7 @@ const Add = () => {
           console.log(error);
       return "Error..."
       }
-      temp = data.getAllListing;
+    //   temp = data.getAllListing;
     // const {loading, error, data: dataGetOne} = useQuery(GET_ONE_FASILITAS_KOS,
     //     { variables: {  id: id }}
     // )

@@ -61,7 +61,7 @@ const EditMedia = () => {
           
           axios
             .post(
-              "http://localhost:3002/upload/"+ id,
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ id,
               formData,
               {
                 headers: { "Content-Type": "multipart/form-data" },

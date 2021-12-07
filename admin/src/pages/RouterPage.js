@@ -21,7 +21,7 @@ import AddKeper from './form/AddKeper';
 
 export default function RouterPage() {
     const client = new ApolloClient({
-        uri: "http://localhost:3001/graphql",
+        uri: "https://ngekosaja.herokuapp.com/graphql",
         cache: new InMemoryCache(),
     });
     return (
