@@ -120,3 +120,13 @@ export const UPDATE_MEDIA = gql`
     }
   }
 `;
+
+export const ADD_KEPER = gql`
+  mutation addKeper($isi: String!, $tipe: String!, $listingId: String!){
+    addKeper(isi: $isi, tipe: $tipe, listingId: $listingId){
+      id
+      successful
+      message
+    }
+  }
+`;

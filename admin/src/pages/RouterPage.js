@@ -16,6 +16,8 @@ import { PrivateRouter } from './PrivateRouter';
 import AddMedia from './form/AddMedia';
 import MediaTable from './table/mediaTable';
 import EditMedia from './form/EditMedia';
+import EditKeper from './form/EditKeper';
+import AddKeper from './form/AddKeper';
 
 export default function RouterPage() {
     const client = new ApolloClient({
@@ -54,8 +56,16 @@ export default function RouterPage() {
                                     </>
                                 )}
                             />
+                            <Route path={`${url}/keperTable`}
+                                render={({ match: { url } }) => (
+                                    <> 
+                                        <Route path={`${url}`} exact component={KeperTable} />
+                                        <Route path={`${url}/actionKeper`} exact component={EditKeper} />
+                                        <Route path={`${url}/addKeper`} exact component={AddKeper} />
+                                    </>
+                                )}
+                            />
                             <Route path={`${url}/rumahTable`} component={RumahTable} />
-                            <Route path={`${url}/keperTable`} component={KeperTable} />
                             <Route path={`${url}/testimoniTable`} component={TestimoniTable} />
                             <Route path={`${url}/promoTable`} component={PromoTable} />
                             

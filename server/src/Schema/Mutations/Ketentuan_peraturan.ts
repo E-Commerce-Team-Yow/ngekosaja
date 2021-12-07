@@ -76,3 +76,25 @@ export const DELRES_KEPER = {
     }
   },
 };
+
+export const UPDATE_KEPER = {
+  type: KeperType,
+  args: {
+    id: { type: GraphQLNonNull(GraphQLString) },
+    isi: { type: GraphQLNonNull(GraphQLString) },
+    tipe: { type: GraphQLNonNull(GraphQLString) },
+  },
+
+  async resolve(parent: any, args: any) {
+    const { id, isi, tipe } = args;
+
+    await getConnection()
+    .createQueryBuilder()
+    .update('ketentuan_peraturan')
+    .set({ isi: isi, tipe: tipe })
+    .where("id = :id", { id: id })
+    .execute()
+
+    return {id: id, successful: true, message: "Berhasil mengubah ketentuan peraturan"}
+  },
+};

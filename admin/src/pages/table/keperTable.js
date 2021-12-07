@@ -1,14 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client';
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { DELRES_KEPER } from '../../graphql/mutation';
 import { GET_ALL_KEPER} from '../../graphql/queries';
 import Footer from '../Footer';
 import Header from '../Header';
 import SideNav from '../SideNav';
-
+import { Link, useRouteMatch } from 'react-router-dom';
 
 const KeperTable = () => {
+    let { path, url } = useRouteMatch();
+    console.log(url);
     const script = document.createElement("script");
     script.src = `../../js/content.js`;
     script.async = true;
@@ -34,12 +35,12 @@ const KeperTable = () => {
               <div className="container-fluid">
                 <div className="row mb-2">
                   <div className="col-sm-6">
-                    <h1>Tabel Fasilitas Kos</h1>
+                    <h1>Tabel Ketentuan Peraturan</h1>
                   </div>
                   <div className="col-sm-6">
                     <ol className="breadcrumb float-sm-right">
                       <li className="breadcrumb-item"><a href="#">Home</a></li>
-                      <li className="breadcrumb-item active">Tabel Fasilitas Kos</li>
+                      <li className="breadcrumb-item active">Tabel Ketentuan Peraturan</li>
                     </ol>
                   </div>
                 </div>
@@ -53,7 +54,16 @@ const KeperTable = () => {
                     {/* /.card */}
                     <div className="card">
                       <div className="card-header">
+                        <div className="row">
+                        <div className="col-10">
                         <h3 className="card-title">Tabel</h3>
+                        </div>
+                        <div className="col-2">
+                        <Link to={`${url}/addKeper`} replace>
+                          <button type="button" className="btn btn-success btn-block btn-sm"><i className="fa fa-plus mr-1" />Tambah Fasilitas</button>
+                        </Link>
+                        </div>
+                        </div>
                       </div>
                       {/* /.card-header */}
                       <div className="card-body">
