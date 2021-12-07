@@ -42,6 +42,9 @@ const EditMedia = () => {
     useEffect(() => {
       if(!data.loading && data.data?.updateMedia){
         NotificationManager.success('', data.data?.updateMedia.message, 2000);
+        setTimeout(() => {
+          window.location.replace("/admin/mediaTable")
+      }, 1000);
       }
     }, [!data.loading])
     const {loading, error, data: dataGetOne} = useQuery(GET_ONE_MEDIA,
@@ -54,7 +57,6 @@ const EditMedia = () => {
     }
     
     const doUploadImage = () => {    
-        console.log(namafoto);
         const formData = generateFormData({
             foto: uploadedFile,
           });
@@ -85,11 +87,6 @@ const EditMedia = () => {
                 console.log("Error", err.message);
               }
             });
-            
-            
-            setTimeout(() => {
-                window.location.replace("/admin/mediaTable")
-            }, 1000);
     }
 
     

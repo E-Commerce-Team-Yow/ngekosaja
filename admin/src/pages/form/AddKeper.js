@@ -21,23 +21,17 @@ const Add = () => {
     script.src = `../../js/validation.js`;
     script.async = true;
     document.body.appendChild(script);
-   
 
-
-    const [creFas, data] = useMutation(ADD_KEPER);
+    const [creKeper, data] = useMutation(ADD_KEPER);
     useEffect(() => {
         if(!data.loading && data.data?.addKeper){
           NotificationManager.success('', data.data?.addKepers.message, 2000);
+            setTimeout(() => {
+                window.location.replace("/admin/fasilitasTable")
+            }, 1000);
         }
       }, [!data.loading])
-      const {loading, data: dataGetAll, error} = useQuery(GET_ALL_LISTING);
-      if(loading){
-          return "Loading..."
-      }
-      if(error){
-          console.log(error);
-      return "Error..."
-      }
+      
     //   temp = data.getAllListing;
     // const {loading, error, data: dataGetOne} = useQuery(GET_ONE_FASILITAS_KOS,
     //     { variables: {  id: id }}
@@ -98,14 +92,10 @@ const Add = () => {
                         <form id="quickForm" 
                             onSubmit={ e =>{
                                 e.preventDefault();
-                                creFas({
+                                creKeper({
                                     variables: { isi: formState.isi, tipe: formState.tipe, listingId: formState.listingId },
                                     refetchQueries:[{query: GET_ALL_KEPER}]
                                 });
-                                console.log(formState.listingId);
-                                // setTimeout(() => {
-                                //     window.location.replace("/admin/fasilitasTable")
-                                // }, 1000);
                             }}
                             >
                         <div className="card-body">
@@ -123,37 +113,20 @@ const Add = () => {
                             </div>
                             <div className="form-group">
                             <label>Tipe</label>
-                                <input type="text" name="tipe" className="form-control" placeholder="Masukkan tipe ketentuan peraturan" 
-                                defaultValue={formState.nama}
-                                onChange={(e) =>
-                                    setFormState({
-                                    ...formState,
-                                    tipe: e.target.value 
-                                    })
-                                }
-                                />
-                            </div>
-                            <div className="form-group">
-                            <label>Listing </label>
-                                    <select name="fasilitas" className="form-control" placeholder="Pilih Listing" 
-                                        onChange={(e) =>
-                                            setFormState({
-                                                ...formState,
-                                                listingId: e.target.value
+                                <select id="tipe" className="form-control" placeholder="Pilih lah tipe"
+                                    onChange={(e) => 
+                                        setFormState({
+                                            ...formState,
+                                            tipe: e.target.value 
                                             })
-                                        }
-                                    >
-                                    { 
-                                        
-                                        // dataGetAll && (
-                                        //     dataGetAll.getAllKeper.map(keper => 
-                                        //         <option value={keper.id}>{keper.id} - {keper.nama}</option>                                               
-                                        //     )
-                                        // )
                                     }
-                                    </select>
+                                >
+                                    <option value="1">1 - Ketentuan</option>
+                                    <option value="2">2 - Peraturan</option>
+                                </select>
                                 
                             </div>
+                            
                         </div>
                         {/* /.card-body */}
                         <div className="card-footer">
