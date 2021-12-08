@@ -33,10 +33,10 @@ export default function ListRumahKos() {
     console.log(dataGetAll);
     if(loading){
         return "Loading..."
-      }
-      if(error){
-        return "Error..."
-      }
+    }
+    if(error){
+    return "Error..."
+    }
 
     const columns = [
         {
@@ -65,18 +65,12 @@ export default function ListRumahKos() {
                 {
                     row.status == 1 ?  <button className="btnOwnerRed p-2"  onClick={
                        function(){
-                        delete_rumah_kos({variables: {id: row.id}});
-                        setTimeout(() => {
-                            window.location.replace("/owner/ListRumahKos");
-                        }, 2000); 
+                        delete_rumah_kos({variables: {id: row.id}, refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
                        }
                     }> <i className="fas fa-times" /></button> :
                     <button className="btnOwnerGreen p-2"  onClick={
                         function(){
-                         delete_rumah_kos({variables: {id: row.id}});
-                         setTimeout(() => {
-                             window.location.replace("/owner/ListRumahKos");
-                         }, 2000); 
+                         delete_rumah_kos({variables: {id: row.id},  refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
                         }
                      }> <i className="fas fa-check" /></button>
                 }

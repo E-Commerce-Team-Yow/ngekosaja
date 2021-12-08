@@ -7,7 +7,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import SearchListing from './SearchListing';
 import NearByCampus from './nearByCampus';
 import LoginUser from './LoginUser';
-// import RegisterUser from './RegisterUser';
+import RegisterUser from './RegisterUser';
 import DetailUser from './DetailUser';
 // import Login from '../admin/Login';
 // import UserTable from '../admin/table/userTable';
@@ -26,7 +26,7 @@ import Isidata from './Isidata';
 
 export default function RouterPage() {
     const client = new ApolloClient({
-        uri: "http://localhost:3001/graphql",
+        uri: "https://ngekosaja.herokuapp.com/graphql",
         cache: new InMemoryCache(),
     });
     return (
@@ -41,7 +41,7 @@ export default function RouterPage() {
                     <Route path="/search" exact component={SearchListing}/>
                     <Route path="/near-campus" exact component={NearByCampus}/>
                     <Route path="/loginUser" component={LoginUser} />
-                    {/* <Route path="/registerUser" component={RegisterUser} /> */}
+                    <Route path="/registerUser" component={RegisterUser} />
                     <Route path="/profile" component={DetailUser} />
                     <Route path="/owner" component={DashboardOwner} />
                     {/* <Route path="/login" component={Login}/> */}
