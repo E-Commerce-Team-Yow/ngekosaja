@@ -1,0 +1,194 @@
+/* DETAIL KAMAR */
+.carousel-foto{
+    height: 50vh;
+}
+.pilihan{
+    border: 1px solid black;
+    width: 5vw;
+    height: 15vh;
+    margin-top: 2.5vh;
+    border-radius: 10px;
+}
+.foto-image{
+    object-fit: cover;
+    height: 15vh;
+    width: 90%;
+    margin-top: 2.5vh;
+}
+.icon-image{
+    object-fit: contain;
+    height: 15vh;
+    width: 90%;
+    padding:0 0 0 0.5vw;
+}
+.logo-image{
+    object-fit: contain;
+    height: 15vh;
+    width: 90%;
+    padding:0 0 0 0.5vw;
+}
+.title-kos{
+    padding-top: 2.5vh;
+}
+.icon-v1{
+    object-fit: contain;
+    height: 5vh;
+    width: 5vh;
+    padding:0 0 0 0.5vw;
+}
+.kotak-tumpul{
+    border: 1px solid black;
+    border-radius: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.jarak-v1{
+    margin-left: 2%;
+}
+.icon-mini-v1{
+    object-fit: contain;
+    height: 3.5vh;
+}
+.icon-mini-v2{
+    object-fit: contain;
+    height: 2.5vh;
+}
+.icon-medium-v1{
+    object-fit: contain;
+    height: 4.5vh;
+}
+.icon-medium-v2{
+    object-fit: contain;
+    height: 4.5vh;
+    margin-top: 2.5vh;
+    /* margin-left: 2.5vh; */
+}
+.jarak-atas{
+    margin-top: 10px;
+}
+.harga-besar{
+    font-size: 24pt;
+}
+.harga-sedang{
+    font-size: 18pt;
+}
+.kotak-buram{
+    border: 1px solid grey;
+    border-radius: 2px;
+    padding: 5px;
+}
+.kotak-privilege{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+.keterangan-privilege{
+    padding: 10px;
+    padding-top: 15px;
+}
+
+.hr-1{
+    border-top: 1px solid black;
+}
+.subtitle{
+    font-weight: bold;
+    font-size: 21pt;
+    margin-top: 15px;
+}
+.keterangan-privilege-mini{
+    margin-left: 20px;
+}
+.jarak-kiri{
+    margin-left: 5px;
+}
+.image-location{
+    object-fit: contain;
+    height: 50vh;
+}
+.kotak-rule{
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 10px;
+    margin-top: 30px;
+}
+.keterangan-rule{
+    padding: 10px;
+}
+.kotak-review{
+    border: 1px solid black;
+    border-radius: 15px;
+    /* margin-left: 3.5vh; */
+    padding: 30px;
+    
+}
+.comment-review{
+    margin-top: 10px;
+}
+/* CHECKOUT */
+
+.judul-transaksi{
+    margin-left: 27vw;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+.kotak-transaksi{
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+.icon-mini-v2{
+    object-fit: contain;
+    height: 2.5vh;
+}
+.icon-medium-v3{
+    object-fit: contain;
+    height: 3.5vh;
+}
+.jarak-v2{
+    margin-bottom: 1.5vh;
+    margin-top: 1.5vh;
+    margin-left: 2vw;
+}
+.button-v1{
+    border-radius: 15px;
+    background-color: orange;
+    color: white;
+    border: 1px solid orange;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+/* isidata */
+
+.kotak-penyewa{
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.note-v1{
+    font-size: small;
+    color: gray;
+}
+.kotak-rekomendasi{
+    border-radius: 15px;
+    color: orange;
+    border: 1px solid orange;
+    width: min-content;
+    padding: 0 1vw 0 1vw;
+    margin-top: 1vh;
+}
+.jarak-v3{
+    margin-bottom: 1.5vh;
+    margin-top: 1.5vh;
+}
+.upload-v1{
+    cursor: pointer;
+}
+.display-none{
+    display: none;
+}
+.foto-v1{
+    object-fit: contain;
+    height: 20vh;
+}
