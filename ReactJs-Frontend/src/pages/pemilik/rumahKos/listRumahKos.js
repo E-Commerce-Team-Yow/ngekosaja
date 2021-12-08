@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
-
 import DataTable from 'react-data-table-component';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
 import EditRumahKos from './editRumahKos';
 import { DELRES_RUMAH_KOS } from '../../../graphql/mutation';
-
-
+import NotificationManager from 'react-notifications/lib/NotificationManager';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 export default function ListRumahKos() {
-	let history = useHistory();
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const [value,setValue] = useState(null);
@@ -28,7 +25,13 @@ export default function ListRumahKos() {
 
 
      //deklarasi delete kos
-     const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
+    const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
+
+    useEffect(() => {
+        if(!data.loading && data.data?.delresRumah){
+          NotificationManager.success('', data.data?.delresRumah.message, 2000);
+        }
+      }, [!data.loading])
 
     console.log(dataGetAll);
     if(loading){
@@ -104,6 +107,7 @@ export default function ListRumahKos() {
                         />
                 </div>
             </div>
+        <NotificationContainer/>
         </div>
     )
 }

@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA, GET_ONE_RUMAH_KOS } from '../../../graphql/queries';
+import { GET_ALL_KOTA } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
 import { ADD_RUMAH_KOS } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import { NotificationManager } from 'react-notifications';
 
 export default function AddRumahKos() {
-	let history = useHistory();
+    const script = document.createElement("script");
+    script.src = `../../../js/validation.js`;
+    script.async = true;
+    document.body.appendChild(script);
+
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const {loading, data: getAllKota, error} = useQuery(GET_ALL_KOTA);
    
-  
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -43,35 +46,32 @@ export default function AddRumahKos() {
                 kode_pos: '',
                 alamat_kos : '',
                 id_kota: 1,
-               id_user : cookies.userLogin.id,
-               keterangan : ''
+                id_user : cookies.userLogin.id,
+                keterangan : ''
             });
-
 			setdataUser(cookies.userLogin);
-
 		} 
-	},[]);
+        if(!data.loading ){
+            if(data.data && data.data?.addRumahKos != null){
+                NotificationManager.success('', data.data?.addRumahKos.message, 2000);
+                
+            }else if(data.data && data.data?.addRumahKos == null){
+                NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
+            }
+        }
+	},[!data.loading]);
 
     if(loading){
         return "Loading..."
-      }
-      if(error){
+    }
+    if(error){
         return "Error..."
-      }
-
-
-
+    }
     return (
-      
-        <div>
-             
+        <div>   
             {
-                
-
-
                 dataUser ?
-          
-                <div >
+                <div>
                         <Button variant="primary" onClick={handleShow} className="btnOwner float-right">
                             Tambah Rumah Kos
                         </Button>
@@ -87,7 +87,7 @@ export default function AddRumahKos() {
                                 <hr/>
                                 <div className="row">
                                     <div className="col-12">
-                                    <form
+                                    <form id="quickForm"
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
@@ -100,8 +100,7 @@ export default function AddRumahKos() {
                                         >
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Nama Kos</label>
-                                                <input type="text" className="form-control" id="name_kos"
-                                                    
+                                                <input type="text" className="form-control" id="nama_kos"
                                                     onChange={(e) =>
                                                         setFormState({
                                                         ...formState,
@@ -109,11 +108,11 @@ export default function AddRumahKos() {
                                                         })
                                                     }
                                                 
-                                                placeholder="kos SUka Suka" name="name_kos" />
+                                                placeholder="kos SUka Suka" name="nama_kos" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Alamat Kos</label>
-                                                <input type="text" className="form-control" id="alamat_kos" 
+                                                <input type="text" className="form-control" id="alamat_kos"
                                                     onChange={(e) =>
                                                         setFormState({
                                                         ...formState,
@@ -124,7 +123,7 @@ export default function AddRumahKos() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Kode Pos</label>
-                                                <input type="text" className="form-control" id="kode_kos" 
+                                                <input type="text" className="form-control" id="kode_kos"
                                                     onChange={(e) =>
                                                         setFormState({
                                                         ...formState,
@@ -164,15 +163,14 @@ export default function AddRumahKos() {
                                                 })
                                             }
                                             >
-                                                    {
-                                                        getAllKota && (
-                                                            getAllKota.getAllKota.map(kota => 
-                                                                <option value={kota.id} key={kota.id}>{kota.nama}</option>
-                                                            )
+                                                {
+                                                    getAllKota && (
+                                                        getAllKota.getAllKota.map(kota => 
+                                                            <option value={kota.id} key={kota.id}>{kota.nama}</option>
                                                         )
-                                                    }
-                                                </select>
-
+                                                    )
+                                                }
+                                            </select>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="media">Media</label> <br/>
@@ -185,11 +183,10 @@ export default function AddRumahKos() {
                             </div>
                         </Modal>
                 </div>
-
-
         : 
         <div> </div>
-            }
+        }
+        <NotificationContainer/>
         </div>
     )
 }

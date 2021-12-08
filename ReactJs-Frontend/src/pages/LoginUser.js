@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { LOGIN_USER } from '../graphql/mutation';
 import { useCookies } from 'react-cookie';
 import 'react-notifications/lib/notifications.css';
@@ -10,8 +10,6 @@ import Loading from './Loading';
 
 
 export default function LoginUser() {
-    let history = useHistory();
-
     const script = document.createElement("script");
     script.src = `../../js/validation.js`;
     script.async = true;
@@ -41,19 +39,18 @@ export default function LoginUser() {
         if(!data.loading ){
             if(data.data && data.data?.loginUser != null){
                 //set user login
-            
-
-                setCookie('userLogin', data.data.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
-
-                console.log(data.data.loginUser.role.id);
-                if(data.data.loginUser.role.id == 2){
-                    window.location.replace("/owner");
-                }else{
-                    window.location.replace("/");
-                }
-                
+                NotificationManager.success('', "Berhasil login", 2000);
+                setTimeout(() => {
+                    setCookie('userLogin', data.data.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
+                    window.location.replace("/admin/userTable")
+                    if(data.data.loginUser.role.id == 2){
+                        window.location.replace("/owner");
+                    }else{
+                        window.location.replace("/");
+                    }
+                }, 2000);
             }else if(data.data && data.data?.loginUser == null){
-                NotificationManager.success('', "User tidak ditemukan", 2000);
+                NotificationManager.error('', "User tidak ditemukan", 2000);
             }
         }
     }, [!data.loading])
