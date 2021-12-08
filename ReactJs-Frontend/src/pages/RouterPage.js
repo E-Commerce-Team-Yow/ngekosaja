@@ -7,9 +7,9 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import SearchListing from './SearchListing';
 import NearByCampus from './nearByCampus';
 import LoginUser from './LoginUser';
-// import RegisterUser from './RegisterUser';
+import RegisterUser from './RegisterUser';
 import DetailUser from './DetailUser';
-// import Login from '../admin/Login';
+//import Login from '../admin/Login';
 // import UserTable from '../admin/table/userTable';
 // import ListingTable from '../admin/table/listingTable';
 // import RumahTable from '../admin/table/rumahTable';
@@ -26,7 +26,7 @@ import Isidata from './Isidata';
 
 export default function RouterPage() {
     const client = new ApolloClient({
-        uri: "http://localhost:3001/graphql",
+        uri:"localhost:3001/graphql",
         cache: new InMemoryCache(),
     });
     return (
@@ -41,10 +41,10 @@ export default function RouterPage() {
                     <Route path="/search" exact component={SearchListing}/>
                     <Route path="/near-campus" exact component={NearByCampus}/>
                     <Route path="/loginUser" component={LoginUser} />
-                    {/* <Route path="/registerUser" component={RegisterUser} /> */}
+                    <Route path="/registerUser" component={RegisterUser} /> 
                     <Route path="/profile" component={DetailUser} />
                     <Route path="/owner" component={DashboardOwner} />
-                    {/* <Route path="/login" component={Login}/> */}
+                    {/* <Route path="/login" component={Login}/>  */}
                     <Route path="/DetailKamar" component={DetailKamar}/>
                     <Route path="/Checkout" component={Checkout}/>
                     <Route path="/Isidata" component={Isidata}/>

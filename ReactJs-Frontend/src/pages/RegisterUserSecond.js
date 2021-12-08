@@ -65,7 +65,7 @@ export default function RegisterUserSecond({ prevPage, ...props }) {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Nama belakang</label>
-                                    <Input type="password" name="belakang" className="form-control" id="belakang" placeholder="Nama belakang"
+                                    <Input type="text" name="belakang" className="form-control" id="belakang" placeholder="Nama belakang"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -73,7 +73,7 @@ export default function RegisterUserSecond({ prevPage, ...props }) {
                                     <Input type="text" name="telepon" className="form-control" id="telepon" placeholder="Nomor telepon"
                                     />
                                 </div>
-                                <button type="submit" onClick={prevPage}>
+                                <button type="submit" className="mb-2" onClick={prevPage}>
                                     Previous Page
                                 </button>
                                 <button type="submit" id="btnSubmit">Submit</button>
