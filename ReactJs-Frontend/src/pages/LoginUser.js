@@ -7,7 +7,9 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
+const clientId = "568661146363-eo0s56tv59nsj9cfl416s7nvu7d2k9c9.apps.googleusercontent.com";
 
 export default function LoginUser() {
     const script = document.createElement("script");
@@ -55,6 +57,22 @@ export default function LoginUser() {
         }
     }, [!data.loading])
 
+    const [showloginButton, setShowloginButton] = useState(true);
+
+    const onLoginSuccess = (res) => {
+        NotificationManager.success('', "Berhasil login", 2000);
+        setTimeout(() => {
+            setCookie('userLogin', res.profileObj, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
+            window.location.replace("/")
+        }, 2000);
+        setShowloginButton(false);
+    };
+
+    const onLoginFailure = (res) => {
+        NotificationManager.success('', "Gagak login", 2000);
+        console.log('Login Failed:', res);
+    };
+
     return (
         <div className="js">
             <div className="login-page" >
@@ -95,8 +113,28 @@ export default function LoginUser() {
                         </div>
                         {/* /.card-body */}
                         <div className="card-footer">
-                            <button type="submit">Submit</button>
+                            <button type="submit" id="btnSubmit">Submit</button>
                             <p className="message">Not registered? <Link to={linkRegister} >Create an account</Link></p>
+                        </div>
+                        <div>
+                        { showloginButton ?
+                            <GoogleLogin
+                                clientId={clientId}
+                                buttonText="Sign In"
+                                onSuccess={onLoginSuccess}
+                                onFailure={onLoginFailure}
+                                cookiePolicy={'single_host_origin'}
+                                isSignedIn={true}
+                            /> : null}
+
+                        {/* { showlogoutButton ?
+                            <GoogleLogout
+                                clientId={clientId}
+                                buttonText="Sign Out"
+                                onLogoutSuccess={onSignoutSuccess}
+                            >
+                            </GoogleLogout> : null
+                        } */}
                         </div>
                     </form>
                 </div>

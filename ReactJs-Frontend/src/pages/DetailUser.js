@@ -57,7 +57,7 @@ export default function DetailUser() {
                                     <div className="col-lg-12 col-sm-12 inline">
                                        <div className="row">
                                            <div className="col-8">
-                                           <h2 className="inline">{dataUser.nama_depan}  {dataUser.nama_belakang}</h2>
+                                           <h2 className="inline">{dataUser.nama_depan} {dataUser.nama_belakang}</h2>
                                        
                                            </div>
                                            <div className="col-4">
@@ -70,16 +70,9 @@ export default function DetailUser() {
 												}> <i className="fas fa-sign-out-alt fa-2x"></i></button>
                                            </div>
                                        </div>
-
-
                                         {/* Modal edit */}
-
-                                      
                                             <FormEditUser/>
-
-                                        {/* end-modal-edit */}
-
-                                   
+                                        {/* end-modal-edit */}        
                                     </div>
                                 </div>
                                 <hr className="border-black"/>
