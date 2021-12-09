@@ -17,6 +17,27 @@ export const GET_ALL_LISTING = gql`
   }
 `;
 
+export const GET_ONE_LISTING = gql`
+  query getOneListing ($id_kamar: String) {
+    getOneListing (id_kamar: $id_kamar) {
+        id
+        nama
+        jenis
+        panjang
+        lebar
+        harga_bulanan
+        harga_tahunan
+        keterangan
+        status
+        successful
+        fasilitas_koss{
+          id
+          nama
+        }
+    }
+  }
+`;
+
 export const GET_ALL_USERS = gql`
   query getAllUsers {
     getAllUsers{
