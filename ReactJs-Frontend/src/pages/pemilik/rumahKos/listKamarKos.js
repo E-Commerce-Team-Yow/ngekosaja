@@ -30,10 +30,10 @@ export default function ListKamarKos() {
     console.log(dataGetAllListing);
     if(loading){
         return "Loading..."
-      }
-      if(error){
+    }
+    if(error){
         return "Error..."
-      }
+    }
 
     const columns = [
         {

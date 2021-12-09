@@ -323,39 +323,38 @@ export default function Home() {
                                 Kos di Kota
                             </h1>
                             <div className="box-program">
-                                <a href="product-by-category.php">
+                                <Link to="/search?keyword=JAKARTA">
                                     <div className="list-program" style={{backgroundImage:`url(${Source.jakarta})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Jakarta
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.bali})`}}>
+                                </Link>
+                                <Link to="/search?keyword=BANDUNG">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.bandung})`}}>
                                     <div className="overlay-program" />
                                     <h2>
-                                        Bali
+                                        Bandung
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Jogja
-                                    </h2>
-                                    </div>
-                                </a>
-                                <a href="product-by-category.php">
+                                </Link>
+                                <Link to="/search?keyword=SEMARANG">
                                     <div className="list-program" style={{backgroundImage: `url(${Source.semarang})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Semarang
                                     </h2>
                                     </div>
-                                </a>
-                            
+                                </Link>
+                                <Link to="/search?keyword=JOGJA">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Yogyakarta
+                                    </h2>
+                                    </div>
+                                </Link>
                                 <div className="clearer" />
                             </div>
                         </div>
@@ -363,39 +362,38 @@ export default function Home() {
                     <section>
                         <div className="container mb-5">
                             <div className="box-program">
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage:`url(${Source.jakarta})`}}>
+                                <Link to="/search?keyword=SOLO">
+                                    <div className="list-program" style={{backgroundImage:`url(${Source.solo})`}}>
                                     <div className="overlay-program" />
                                     <h2>
-                                        Jakarta
+                                        Solo
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
+                                </Link>
+                                <Link to="/search?keyword=SURABAYA">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.surabaya})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Surabaya
+                                    </h2>
+                                    </div>
+                                </Link>
+                                <Link to="/search?keyword=MALANG">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.malang})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Malang
+                                    </h2>
+                                    </div>
+                                </Link>
+                                <Link to="/search?keyword=BALI">
                                     <div className="list-program" style={{backgroundImage: `url(${Source.bali})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Bali
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Jogja
-                                    </h2>
-                                    </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.semarang})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Semarang
-                                    </h2>
-                                    </div>
-                                </a>
-                            
+                                </Link>
                                 <div className="clearer" />
                             </div>
                         </div>

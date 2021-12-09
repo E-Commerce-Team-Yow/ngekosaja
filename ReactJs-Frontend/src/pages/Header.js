@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import Example from './SearchBar';
-import { SearchBarFunc } from './SearchBarFunc';
+import { SearchBar } from './SearchBar';
 import Source from './Source';
 import { useCookies } from 'react-cookie';
 
@@ -17,10 +16,6 @@ export default function Header() {
 			setdataUser(cookies.userLogin);
 		} 
 	},[]);
-
-	function submit() {
-		Link('/seacrh');
-	}
 
     return (
         <header className="header shop">
@@ -51,7 +46,7 @@ export default function Header() {
 				<div className="row">
 					<div className="col-lg-2 col-md-2 col-12">
 						<div className="logo">
-							<Link to="/"><img src={Source['logo']} alt="logo"/></Link>
+							<Link to="/" replace><img src={Source['logo']} alt="logo"/></Link>
 						</div>
 						<div className="search-top">
 							<div className="top-search"><a href="#0"><i className="ti-bell"></i></a></div>
@@ -75,7 +70,7 @@ export default function Header() {
 					<div className="col-lg-6 col-md-7 col-12">
 						<div className="search-bar-top">
 							<div className="search-bar">
-								<SearchBarFunc/>
+								<SearchBar/>
 									{/* <input name="search" placeholder="Masukkan alamat/nama jalan" type="search"/>
 									<button className="btnn"><i className="ti-search"></i></button> */}
 							</div>
@@ -83,16 +78,14 @@ export default function Header() {
 					</div>
 					<div className="col-lg-4 col-md-1 col-12">
 					{
-							   dataUser ? 
+						dataUser ? 
 							<div className="right-bar" id="allHeaderRight">
 							   <label className="dropdown">
-   
 								   <div className="dd-button">
 									   Dropdown
 								   </div>
    
 								   <input name="" type="checkbox" className="dd-input" id="test" />
-   
 								   <ul className="dd-menu">
 									   <li>Action</li>
 									   <li>Another action</li>
@@ -134,13 +127,11 @@ export default function Header() {
 							   : 
 						<div className="right-bar top-20" id="allHeaderRight">
 							<label className="dropdown">
-
 								<div className="dd-button">
 									Dropdown
 								</div>
 
 								<input name="" type="checkbox" className="dd-input" id="test" />
-
 								<ul className="dd-menu">
 									<li>Action</li>
 									<li>Another action</li>
@@ -159,12 +150,9 @@ export default function Header() {
 							   <span className="single-bar ml-3">
 									<button className="btn btn-info" data-toggle="modal" data-target="#exampleModal">Masuk</button>
 								</span>
-						   
 						</div>
 					}
-						
-					</div>
-							
+					</div>			
 				</div>
 			</div>
 		</div>

@@ -26,6 +26,7 @@ import Isidata from './Isidata';
 
 export default function RouterPage() {
     const client = new ApolloClient({
+        // uri: "http://localhost:3001/graphql",
         uri: "https://ngekosaja.herokuapp.com/graphql",
         cache: new InMemoryCache(),
     });
@@ -46,6 +47,8 @@ export default function RouterPage() {
                     <Route path="/owner" component={DashboardOwner} />
                     {/* <Route path="/login" component={Login}/>  */}
                     <Route path="/DetailKamar" component={DetailKamar}/>
+                    {/* <Route path="/login" component={Login}/> */}
+                    <Route path="/near-campus/DetailKamar" component={DetailKamar}/>
                     <Route path="/Checkout" component={Checkout}/>
                     <Route path="/Isidata" component={Isidata}/>
                     {/* <Route
