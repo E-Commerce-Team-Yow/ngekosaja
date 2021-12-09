@@ -7,7 +7,6 @@ import Source from './Source'
 export default function Checkout() {
     return (
         <div>
-            
             <div className="container" style={{marginTop: '2%'}}>
                 <div className="row">
                     <div className="col-12">

@@ -108,7 +108,6 @@ export const GET_ALL_RUMAH_KOS = gql`
         id
         nama
       }
-      provinsi
       total_kamar
       sisa_kamar
       status

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { HashRouter, Link, useHistory,  Route } from 'react-router-dom'
-import Example from './SearchBar';
-import { SearchBarFunc } from './SearchBarFunc';
 import Source from './Source';
 import { useCookies } from 'react-cookie';
 import SidebarOwner from './SidebarOwner';

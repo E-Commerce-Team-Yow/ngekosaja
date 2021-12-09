@@ -28,10 +28,10 @@ export default function ListRumahKos() {
     console.log(dataGetAll);
     if(loading){
         return "Loading..."
-      }
-      if(error){
+    }
+    if(error){
         return "Error..."
-      }
+    }
 
     const columns = [
         {
