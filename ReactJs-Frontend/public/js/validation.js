@@ -29,7 +29,23 @@ $(function () {
       },
       rekening:{
         digits: true,
-      }
+      },
+
+      //rumah kos
+      nama_kos:{
+        required: true
+      },
+      alamat_kos:{
+        required: true
+      },
+      kode_pos:{
+        required: true,
+        digits: true,
+        maxlength: 5
+      },
+      kota_kos:{
+        required: true
+      },
     },
     messages: {
       email: {
@@ -53,14 +69,30 @@ $(function () {
         required: "Harap isi telepon",
         digits: "Harap isi dengan angka",
         minlength: "Panjang telepon minimal 11 karakter",
-        maxlength: "Panjang telepon minimal 13 karakter"
+        maxlength: "Panjang telepon maksimal 13 karakter"
       },
       nik: {
         digits: "Harap isi dengan angka",
       },
       rekening: {
         digits: "Harap isi dengan angka",
-      }
+      },
+
+      //rumah kos
+      nama_kos:{
+        required: "Harap isi nama rumah kos",
+      },
+      alamat_kos:{
+        required: "Harap isi alamat rumah kos",
+      },
+      kode_pos:{
+        required: "Harap isi kode pos",
+        digits: "Harap isi dengan angka",
+        maxlength: "Panjang kode pos maksimal 5 karakter"
+      },
+      kota_kos:{
+        required: "Harap pilih kota",
+      },
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

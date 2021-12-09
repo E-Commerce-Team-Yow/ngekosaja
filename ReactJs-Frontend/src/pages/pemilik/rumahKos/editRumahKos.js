@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA, GET_ONE_RUMAH_KOS } from '../../../graphql/queries';
+import { GET_ALL_KOTA } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { ADD_RUMAH_KOS, UPDATE_RUMAH_KOS } from '../../../graphql/mutation';
+import { UPDATE_RUMAH_KOS } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { NotificationManager } from 'react-notifications';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 
 export default function EditRumahKos({rumah_kos}) {
-	let history = useHistory();
+    const script = document.createElement("script");
+    script.src = `../../../js/validation.js`;
+    script.async = true;
+    document.body.appendChild(script);
+
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const {loading, data: getAllKota, error} = useQuery(GET_ALL_KOTA);
@@ -50,7 +55,15 @@ export default function EditRumahKos({rumah_kos}) {
 			setdataUser(cookies.userLogin);
 
 		} 
-	},[]);
+        if(!data.loading ){
+            if(data.data && data.data?.updateRumahKos != null){
+                NotificationManager.success('', data.data?.updateRumahKos.message, 2000);
+                
+            }else if(data.data && data.data?.updateRumahKos == null){
+                NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
+            }
+        }
+	},[!data.loading]);
 
     if(loading){
         return "Loading..."
@@ -61,16 +74,10 @@ export default function EditRumahKos({rumah_kos}) {
 
 
 
-    return (
-      
-        <div>
-             
+    return ( 
+        <div>          
             {
-                
-
-
-                dataUser ?
-          
+                dataUser ?        
                 <div >
                         <Button variant="primary" onClick={handleShow} className="btnOwner float-right p-2">
                           <i className="fas fa-pencil-alt" />
@@ -87,7 +94,7 @@ export default function EditRumahKos({rumah_kos}) {
                                 <hr/>
                                 <div className="row">
                                     <div className="col-12">
-                                    <form
+                                    <form id="quickForm"
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
@@ -109,7 +116,7 @@ export default function EditRumahKos({rumah_kos}) {
                                                         })
                                                     }
                                                 
-                                                placeholder="kos SUka Suka" name="name_kos" />
+                                                placeholder="kos SUka Suka" name="nama_kos" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Alamat Kos</label>
@@ -191,11 +198,10 @@ export default function EditRumahKos({rumah_kos}) {
                             </div>
                         </Modal>
                 </div>
-
-
         : 
         <div> </div>
             }
+        <NotificationContainer/>
         </div>
     )
 }

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
-
 import DataTable from 'react-data-table-component';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
 import EditRumahKos from './editRumahKos';
 import { DELRES_RUMAH_KOS } from '../../../graphql/mutation';
-
-
+import NotificationManager from 'react-notifications/lib/NotificationManager';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 export default function ListRumahKos() {
-	let history = useHistory();
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const [value,setValue] = useState(null);
@@ -28,15 +25,21 @@ export default function ListRumahKos() {
 
 
      //deklarasi delete kos
-     const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
+    const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
+
+    useEffect(() => {
+        if(!data.loading && data.data?.delresRumah){
+          NotificationManager.success('', data.data?.delresRumah.message, 2000);
+        }
+      }, [!data.loading])
 
     console.log(dataGetAll);
     if(loading){
         return "Loading..."
-      }
-      if(error){
-        return "Error..."
-      }
+    }
+    if(error){
+    return "Error..."
+    }
 
     const columns = [
         {
@@ -65,18 +68,12 @@ export default function ListRumahKos() {
                 {
                     row.status == 1 ?  <button className="btnOwnerRed p-2"  onClick={
                        function(){
-                        delete_rumah_kos({variables: {id: row.id}});
-                        setTimeout(() => {
-                            window.location.replace("/owner/ListRumahKos");
-                        }, 2000); 
+                        delete_rumah_kos({variables: {id: row.id}, refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
                        }
                     }> <i className="fas fa-times" /></button> :
                     <button className="btnOwnerGreen p-2"  onClick={
                         function(){
-                         delete_rumah_kos({variables: {id: row.id}});
-                         setTimeout(() => {
-                             window.location.replace("/owner/ListRumahKos");
-                         }, 2000); 
+                         delete_rumah_kos({variables: {id: row.id},  refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
                         }
                      }> <i className="fas fa-check" /></button>
                 }
@@ -110,6 +107,7 @@ export default function ListRumahKos() {
                         />
                 </div>
             </div>
+        <NotificationContainer/>
         </div>
     )
 }
