@@ -3,8 +3,9 @@ import { Link, useHistory } from 'react-router-dom'
 import { SearchBar } from './SearchBar';
 import Source from './Source';
 import { useCookies } from 'react-cookie';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
-
+const clientId = "568661146363-eo0s56tv59nsj9cfl416s7nvu7d2k9c9.apps.googleusercontent.com";
 
 export default function Header() {
 	let history = useHistory();
@@ -16,6 +17,13 @@ export default function Header() {
 			setdataUser(cookies.userLogin);
 		} 
 	},[]);
+
+	const onSignoutSuccess = () => {
+		removeCookie('userLogin');
+		window.location.reload();
+    };
+
+	console.log(dataUser);
 
     return (
         <header className="header shop">
@@ -103,14 +111,31 @@ export default function Header() {
 							 
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
+										{dataUser.googleId ?
+										<img src={dataUser.imageUrl} alt="Profil Pict" className="img-round"/>
+										
+										:
 										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>
+										
+										}
 										<input name="" type="checkbox" className="dd-input" id="test" />
    
 										<ul className="dd-menu">
 										
-											<li className="disable"><h5>Hello, {dataUser.nama_depan}</h5></li>
+											<li className="disable"><h5>Hello, {dataUser.googleId ? dataUser.givenName : dataUser.nama_depan}</h5></li>
 											<li className="divider"></li> 
 											<li><a href="/profile">My Profile</a></li>
+											{
+												dataUser.googleId ?
+											<li>
+													<GoogleLogout
+														clientId={clientId}
+														buttonText="Sign Out"
+														onLogoutSuccess={onSignoutSuccess}
+													>
+													</GoogleLogout>
+											</li>
+											:
 											<li>
 												<a href=""  onClick={(e) =>
 													{ 
@@ -118,6 +143,7 @@ export default function Header() {
 													}
 												}>Log Out</a>
 											</li>
+											}
 										</ul>
 									
 									</label>
