@@ -17,6 +17,23 @@ export const GET_ALL_LISTING = gql`
   }
 `;
 
+export const GET_ALL_LISTING_OWNER = gql`
+  query getAllListingUserOwner($id_user :String!){
+    getAllListingUserOwner(id_user : $id_user){
+      id
+      nama
+      panjang
+      lebar
+      harga_bulanan
+      status
+      fasilitas_koss{
+        id
+        nama
+      }
+    }
+  }
+`;
+
 export const GET_ALL_USERS = gql`
   query getAllUsers {
     getAllUsers{

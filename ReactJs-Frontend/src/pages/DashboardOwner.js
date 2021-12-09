@@ -6,6 +6,7 @@ import Source from './Source';
 import { useCookies } from 'react-cookie';
 import SidebarOwner from './SidebarOwner';
 import ListRumahKos from './pemilik/rumahKos/listRumahKos';
+import ListKamarKos from './pemilik/rumahKos/listKamarKos';
 
 export default function DashboardOwner() {
 	let history = useHistory();
@@ -34,6 +35,7 @@ export default function DashboardOwner() {
           <main className="page-content">
             <div className="container">
                 <Route exact path="/owner/listRumahKos" component={ListRumahKos}/>
+                <Route exact path="/owner/listKamarKos" component={ListKamarKos}/>
             </div>
           </main>
         </div>

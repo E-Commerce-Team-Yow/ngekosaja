@@ -105,6 +105,17 @@ export const ADD_RUMAH_KOS = gql `
 `;
 
 
+export const ADD_LISTING = gql `
+  mutation addListing($nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){
+    addListing(nama : $nama, jenis: $jenis, harga_bulanan : $harga_bulanan, harga_tahunan : $harga_tahunan, panjang: $panjang, lebar : $lebar, rumah_kos: $rumah_kos, keterangan : $keterangan){
+      id
+      message
+      successful
+    }
+  }
+`;
+
+
 export const UPDATE_RUMAH_KOS = gql `
   mutation updateRumahKos($id: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!){
     updateRumahKos(id: $id, nama: $nama, alamat: $alamat, id_kota: $id_kota, kode_pos : $kode_pos, total_kamar : $total_kamar, sisa_kamar : $sisa_kamar, keterangan : $keterangan){

@@ -100,7 +100,7 @@ export default function SidebarOwner() {
                       <NavLink to="/owner/ListRumahKos" >List Rumah Kos</NavLink>
                     </li>
                     <li>
-                      <a href="#">Peraturan Rumah Kos</a>
+                      <NavLink to="/owner/ListKamarKos" >List Kamar Kos</NavLink>
                     </li>
                   </ul>
                 </div>

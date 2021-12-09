@@ -4,13 +4,15 @@ import { useCookies } from 'react-cookie';
 
 import DataTable from 'react-data-table-component';
 import { useQuery } from '@apollo/client';
-import { GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_LISTING_OWNER, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
 import EditRumahKos from './editRumahKos';
+import AddKamarKos from './addKamarKos';
+import EditsKamarKos from './editKamarKos';
 
 
 
-export default function ListRumahKos() {
+export default function ListKamarKos() {
 	let history = useHistory();
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
@@ -23,9 +25,9 @@ export default function ListRumahKos() {
 		} 
 	},[value]);
     console.log(value);
-    const {loading, data: dataGetAll, error} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value}});
+    const {loading, data: dataGetAllListing, error} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
 
-    console.log(dataGetAll);
+    console.log(dataGetAllListing);
     if(loading){
         return "Loading..."
       }
@@ -35,24 +37,28 @@ export default function ListRumahKos() {
 
     const columns = [
         {
-            name: 'Id Peraturan',
+            name: 'Nama',
             selector: row => row.nama,
             sortable: true
         },
         {
-            name: 'Peraturan ',
-            selector: row => row.alamat,
+            name: 'Panjang ',
+            selector: row => row.panjang,
             sortable:true
         },
         {
-            name: 'Status',
+            name: 'Lebar',
+            selector: row => row.lebar,
+            sortable:true
+        },
+        {
+            name: 'status',
             cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> : <span className="badge badge-danger">Non Available</span>  
         },
         {
 			name: 'Actions',
             cell: row => <div className="col-12">  
-                <EditRumahKos rumah_kos={row} />
-                <button className="btnOwnerRed p-2">X</button>
+                <EditsKamarKos kamar_kos={row}/>
             </div>,
             ignoreRowClick: true,
             allowOverflow: true,
@@ -66,18 +72,18 @@ export default function ListRumahKos() {
 
     return (
         <div>
-            <h4>Peraturan Rumah Kos</h4>
+            <h4>Kamar Rumah Kos</h4>
             <hr />
             <div className="row">
                 <div className="col-12">
-                    <AddRumahKos />
+                   <AddKamarKos />
                 </div>
             </div>
             <div className="row">
                 <div className="col-12">
                         <DataTable
                             columns={columns}
-                            data={dataGetAll.getAllRumahKosUser}
+                            data={dataGetAllListing.getAllListingUserOwner}
                             pagination
                            
                         />
