@@ -34,6 +34,9 @@ export const GET_ALL_LISTING_OWNER = gql`
         id
         nama
       }
+      rumah_kos{
+        id
+      }
     }
   }
 `;
@@ -55,6 +58,9 @@ export const GET_ONE_LISTING = gql`
         fasilitas_koss{
           id
           nama
+        }
+        rumah_kos{
+          id
         }
     }
   }

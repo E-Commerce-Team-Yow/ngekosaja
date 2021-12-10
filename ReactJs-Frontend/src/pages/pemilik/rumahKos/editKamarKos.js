@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { ADD_LISTING, ADD_RUMAH_KOS } from '../../../graphql/mutation';
+import { ADD_LISTING, ADD_RUMAH_KOS, EDIT_LISTING } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
@@ -26,19 +26,20 @@ export default function EditsKamarKos({kamar_kos}) {
 
     const [formState, setFormState] = useState({
         nama_kamar : kamar_kos.nama,
-        rumah_kos : kamar_kos.rumah_kos,
+        rumah_kos : kamar_kos.rumah_kos.id,
         panjang : kamar_kos.panjang,
         lebar : kamar_kos.lebar,
-        harga_bulanan : kamar_kos.bulanan,
-        harga_tahunan : kamar_kos.tahunan,
+        harga_bulanan : kamar_kos.harga_bulanan,
+        harga_tahunan : kamar_kos.harga_tahunan,
         keterangan : kamar_kos.keterangan,
         jenis : kamar_kos.jenis,
     });
 
     console.log(formState)
+    console.log(kamar_kos);
 
     //deklarasi add Kos
-    const [add_kamar_kos, data] = useMutation(ADD_LISTING);
+    const [edit_kamar_kos, data] = useMutation(EDIT_LISTING);
 
 	//check data user
 	useEffect(()=>{
@@ -49,10 +50,10 @@ export default function EditsKamarKos({kamar_kos}) {
             window.location.replace(`/loginUser?role=2`);
         }
         if(!data.loading ){
-            if(data.data && data.data?.addListing != null){
-                NotificationManager.success('', data.data?.addListing.message, 2000);
+            if(data.data && data.data?.updateListing != null){
+                NotificationManager.success('', data.data?.updateListing.message, 2000);
                 
-            }else if(data.data && data.data?.addListing == null){
+            }else if(data.data && data.data?.updateListing == null){
                 NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
             }
         }
@@ -93,7 +94,8 @@ export default function EditsKamarKos({kamar_kos}) {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                    console.log( add_kamar_kos({ variables: { nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}}));
+                                                    console.log(kamar_kos.id);
+                                                    console.log(edit_kamar_kos({ variables: {id: kamar_kos.id, nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}}));
                                                     setTimeout(() => {
                                                         window.location.replace("/owner/ListKamarKos");
                                                     }, 2000); 
