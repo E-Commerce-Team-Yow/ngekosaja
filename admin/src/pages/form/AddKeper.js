@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router';
-import { ADD_KEPER, UPDATE_KEPERS } from '../../graphql/mutation';
-import { GET_ONE_KEPER, GET_ALL_KEPER, GET_ALL_LISTING } from '../../graphql/queries';
+import { ADD_KETENTUAN_PERATURAN } from '../../graphql/mutation';
+import { GET_ONE_KEPER, GET_ALL_KEPER } from '../../graphql/queries';
 import Footer from '../Footer';
 import Header from '../Header';
 import SideNav from '../SideNav';
@@ -10,11 +10,10 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 // const temp;
-const Add = () => {
+const AddKeper = () => {
     const [formState, setFormState] = useState({
         isi: '',
-        tipe: '', 
-        listingId: ''
+        tipe: 1, 
     });
 
     const script = document.createElement("script");
@@ -22,16 +21,15 @@ const Add = () => {
     script.async = true;
     document.body.appendChild(script);
 
-    const [creKeper, data] = useMutation(ADD_KEPER);
+    const [creKeper, data] = useMutation(ADD_KETENTUAN_PERATURAN);
     useEffect(() => {
         if(!data.loading && data.data?.addKeper){
-          NotificationManager.success('', data.data?.addKepers.message, 2000);
+          NotificationManager.success('', data.data?.addKeper.message, 2000);
             setTimeout(() => {
-                window.location.replace("/admin/fasilitasTable")
+                window.location.replace("/admin/keperTable")
             }, 1000);
         }
       }, [!data.loading])
-      
     //   temp = data.getAllListing;
     // const {loading, error, data: dataGetOne} = useQuery(GET_ONE_FASILITAS_KOS,
     //     { variables: {  id: id }}
@@ -92,8 +90,9 @@ const Add = () => {
                         <form id="quickForm" 
                             onSubmit={ e =>{
                                 e.preventDefault();
+                                console.log(formState.tipe);
                                 creKeper({
-                                    variables: { isi: formState.isi, tipe: formState.tipe, listingId: formState.listingId },
+                                    variables: { isi: formState.isi, tipe: parseInt(formState.tipe)},
                                     refetchQueries:[{query: GET_ALL_KEPER}]
                                 });
                             }}
@@ -113,11 +112,12 @@ const Add = () => {
                             </div>
                             <div className="form-group">
                             <label>Tipe</label>
-                                <select id="tipe" className="form-control" placeholder="Pilih lah tipe"
+                                <select id="tipe" className="form-control"
+                                    defaultValue={formState.tipe}
                                     onChange={(e) => 
                                         setFormState({
                                             ...formState,
-                                            tipe: e.target.value 
+                                            tipe: parseInt(e.target.value,10) 
                                             })
                                     }
                                 >
@@ -153,4 +153,4 @@ const Add = () => {
     )
 }
 
-export default Add;
+export default AddKeper;
