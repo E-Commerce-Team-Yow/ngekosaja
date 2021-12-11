@@ -192,3 +192,19 @@
     object-fit: contain;
     height: 20vh;
 }
+
+/* near campus */
+.filter-cursor{
+    cursor: pointer;
+}
+.title-filter{
+    margin-top: 3vh;
+    margin-left: 6vw;
+}
+.jarak-row{
+    margin-right: 1.5vw;
+}
+
+.filter-padding{
+    padding: 15px;
+}

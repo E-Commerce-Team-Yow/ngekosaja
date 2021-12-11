@@ -7,6 +7,7 @@ import Source from './Source';
 import { GET_ALL_LISTING} from '../graphql/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import { Link, useRouteMatch } from 'react-router-dom';
+import FilterKamarKos from './FilterKamarKos';
 
 export default function NearByCampus(){
     let { path, url } = useRouteMatch();
@@ -117,7 +118,7 @@ export default function NearByCampus(){
                          <div className="container ">
                                 <div className="page-flash-deal filter-by">
                                     <div className="left-page-flash-deal mt-2">
-                                        <h1 className="h1-program">
+                                        <h1 className="h1-program filter-cursor" data-toggle="modal" data-target="#modalFilter">
                                         <i className="fas fa-filter "></i>  Filter
                                         </h1>
                                     </div>
@@ -157,9 +158,10 @@ export default function NearByCampus(){
                                                 </li>
                                             </ul>
                                         </label>
-                                        
+                                        <FilterKamarKos/>
                                     </div>
                                     <div className="clearer" />
+
                                 </div>
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12">
