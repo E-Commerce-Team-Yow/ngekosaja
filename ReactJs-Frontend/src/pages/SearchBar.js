@@ -1,112 +1,119 @@
-// import React from 'react';
+import { useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+import { GET_ALL_KOTA, GET_ALL_RUMAH_KOS } from '../graphql/queries';
+import Loading from './Loading';
 
-// // Imagine you have a list of languages that you'd like to autosuggest.
-// const languages = [
-//   {
-//     name: 'C',
-//     year: 1972
-//   },
-//   {
-//     name: 'Elm',
-//     year: 2012
-//   },
-//   {
-//     name: 'Els',
-//     year: 2012
-//   },
-//   {
-//     name: 'Ele',
-//     year: 2012
-//   },
 
-// ];
-
-// // Teach Autosuggest how to calculate suggestions for any given input value.
-// const getSuggestions = value => {
-//   const inputValue = value.trim().toLowerCase();
-//   const inputLength = inputValue.length;
-
-//   return inputLength === 0 ? [] : languages.filter(lang =>
-//     lang.name.toLowerCase().slice(0, inputLength) === inputValue
-//   );
-// };
-
-// // When suggestion is clicked, Autosuggest needs to populate the input
-// // based on the clicked suggestion. Teach Autosuggest how to calculate the
-// // input value for every given suggestion.
-// const getSuggestionValue = suggestion => suggestion.name;
-
-// // Use your imagination to render suggestions.
-// const renderSuggestion = suggestion => (
-//   <div className="card" style={{zIndex: "99"}}>
-//     {suggestion.name}
-//   </div>
-// );
-
-// class Example extends React.Component {
-//   constructor() {
-//     super();
-
-//     // Autosuggest is a controlled component.
-//     // This means that you need to provide an input value
-//     // and an onChange handler that updates this value (see below).
-//     // Suggestions also need to be provided to the Autosuggest,
-//     // and they are initially empty because the Autosuggest is closed.
-//     this.state = {
-//       value: '',
-//       suggestions: []
-//     };
+export const SearchBar = () => {
+    const [value, setValue] = useState('');
+    const [suggestions, setSuggestions] = useState('');
+    const [arr, setArr] = useState([]);
+    const [arrKota, setArrKota] = useState([]);
+    const {loading, error, data: dataGetAll} = useQuery(GET_ALL_RUMAH_KOS, {variables: {search: value}});
+    const {loading: loadingKota, error: errorKota, data: dataGetAllKota} = useQuery(GET_ALL_KOTA, {variables: {search: value}});
     
-//   }
-  
+    useEffect(() => {
+        if(loading){
+            return <Loading/>
+        }
+        else if(loadingKota){
+            return <Loading/>
+        }
+        if(error){
+            return "Error..."
+        }
+        else if(errorKota){
+            return "Error..."
+        }
+        if(value.length >= 2){
+            setArr(
+                dataGetAll.getAllRumahKos
+            );
+            setArrKota(
+                dataGetAllKota.getAllKota
+            );
+        }else{
+            setArr(
+               []
+            );
+            setArrKota(
+                []
+             );
+        }
 
-//   onChange = (event, { newValue }) => {
-//     this.setState({
-//       value: newValue
-//     });
-//   };
+    }, [loading, loadingKota, value])
 
-//   // Autosuggest will call this function every time you need to update suggestions.
-//   // You already implemented this logic above, so just use it.
-//   onSuggestionsFetchRequested = ({ value }) => {
-//     this.setState({
-//       suggestions: getSuggestions(value)
-//     });
-//   };
+    function change(e){
+        setValue(e.target.value)
+    }
 
-//   // Autosuggest will call this function every time you need to clear suggestions.
-//   onSuggestionsClearRequested = () => {
-//     this.setState({
-//       suggestions: []
-//     });
-//   };
-
-//   render() {
-//     const { value, suggestions } = this.state;
-    
-//     // Autosuggest will pass through all these props to the input.
-//     const inputProps = {
-//       placeholder: 'Masukkan alamat / nama jalan',
-//       type: 'search',
-//       value,
-//       onChange: this.onChange
-//     };
-
-//     // Finally, render it!
-//     return (
-//         <div>
-//             <Autosuggest
-//             suggestions={suggestions}
-//             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-//             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-//             getSuggestionValue={getSuggestionValue}
-//             renderSuggestion={renderSuggestion}
-//             inputProps={inputProps}
-//             />
-
-//         </div>
-//     );
-//   }
-// }
-
-// export default Example;
+    function searchKos() {
+        if(value.length >= 2){
+            window.location.replace(`/search?keyword=${value}`);
+        }
+    }
+    function getSuggestion(params, e){
+        e.preventDefault();
+        window.location.replace(`/search?keyword=${params}`);
+    }
+    return (
+        <div>
+            <form autoComplete="off">
+            <div className="autocomplete">
+            <input id="myInput" type="text" placeholder="Masukkan alamat/nama jalan"
+                    onChange={change}
+            />
+                {/* <input name="search" placeholder="Masukkan alamat/nama jalan" type="search"
+                /> */}
+            </div>
+            <div>    
+                <ul>
+                {
+                    arr.length > 0 && value.length >= 2 && (
+                        <div className="background-white">
+                            Kos di Jalan...
+                        </div>
+                    )
+                }
+                {
+                    arr && (
+                        arr.map(rumah => 
+                            <div key={rumah.id} className="background-white" 
+                                onClick={(e) =>
+                                    getSuggestion(rumah.alamat, e)
+                                }
+                            >
+                                <li id="myInputautocomplete-items" className="autocomplete-items">{rumah.alamat}, {rumah.kota.nama}</li>
+                            </div>
+                            )
+                            )     
+                        }
+                {
+                    arrKota.length > 0 && value.length >= 2 && (
+                        <div className="background-white">
+                            Kos di Kota...
+                        </div>
+                    )
+                }
+                {
+                    arrKota && (
+                        arrKota.map(kota => 
+                            <div key={kota.id} className="background-white"
+                                onClick={(e) =>
+                                    getSuggestion(kota.nama, e)
+                                }
+                            >
+                                <li id="myInputautocomplete-items" className="autocomplete-items">{kota.nama}</li>
+                            </div>
+                           
+                           )
+                           )
+                        }
+                </ul>
+            </div>
+            </form>
+            {/* <button className="btnn" onClick={searchKos}><i className="ti-search"></i></button> */}
+        </div>
+    )
+}

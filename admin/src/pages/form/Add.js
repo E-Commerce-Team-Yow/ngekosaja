@@ -23,7 +23,10 @@ const Add = () => {
     const [creFas, data] = useMutation(ADD_FASILITAS_KOS);
     useEffect(() => {
         if(!data.loading && data.data?.addFasilitasKos){
-          NotificationManager.success('', data.data?.addFasilitasKos.message, 2000);
+            NotificationManager.success('', data.data?.addFasilitasKos.message, 2000);
+            setTimeout(() => {
+                window.location.replace("/admin/fasilitasTable")
+            }, 1000);
         }
       }, [!data.loading])
     // const {loading, error, data: dataGetOne} = useQuery(GET_ONE_FASILITAS_KOS,
@@ -89,9 +92,7 @@ const Add = () => {
                                     variables: { nama: formState.nama, keterangan: formState.keterangan },
                                     refetchQueries:[{query: GET_ALL_FASILITAS_KOS}]
                                 });
-                                setTimeout(() => {
-                                    window.location.replace("/admin/fasilitasTable")
-                                }, 1000);
+                                
                             }}
                             >
                         <div className="card-body">

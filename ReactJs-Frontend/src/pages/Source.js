@@ -4,10 +4,13 @@ import payments from '../images/payments.png';
 import banner from '../images/bg_1.jpg';
 import bedroom from '../images/bedroom.jfif';
 import bali from '../images/bali.jpg';
+import bandung from '../images/bandung.jpg';
 import semarang from '../images/semarang.jpg';
 import jakarta from '../images/jakarta2.jpg';
 import jogja from '../images/jogja.jpg';
 import surabaya from '../images/surabaya.jpg';
+import solo from '../images/solo.jpg';
+import malang from '../images/malang.jpg';
 import penyewaKos from '../images/penyewa-kos.jpg';
 import pemilikKos from '../images/pemilik-kos.jpg';
 import Room from '../images/room-2.jpg';
@@ -48,13 +51,17 @@ import icon_shower from '../icon/icon_shower.png';
 //const image = [logo, logo2, payments, background_carousel_1, background_carousel_2];
 const image = {
     'logo' : logo,
+    'logo2': logo2,
     'banner' : banner,
     'bedroom' : bedroom,
     'bali' : bali,
+    'bandung' : bandung,
     'jogja' : jogja,
     'semarang' : semarang,
     'jakarta' : jakarta,
     'surabaya' : surabaya,
+    'solo' : solo,
+    'malang' : malang,
     'penyewaKos' : penyewaKos,
     'pemilikKos' : pemilikKos,
     'room' : Room,

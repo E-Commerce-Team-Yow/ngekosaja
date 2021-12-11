@@ -6,20 +6,33 @@ import Header from './Header';
 // import Loading from '../Loading';
 import Source from './Source';
 import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_LAST_RUMAH_KOS } from '../graphql/queries';
 
 export default function Home() {
     
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        setLoading(true);
-        const timing = setTimeout(() => {
-        setLoading(false);
-        }, 1000);
-        return () => {
-            clearTimeout(timing);
-        }
-    }, []);
+   // const [loading, setLoading] = useState(true);
 
+    //deklarasi add Kos
+    const {loading:loadingrumahKos, data: getLastRumahKos, error:errorrumahKos} = useQuery(GET_LAST_RUMAH_KOS,{variables: {limit:6}});
+    // useEffect(() => {
+    //     setLoading(true);
+    //     const timing = setTimeout(() => {
+    //     setLoading(false);
+    //     }, 1000);
+    //     return () => {
+    //         clearTimeout(timing);
+    //     }
+    // }, []);
+
+    
+    if(loadingrumahKos){
+        return "Loading..."
+    }
+    if(errorrumahKos){
+        return "Error..."
+    }
+    console.log(getLastRumahKos.getLastRumahKos);
 
     return (
         <div className="js">
@@ -315,6 +328,51 @@ export default function Home() {
                         </div>
                     </section>
                     {/* end-flash-deal */}
+
+                    {/* section rumah kos */}
+                    <section>
+                        <div className='container'>
+                            <h1 className='h1-program'>
+                                Rumah Kos Terkini
+                            </h1>
+                            <div className='row box-program'>
+
+                            {
+                                getLastRumahKos && (
+                                        getLastRumahKos.getLastRumahKos.map(rumah_kos => 
+                                           
+                                      
+                                <div className='box-rumah-kos' key={rumah_kos.id}>
+                                   <div className='row'>
+                                       <div className='col-12'>
+                                             <img className='img-box-rumah-kos' src={Source.room} />
+                                       </div>
+                                   </div>
+                                   <div className='row p-2'>
+                                       <div className='col-12'>
+                                           <h5>{rumah_kos.nama}</h5>
+                                           <h6>{rumah_kos.alamat}, {rumah_kos.kota.nama}</h6>
+                                           <p className='mt-2' dangerouslySetInnerHTML={{ __html: rumah_kos.keterangan }}></p>
+                                       </div>
+                                       <div className='col-6 mt-5'>
+                                           <i>Rating : </i>
+                                       </div>
+                                       <div className='col-6 mt-5'>
+                                        {rumah_kos.sisa_kamar} kamar tersisa
+                                       </div>
+                                   </div>
+                                </div>
+                                
+                                    )
+                                )
+                            }
+                                
+
+
+
+                            </div>
+                        </div>
+                    </section>
                     
                     {/* Kos-di-kota */}
                     <section>
@@ -323,39 +381,38 @@ export default function Home() {
                                 Kos di Kota
                             </h1>
                             <div className="box-program">
-                                <a href="product-by-category.php">
+                                <Link to="/search?keyword=JAKARTA">
                                     <div className="list-program" style={{backgroundImage:`url(${Source.jakarta})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Jakarta
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.bali})`}}>
+                                </Link>
+                                <Link to="/search?keyword=BANDUNG">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.bandung})`}}>
                                     <div className="overlay-program" />
                                     <h2>
-                                        Bali
+                                        Bandung
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Jogja
-                                    </h2>
-                                    </div>
-                                </a>
-                                <a href="product-by-category.php">
+                                </Link>
+                                <Link to="/search?keyword=SEMARANG">
                                     <div className="list-program" style={{backgroundImage: `url(${Source.semarang})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Semarang
                                     </h2>
                                     </div>
-                                </a>
-                            
+                                </Link>
+                                <Link to="/search?keyword=JOGJA">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Yogyakarta
+                                    </h2>
+                                    </div>
+                                </Link>
                                 <div className="clearer" />
                             </div>
                         </div>
@@ -363,39 +420,38 @@ export default function Home() {
                     <section>
                         <div className="container mb-5">
                             <div className="box-program">
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage:`url(${Source.jakarta})`}}>
+                                <Link to="/search?keyword=SOLO">
+                                    <div className="list-program" style={{backgroundImage:`url(${Source.solo})`}}>
                                     <div className="overlay-program" />
                                     <h2>
-                                        Jakarta
+                                        Solo
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
+                                </Link>
+                                <Link to="/search?keyword=SURABAYA">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.surabaya})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Surabaya
+                                    </h2>
+                                    </div>
+                                </Link>
+                                <Link to="/search?keyword=MALANG">
+                                    <div className="list-program" style={{backgroundImage: `url(${Source.malang})`}}>
+                                    <div className="overlay-program" />
+                                    <h2>
+                                        Malang
+                                    </h2>
+                                    </div>
+                                </Link>
+                                <Link to="/search?keyword=BALI">
                                     <div className="list-program" style={{backgroundImage: `url(${Source.bali})`}}>
                                     <div className="overlay-program" />
                                     <h2>
                                         Bali
                                     </h2>
                                     </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.jogja})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Jogja
-                                    </h2>
-                                    </div>
-                                </a>
-                                <a href="product-by-category.php">
-                                    <div className="list-program" style={{backgroundImage: `url(${Source.semarang})`}}>
-                                    <div className="overlay-program" />
-                                    <h2>
-                                        Semarang
-                                    </h2>
-                                    </div>
-                                </a>
-                            
+                                </Link>
                                 <div className="clearer" />
                             </div>
                         </div>

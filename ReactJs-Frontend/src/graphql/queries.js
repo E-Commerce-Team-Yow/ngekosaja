@@ -17,6 +17,31 @@ export const GET_ALL_LISTING = gql`
   }
 `;
 
+export const GET_ALL_LISTING_OWNER = gql`
+  query getAllListingUserOwner($id_user :String!){
+    getAllListingUserOwner(id_user : $id_user){
+      id
+      nama
+      jenis
+      panjang
+      lebar
+      harga_bulanan
+      harga_tahunan
+      keterangan
+      status
+      successful
+      fasilitas_koss{
+        id
+        nama
+      }
+      rumah_kos{
+        id
+      }
+    }
+  }
+`;
+
+
 export const GET_ONE_LISTING = gql`
   query getOneListing ($id_kamar: String) {
     getOneListing (id_kamar: $id_kamar) {
@@ -33,6 +58,9 @@ export const GET_ONE_LISTING = gql`
         fasilitas_koss{
           id
           nama
+        }
+        rumah_kos{
+          id
         }
     }
   }
@@ -108,7 +136,25 @@ export const GET_ALL_RUMAH_KOS = gql`
         id
         nama
       }
-      provinsi
+      total_kamar
+      sisa_kamar
+      status
+    }
+  }
+`;
+
+export const GET_LAST_RUMAH_KOS = gql`
+  query getLastRumahKos($limit: Int!) {
+    getLastRumahKos(limit: $limit){
+      id
+      nama
+      alamat
+      keterangan
+      kode_pos
+      kota{
+        id
+        nama
+      }
       total_kamar
       sisa_kamar
       status

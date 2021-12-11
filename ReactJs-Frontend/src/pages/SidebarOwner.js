@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
-import Example from './SearchBar';
-import { SearchBarFunc } from './SearchBarFunc';
 import Source from './Source';
 import { useCookies } from 'react-cookie';
 
@@ -100,7 +98,7 @@ export default function SidebarOwner() {
                       <NavLink to="/owner/ListRumahKos" >List Rumah Kos</NavLink>
                     </li>
                     <li>
-                      <a href="#">Peraturan Rumah Kos</a>
+                      <NavLink to="/owner/ListKamarKos" >List Kamar Kos</NavLink>
                     </li>
                   </ul>
                 </div>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import Example from './SearchBar';
-import { SearchBarFunc } from './SearchBarFunc';
+import { SearchBar } from './SearchBar';
 import Source from './Source';
 import { useCookies } from 'react-cookie';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
-
+const clientId = "568661146363-eo0s56tv59nsj9cfl416s7nvu7d2k9c9.apps.googleusercontent.com";
 
 export default function Header() {
 	let history = useHistory();
@@ -18,9 +18,12 @@ export default function Header() {
 		} 
 	},[]);
 
-	function submit() {
-		Link('/seacrh');
-	}
+	const onSignoutSuccess = () => {
+		removeCookie('userLogin');
+		window.location.reload();
+    };
+
+	console.log(dataUser);
 
     return (
         <header className="header shop">
@@ -51,7 +54,7 @@ export default function Header() {
 				<div className="row">
 					<div className="col-lg-2 col-md-2 col-12">
 						<div className="logo">
-							<Link to="/"><img src={Source['logo']} alt="logo"/></Link>
+							<Link to="/" replace><img src={Source['logo']} alt="logo"/></Link>
 						</div>
 						<div className="search-top">
 							<div className="top-search"><a href="#0"><i className="ti-bell"></i></a></div>
@@ -75,7 +78,7 @@ export default function Header() {
 					<div className="col-lg-6 col-md-7 col-12">
 						<div className="search-bar-top">
 							<div className="search-bar">
-								<SearchBarFunc/>
+								<SearchBar/>
 									{/* <input name="search" placeholder="Masukkan alamat/nama jalan" type="search"/>
 									<button className="btnn"><i className="ti-search"></i></button> */}
 							</div>
@@ -83,16 +86,14 @@ export default function Header() {
 					</div>
 					<div className="col-lg-4 col-md-1 col-12">
 					{
-							   dataUser ? 
+						dataUser ? 
 							<div className="right-bar" id="allHeaderRight">
 							   <label className="dropdown">
-   
 								   <div className="dd-button">
 									   Dropdown
 								   </div>
    
 								   <input name="" type="checkbox" className="dd-input" id="test" />
-   
 								   <ul className="dd-menu">
 									   <li>Action</li>
 									   <li>Another action</li>
@@ -110,14 +111,31 @@ export default function Header() {
 							 
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
+										{dataUser.googleId ?
+										<img src={dataUser.imageUrl} alt="Profil Pict" className="img-round"/>
+										
+										:
 										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>
+										
+										}
 										<input name="" type="checkbox" className="dd-input" id="test" />
    
 										<ul className="dd-menu">
 										
-											<li className="disable"><h5>Hello, {dataUser.nama_depan}</h5></li>
+											<li className="disable"><h5>Hello, {dataUser.googleId ? dataUser.givenName : dataUser.nama_depan}</h5></li>
 											<li className="divider"></li> 
 											<li><a href="/profile">My Profile</a></li>
+											{
+												dataUser.googleId ?
+											<li>
+													<GoogleLogout
+														clientId={clientId}
+														buttonText="Sign Out"
+														onLogoutSuccess={onSignoutSuccess}
+													>
+													</GoogleLogout>
+											</li>
+											:
 											<li>
 												<a href=""  onClick={(e) =>
 													{ 
@@ -125,6 +143,7 @@ export default function Header() {
 													}
 												}>Log Out</a>
 											</li>
+											}
 										</ul>
 									
 									</label>
@@ -134,13 +153,11 @@ export default function Header() {
 							   : 
 						<div className="right-bar top-20" id="allHeaderRight">
 							<label className="dropdown">
-
 								<div className="dd-button">
 									Dropdown
 								</div>
 
 								<input name="" type="checkbox" className="dd-input" id="test" />
-
 								<ul className="dd-menu">
 									<li>Action</li>
 									<li>Another action</li>
@@ -159,12 +176,9 @@ export default function Header() {
 							   <span className="single-bar ml-3">
 									<button className="btn btn-info" data-toggle="modal" data-target="#exampleModal">Masuk</button>
 								</span>
-						   
 						</div>
 					}
-						
-					</div>
-							
+					</div>			
 				</div>
 			</div>
 		</div>

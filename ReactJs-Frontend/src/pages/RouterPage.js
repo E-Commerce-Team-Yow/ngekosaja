@@ -9,7 +9,7 @@ import NearByCampus from './nearByCampus';
 import LoginUser from './LoginUser';
 import RegisterUser from './RegisterUser';
 import DetailUser from './DetailUser';
-// import Login from '../admin/Login';
+//import Login from '../admin/Login';
 // import UserTable from '../admin/table/userTable';
 // import ListingTable from '../admin/table/listingTable';
 // import RumahTable from '../admin/table/rumahTable';
@@ -46,6 +46,8 @@ export default function RouterPage() {
                     <Route path="/registerUser" component={RegisterUser} />
                     <Route path="/profile" component={DetailUser} />
                     <Route path="/owner" component={DashboardOwner} />
+                    {/* <Route path="/login" component={Login}/>  */}
+                    <Route path="/DetailKamar" component={DetailKamar}/>
                     {/* <Route path="/login" component={Login}/> */}
                     <Route path="/near-campus/DetailKamar" component={DetailKamar}/>
                     <Route path="/near-campus/FilterKamarKos" component={FilterKamarKos}/>

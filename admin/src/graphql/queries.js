@@ -77,7 +77,7 @@ export const GET_ONE_KEPER = gql`
       id
       isi
       tipe
-      listingID
+      id_listing
     }
   }
 `

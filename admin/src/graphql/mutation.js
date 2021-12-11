@@ -121,10 +121,18 @@ export const UPDATE_MEDIA = gql`
   }
 `;
 
-export const ADD_KEPER = gql`
-  mutation addKeper($isi: String!, $tipe: String!){
+export const ADD_KETENTUAN_PERATURAN = gql`
+  mutation addKeper($isi: String!, $tipe: Int!){
     addKeper(isi: $isi, tipe: $tipe){
       id
+      successful
+      message
+    }
+  }
+`;
+export const UPDATE_KEPER = gql`
+  mutation updateKeper($id: String!, $isi: String!, $tipe: Int!){
+    updateKeper(id: $id, isi: $isi, tipe: $tipe){
       successful
       message
     }
