@@ -60,7 +60,7 @@ const KeperTable = () => {
                         </div>
                         <div className="col-2">
                         <Link to={`${url}/addKeper`} replace>
-                          <button type="button" className="btn btn-success btn-block btn-sm"><i className="fa fa-plus mr-1" />Tambah Fasilitas</button>
+                          <button type="button" className="btn btn-success btn-block btn-sm"><i className="fa fa-plus mr-1" />Tambah KePer</button>
                         </Link>
                         </div>
                         </div>
@@ -104,7 +104,7 @@ const KeperTable = () => {
                                       </div>
                                     </div>
                                     <div className="col-sm-6">
-                                      <Link to={`/admin/edit?id=${keper.id}&edit=fasilitas`} replace><i className="nav-icon fas fa-edit" /></Link>
+                                      <Link to={`${url}/actionKeper?act=edit&id=${keper.id}&obj=keper`} replace><i className="nav-icon fas fa-edit" /></Link>
                                     </div>
                                   </div>
                                 </td>
