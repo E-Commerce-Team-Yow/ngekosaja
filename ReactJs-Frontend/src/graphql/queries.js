@@ -143,6 +143,25 @@ export const GET_ALL_RUMAH_KOS = gql`
   }
 `;
 
+export const GET_LAST_RUMAH_KOS = gql`
+  query getLastRumahKos($limit: Int!) {
+    getLastRumahKos(limit: $limit){
+      id
+      nama
+      alamat
+      keterangan
+      kode_pos
+      kota{
+        id
+        nama
+      }
+      total_kamar
+      sisa_kamar
+      status
+    }
+  }
+`;
+
 
 export const GET_RUMAH_KOS_USER = gql`
   query getAllRumahKosUser($id_user: String!) {

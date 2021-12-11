@@ -6,20 +6,33 @@ import Header from './Header';
 // import Loading from '../Loading';
 import Source from './Source';
 import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_LAST_RUMAH_KOS } from '../graphql/queries';
 
 export default function Home() {
     
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        setLoading(true);
-        const timing = setTimeout(() => {
-        setLoading(false);
-        }, 1000);
-        return () => {
-            clearTimeout(timing);
-        }
-    }, []);
+   // const [loading, setLoading] = useState(true);
 
+    //deklarasi add Kos
+    const {loading:loadingrumahKos, data: getLastRumahKos, error:errorrumahKos} = useQuery(GET_LAST_RUMAH_KOS,{variables: {limit:6}});
+    // useEffect(() => {
+    //     setLoading(true);
+    //     const timing = setTimeout(() => {
+    //     setLoading(false);
+    //     }, 1000);
+    //     return () => {
+    //         clearTimeout(timing);
+    //     }
+    // }, []);
+
+    
+    if(loadingrumahKos){
+        return "Loading..."
+    }
+    if(errorrumahKos){
+        return "Error..."
+    }
+    console.log(getLastRumahKos.getLastRumahKos);
 
     return (
         <div className="js">
@@ -318,7 +331,47 @@ export default function Home() {
 
                     {/* section rumah kos */}
                     <section>
-                        <div className='container'></div>
+                        <div className='container'>
+                            <h1 className='h1-program'>
+                                Rumah Kos Terkini
+                            </h1>
+                            <div className='row box-program'>
+
+                            {
+                                getLastRumahKos && (
+                                        getLastRumahKos.getLastRumahKos.map(rumah_kos => 
+                                           
+                                      
+                                <div className='box-rumah-kos' key={rumah_kos.id}>
+                                   <div className='row'>
+                                       <div className='col-12'>
+                                             <img className='img-box-rumah-kos' src={Source.room} />
+                                       </div>
+                                   </div>
+                                   <div className='row p-2'>
+                                       <div className='col-12'>
+                                           <h5>{rumah_kos.nama}</h5>
+                                           <h6>{rumah_kos.alamat}, {rumah_kos.kota.nama}</h6>
+                                           <p className='mt-2' dangerouslySetInnerHTML={{ __html: rumah_kos.keterangan }}></p>
+                                       </div>
+                                       <div className='col-6 mt-5'>
+                                           <i>Rating : </i>
+                                       </div>
+                                       <div className='col-6 mt-5'>
+                                        {rumah_kos.sisa_kamar} kamar tersisa
+                                       </div>
+                                   </div>
+                                </div>
+                                
+                                    )
+                                )
+                            }
+                                
+
+
+
+                            </div>
+                        </div>
                     </section>
                     
                     {/* Kos-di-kota */}

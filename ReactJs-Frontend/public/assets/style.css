@@ -6235,6 +6235,35 @@ ul.breadcrumb {
   }
   
   
+  /*-----------------------------rumah kos-theme-------------------------------------------------*/
+
+  .box-rumah-kos{
+	width: 32.2%;
+	min-height: 440px;
+	background-color: #fff;
+	margin: 0.5%;
+	float: left;
+	-webkit-box-shadow: 0 1px 6px 0 rgba(153, 153, 153, 0.16);
+	box-shadow: 0 1px 6px 0 rgba(19, 1, 1, 0.16);
+	border-radius: 8px;
+	transition: .5s ease;
+	-webkit-transition: .5s ease;
+	-moz-transition: .5s ease;
+	-o-transition: .5s ease;
+  }
+
+  .img-box-rumah-kos{
+	  width: 100%;
+	  height: 30vh;
+	  object-fit: cover;
+	  border-radius: 8px;
+  }
+
+  @media (max-width: 540px){
+	  .box-rumah-kos{
+		  width: 100%;
+	  }
+  }
   /*-----------------------------chiller-theme-------------------------------------------------*/
   
   .chiller-theme .sidebar-wrapper {
