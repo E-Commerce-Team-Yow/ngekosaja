@@ -315,6 +315,11 @@ export default function Home() {
                         </div>
                     </section>
                     {/* end-flash-deal */}
+
+                    {/* section rumah kos */}
+                    <section>
+                        <div className='container'></div>
+                    </section>
                     
                     {/* Kos-di-kota */}
                     <section>
