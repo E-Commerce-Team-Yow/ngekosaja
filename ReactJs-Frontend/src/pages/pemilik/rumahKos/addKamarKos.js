@@ -52,7 +52,7 @@ export default function AddKamarKos() {
                 NotificationManager.success('', data.data?.addListing.message, 2000);
                 
             }else if(data.data && data.data?.addListing == null){
-                NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
+                NotificationManager.error('', "Gagal menambahkan kamar kos", 2000);
             }
         }
 	},[!data.loading]);

@@ -85,9 +85,14 @@ export default function RegisterUser() {
       if(!data.loading ){
           if(data.data && data.data?.createUser != null){
               NotificationManager.success('', data.data?.createUser.message, 2000);
+            if(data.data?.createUser.successfull){
               setTimeout(() => {
                 window.location.replace(`/loginUser?role=${getWizardState().role}`);
               }, 2000); 
+            }else{
+              document.getElementById("btnSubmit").disabled = false;
+              document.getElementById("btnSubmit").innerHTML = "Register";
+            }
           }
       }
     }, [!data.loading])
