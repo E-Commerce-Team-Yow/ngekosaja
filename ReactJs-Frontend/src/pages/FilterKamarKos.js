@@ -27,8 +27,9 @@ export default function FilterKamarKos(props) {
   
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        props.onChange(inputMinMax)
-        alert(`min price ${inputMinMax.vmin} - max price ${inputMinMax.vmax}`)
+        props.onChange(inputMinMax);
+        //document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+        //alert(`min price ${inputMinMax.vmin} - max price ${inputMinMax.vmax}`)
     }
     
     const {loading, data: allkota, error} = useQuery(GET_ALL_KOTA);
@@ -38,7 +39,6 @@ export default function FilterKamarKos(props) {
     if(error){
       return "Error..."
     }
-    console.log(allkota)
     return(
         <div>
             <div className="modal fade" id="modalFilter" tabIndex={-1} role="dialog" aria-labelledby="modalFilterLabel" aria-hidden="true">
@@ -106,7 +106,7 @@ export default function FilterKamarKos(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" className="btn btn-primary" defaultValue="Save Changes" />
+                            <input type="submit" className="btn btn-primary" id="btnFilter" defaultValue="Save Changes" />
                         </div>
                     </form>
                 </div>

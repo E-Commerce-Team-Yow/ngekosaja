@@ -11,35 +11,26 @@ import FilterKamarKos from './FilterKamarKos';
 
 export default function NearByCampus(){
     let { path, url } = useRouteMatch();
-    console.log(url);
 
     const [inputMinMax, setInputMinMax] = useState({
-        vmin : 0,
-        vmax : 0,
+        vmin : -1,
+        vmax : -1,
     });
     const TransMinMax = (data) => {
         setInputMinMax(data)
     }
     
+    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_LISTING, {variables: {vmin: parseInt(inputMinMax.vmin), vmax: parseInt(inputMinMax.vmax)}});
+    //const {loading : loading2, data: filterdata, error : error2} = useQuery(GET_LISTING_BETWEEN_EXPECTED_PRICE,{variables: {vmin: parseInt(inputMinMax.vmin), vmax:parseInt(inputMinMax.vmax)}});
     useEffect(() => {
-        console.log(inputMinMax)
-    }, []);
+        if(loading){
+          return "Loading..."
+        }
+        if(error){
+          return "Error..."
+        }
+    }, [!loading]);
 
-    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_LISTING);
-    const {loading : loading2, data: filterdata, error : error2} = useQuery(GET_LISTING_BETWEEN_EXPECTED_PRICE,{variables: {vmin:inputMinMax.vmin,vmax:inputMinMax.vmax}});
-    if(loading){
-      return "Loading..."
-    }
-    if(error){
-      return "Error..."
-    }
-    if(loading2){
-      return "Loading2..."
-    }
-    if(error2){
-      return "Error2..."
-    }
-    console.log(dataGetAll)
     return(
         <div className="js">
             {
@@ -263,10 +254,8 @@ export default function NearByCampus(){
                                                                 </div>
                                                             )
                                                         )
-                                                    }
-                                                    {
-                                                        filterdata && (
-                                                            filterdata.getListingBetweenExpectedPrice.map(listing => 
+                                                            }
+                                                            {/* dataGetAll.getAllListing.map(listing => 
                                                                 <div>
                                                                     <Link to={`${url}/DetailKamar?id=${listing.id}`} replace>
                                                                         <div className="card mb-1 card-room">
@@ -338,9 +327,8 @@ export default function NearByCampus(){
                                                                     
                                                                     </Link>
                                                                 </div>
-                                                            )
-                                                        )
-                                                    }
+                                                            ) */}
+                                                    
                                                 </div>
                                                 
                                                     
