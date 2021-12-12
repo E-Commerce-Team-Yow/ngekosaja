@@ -8,7 +8,7 @@ import { GET_ALL_KOTA} from '../graphql/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import { Link, useRouteMatch } from 'react-router-dom';
 
-export default function FilterKamarKos() { 
+export default function FilterKamarKos(props) { 
     const script = document.createElement("script");
     script.src = `../../js/validation.js`;
     script.async = true;
@@ -18,13 +18,19 @@ export default function FilterKamarKos() {
         
 	},[]);
 
-    const [vmin, setVmin] = useState("");
-    const [vmax, setVmax] = useState("");
+    // const [vmin, setVmin] = useState("");
+    // const [vmax, setVmax] = useState("");
+    const [inputMinMax, setInputMinMax] = useState({
+        vmin : '',
+        vmax : '',
+    });
   
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        alert(`Submitting Name ${vmin}${vmax}`)
+        props.onChange(inputMinMax)
+        alert(`min price ${inputMinMax.vmin} - max price ${inputMinMax.vmax}`)
     }
+    
     const {loading, data: allkota, error} = useQuery(GET_ALL_KOTA);
     if(loading){
       return "Loading..."
@@ -77,8 +83,21 @@ export default function FilterKamarKos() {
                             <div className="col-10 text-left">
                                 <div className="row">
                                 <div className="form-check">
-                                    <input type="number" name id className="range" placeholder="harga min" value={vmin} onChange={e => setVmin(e.target.value)} /> -
-                                    <input type="number" name id className="range" placeholder="harga max" value={vmax} onChange={e => setVmax(e.target.value)} />
+                                    <input type="number" name id className="range" placeholder="harga min" value={inputMinMax.vmin} 
+                                    onChange={(e) =>
+                                        setInputMinMax({
+                                        ...inputMinMax,
+                                        vmin: e.target.value
+                                        })
+                                    }/> -
+                                    <input type="number" name id className="range" placeholder="harga max" value={inputMinMax.vmax}
+                                    onChange={(e) =>
+                                        setInputMinMax({
+                                        ...inputMinMax,
+                                        vmax: e.target.value
+                                        })
+                                    }/>
+                                    {/* <input type="number" name id className="range" placeholder="harga max" value={inputMinMax.vmax} onChange={e => setVmax(e.target.value)} /> */}
                                 </div>
                                 </div>
                             </div>

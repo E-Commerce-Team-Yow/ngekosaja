@@ -17,6 +17,23 @@ export const GET_ALL_LISTING = gql`
   }
 `;
 
+export const GET_LISTING_BETWEEN_EXPECTED_PRICE = gql`
+  query getListingBetweenExpectedPrice($vmin :Int! $vmax :Int!) {
+    getListingBetweenExpectedPrice(vmin : $vmin, vmax : $vmax){
+        id
+        nama
+        panjang
+        lebar
+        harga_bulanan
+        status
+        fasilitas_koss{
+          id
+          nama
+        }
+    }
+  }
+`;
+
 export const GET_ALL_LISTING_OWNER = gql`
   query getAllListingUserOwner($id_user :String!){
     getAllListingUserOwner(id_user : $id_user){

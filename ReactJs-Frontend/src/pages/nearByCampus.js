@@ -4,7 +4,7 @@ import SkeletonCard from './SkeletonCard';
 import Navbar from './Navbar';
 import Header from './Header';
 import Source from './Source';
-import { GET_ALL_LISTING} from '../graphql/queries';
+import { GET_ALL_LISTING, GET_LISTING_BETWEEN_EXPECTED_PRICE } from '../graphql/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import { Link, useRouteMatch } from 'react-router-dom';
 import FilterKamarKos from './FilterKamarKos';
@@ -12,16 +12,32 @@ import FilterKamarKos from './FilterKamarKos';
 export default function NearByCampus(){
     let { path, url } = useRouteMatch();
     console.log(url);
+
+    const [inputMinMax, setInputMinMax] = useState({
+        vmin : 0,
+        vmax : 0,
+    });
+    const TransMinMax = (data) => {
+        setInputMinMax(data)
+    }
     
     useEffect(() => {
-
+        console.log(inputMinMax)
     }, []);
+
     const {loading, data: dataGetAll, error} = useQuery(GET_ALL_LISTING);
+    const {loading : loading2, data: filterdata, error : error2} = useQuery(GET_LISTING_BETWEEN_EXPECTED_PRICE,{variables: {vmin:inputMinMax.vmin,vmax:inputMinMax.vmax}});
     if(loading){
       return "Loading..."
     }
     if(error){
       return "Error..."
+    }
+    if(loading2){
+      return "Loading2..."
+    }
+    if(error2){
+      return "Error2..."
     }
     console.log(dataGetAll)
     return(
@@ -114,6 +130,8 @@ export default function NearByCampus(){
                     </section>
                      {/* end-Kos-di-kota */}
 
+                     min : {inputMinMax.vmin}
+                     max : {inputMinMax.vmax}
                      <section>
                          <div className="container ">
                                 <div className="page-flash-deal filter-by">
@@ -140,7 +158,6 @@ export default function NearByCampus(){
                                                 </li>
                                             </ul>
                                         </label>
-                                        
                                     </div>
                                     <div className="right-page-flash-deal mb-5">
                                         <label className="dropdown">
@@ -158,7 +175,7 @@ export default function NearByCampus(){
                                                 </li>
                                             </ul>
                                         </label>
-                                        <FilterKamarKos/>
+                                        <FilterKamarKos data={inputMinMax} onChange={(e) => {TransMinMax(e)}}/>
                                     </div>
                                     <div className="clearer" />
 
@@ -173,6 +190,83 @@ export default function NearByCampus(){
                                                     {
                                                         dataGetAll && (
                                                             dataGetAll.getAllListing.map(listing => 
+                                                                <div>
+                                                                    <Link to={`${url}/DetailKamar?id=${listing.id}`} replace>
+                                                                        <div className="card mb-1 card-room">
+                                                                            <div className="row">
+                                                                                <input type="hidden" name="hidid" value={listing.id} />
+                                                                                <div className="col-5">
+                                                                                    <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" style={{borderRadius:100+'%'}}>
+                                                                                        <div className="carousel-inner carousel-rounded">
+                                                                                            <div className="carousel-item active">
+                                                                                                <img className="d-block w-100" src={Source['room']} alt="First slide" />
+                                                                                            </div>
+                                                                                            <div className="carousel-item">
+                                                                                                    <img className="d-block w-100" src={Source['room']} alt="Second slide" />
+                                                                                            </div>
+                                                                                            <div className="carousel-item">
+                                                                                                <img className="d-block w-100" src={Source['room']} alt="Third slide" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                                                            <span className="carousel-control-prev-icon" aria-hidden="true" />
+                                                                                            <span className="sr-only">Previous</span>
+                                                                                        </a>
+                                                                                        <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                                                            <span className="carousel-control-next-icon" aria-hidden="true" />
+                                                                                            <span className="sr-only">Next</span>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="col-7">
+                                                                                    <div className="row">
+                                                                                        <div className="col-8">
+                                                                                            <h6>{listing.nama}</h6>
+                                                                                        </div>
+                                                                                        <div className="col-4 text-right">
+                                                                                            <a href=""><i className="ti-map"> </i></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="row">
+                                                                                        <div className="col-12">
+                                                                                            Surabaya, Jawa Timur
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="row">
+                                                                                        <div className="col-12">
+                                                                                            <span className="badge badge-secondary mr-1">1456 Transaksi</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="row">
+                                                                                        <div className="col-12">
+                                                                                            <i className="ti-rss-alt m-2"></i>
+                                                                                            {listing.fasilitas_koss.nama}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="row">
+                                                                                        <div className="col-12 text-right">
+                                                                                            <del>{listing.harga_bulanan}</del>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="row">
+                                                                                        <div className="col-12 text-right">
+                                                                                            <span className="badge badge-disc-room mr-1">50%</span>
+                                                                                            <b>Rp. {listing.harga_bulanan}</b>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr/>
+                                                                    
+                                                                    </Link>
+                                                                </div>
+                                                            )
+                                                        )
+                                                    }
+                                                    {
+                                                        filterdata && (
+                                                            filterdata.getListingBetweenExpectedPrice.map(listing => 
                                                                 <div>
                                                                     <Link to={`${url}/DetailKamar?id=${listing.id}`} replace>
                                                                         <div className="card mb-1 card-room">
