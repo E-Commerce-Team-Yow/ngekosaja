@@ -18,6 +18,8 @@ import MediaTable from './table/mediaTable';
 import EditMedia from './form/EditMedia';
 import EditKeper from './form/EditKeper';
 import AddKeper from './form/AddKeper';
+import KotaTable from './table/kotaTable';
+import EditKota from './form/EditKota';
 
 export default function RouterPage() {
     const client = new ApolloClient({
@@ -62,6 +64,14 @@ export default function RouterPage() {
                                         <Route path={`${url}`} exact component={KeperTable} />
                                         <Route path={`${url}/actionKeper`} exact component={EditKeper} />
                                         <Route path={`${url}/addKeper`} exact component={AddKeper} />
+                                    </>
+                                )}
+                            />
+                            <Route path={`${url}/kotaTable`}
+                                render={({ match: { url } }) => (
+                                    <> 
+                                        <Route path={`${url}`} exact component={KotaTable} />
+                                        <Route path={`${url}/actionKota`} exact component={EditKota} />
                                     </>
                                 )}
                             />

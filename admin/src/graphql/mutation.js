@@ -138,3 +138,11 @@ export const UPDATE_KEPER = gql`
     }
   }
 `;
+export const UPDATE_KOTA = gql`
+  mutation updateKota($id: Int!, $gambar: String!){
+    updateKota(id: $id, gambar: $gambar){
+      succesful
+      message
+    }
+  }
+`;
