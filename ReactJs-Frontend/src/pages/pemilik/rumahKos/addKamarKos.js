@@ -101,7 +101,7 @@ export default function AddKamarKos() {
                                         >
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Rumah Kos</label>
-                                                <select name="kota_kos" id="kota_kos" className="form-control" 
+                                                <select name="rumah_kos" id="rumah_kos" className="form-control" 
                                             
                                             onChange={(e) =>
                                                 setFormState({
@@ -130,7 +130,7 @@ export default function AddKamarKos() {
                                                         })
                                                     }
                                                 
-                                                placeholder="Kamar 1" name="nama_kamar" />
+                                                placeholder="Kamar 1" name="nama_kos" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Jenis Kamar</label>
@@ -174,7 +174,7 @@ export default function AddKamarKos() {
                                             </div>
                                             <div className="row">
                                                 <div className="form-group col-6">
-                                                    <label htmlFor="name_kos">Harga Taunan</label>
+                                                    <label htmlFor="name_kos">Harga Tahunan</label>
                                                     <input type="number" className="form-control" id="hrgBulanan"
                                                         onChange={(e) =>
                                                             setFormState({
@@ -182,7 +182,7 @@ export default function AddKamarKos() {
                                                             harga_bulanan: e.target.value
                                                             })
                                                         }
-                                                    placeholder="500000" name="hrgBulanan" />
+                                                    placeholder="500000" name="hrgTahunan" />
                                                 </div>
                                                 <div className="form-group col-6">
                                                     <label htmlFor="name_kos">Harga Bulanan</label>
@@ -193,7 +193,7 @@ export default function AddKamarKos() {
                                                             harga_tahunan: e.target.value
                                                             })
                                                         }
-                                                    placeholder="1200000" name="hrgTahunan" />
+                                                    placeholder="1200000" name="hrgBulanan" />
                                                 </div>
                                             </div>
                                             <div className="form-group">

@@ -54,7 +54,7 @@ export default function Header() {
 				<div className="row">
 					<div className="col-lg-2 col-md-2 col-12">
 						<div className="logo">
-							<Link to="/" replace><img src={Source['logo']} alt="logo"/></Link>
+							<Link to="/" replace><img src={Source['ngekosAjalogo']} alt="logo"/></Link>
 						</div>
 						<div className="search-top">
 							<div className="top-search"><a href="#0"><i className="ti-bell"></i></a></div>

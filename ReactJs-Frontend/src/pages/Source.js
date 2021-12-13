@@ -24,6 +24,7 @@ import logoUgm from '../images/logo-UGM.png';
 import profil from '../images/2.jpg';
 import kamar_kos from '../image/kamar_kos.jpg';
 import location from '../image/location.png';
+import ngekosAjalogo from '../images/Logo3.png';
 import icon_atm from '../icon/icon_atm.png';
 import icon_chat from '../icon/icon_chat.jpg';
 import icon_free from '../icon/icon_free.png';
@@ -52,6 +53,7 @@ import icon_shower from '../icon/icon_shower.png';
 const image = {
     'logo' : logo,
     'logo2': logo2,
+    'ngekosAjalogo': ngekosAjalogo,
     'banner' : banner,
     'bedroom' : bedroom,
     'bali' : bali,

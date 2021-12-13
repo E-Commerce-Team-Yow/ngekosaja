@@ -46,6 +46,21 @@ $(function () {
       kota_kos:{
         required: true
       },
+      rumah_kos:{
+        required: true
+      },
+      panjang:{
+        required: true
+      },
+      lebar:{
+        digits: true,
+      },
+      hrgaBulanan:{
+        required: true,
+      },
+      hrgaTahunan:{
+        required: true,
+      },
     },
     messages: {
       email: {
@@ -80,10 +95,10 @@ $(function () {
 
       //rumah kos
       nama_kos:{
-        required: "Harap isi nama rumah kos",
+        required: "Harap isi nama",
       },
       alamat_kos:{
-        required: "Harap isi alamat rumah kos",
+        required: "Harap isi alamat",
       },
       kode_pos:{
         required: "Harap isi kode pos",
@@ -92,6 +107,21 @@ $(function () {
       },
       kota_kos:{
         required: "Harap pilih kota",
+      },
+      rumah_kos:{
+        required: "Harap pilih rumah kos",
+      },
+      panjang:{
+        required: "Harap isi panjang",
+      },
+      lebar:{
+        required: "Harap isi lebar",
+      },
+      hrgaBulanan:{
+        required: "Harap isi harga bulanan",
+      },
+      hrgaTahunan:{
+        required: "Harap isi harga tahunan",
       },
     },
     errorElement: 'span',
