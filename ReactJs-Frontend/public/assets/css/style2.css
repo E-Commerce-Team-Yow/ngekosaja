@@ -208,3 +208,7 @@
 .filter-padding{
     padding: 15px;
 }
+
+.cursor-pointer{
+    cursor: pointer;
+}

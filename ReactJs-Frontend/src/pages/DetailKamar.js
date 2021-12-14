@@ -11,6 +11,9 @@ import { useLocation } from 'react-router';
 
 export default function DetailKamar() {
     let { path, url } = useRouteMatch();
+    const [inputBulan, setBulan] = useState({
+        bulan: 1,
+    });
     console.log(url);
 
     
@@ -123,13 +126,23 @@ export default function DetailKamar() {
                             <img src={Source["icon_kalender"]} className="icon-mini-v2" alt />
                             Tanggal Ngekos
                             </div>
-                            <div className="kotak-buram jarak-v1">
+                            <input type="number" name id  value={inputBulan.bulan}
+                            onChange={(e) =>
+                                setBulan({
+                                ...inputBulan,
+                                bulan: e.target.value
+                                })
+                            }/>
+
+                            {/* <div className="kotak-buram jarak-v1">
                             1 Bulan
                             <img src={Source["icon_updown"]} className="icon-mini-v2" alt />
-                            </div>
-                            <div className="kotak-buram jarak-v1">
-                            Pesan Kamar
-                            </div>
+                            </div> */}
+                            <Link to={`/Checkout?id=${id_kamar}&lama=${inputBulan.bulan}`} replace>
+                                <div className="kotak-buram jarak-v1 cursor-pointer">
+                                    Pesan Kamar
+                                </div>
+                            </Link>
                         </div>
                         </div>
                         <div className="col-4 title-kos">

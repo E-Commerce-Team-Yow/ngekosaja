@@ -11,7 +11,6 @@ import FilterKamarKos from './FilterKamarKos';
 
 export default function NearByCampus(){
     let { path, url } = useRouteMatch();
-
     const [inputMinMax, setInputMinMax] = useState({
         vmin : -1,
         vmax : -1,
