@@ -19,6 +19,7 @@ import DetailUser from './DetailUser';
 // import PromoTable from '../admin/table/promoTable';
 // import Edit from '../admin/form/Edit';
 import DetailKamar from './DetailKamar';
+import DetailRumahKos from './DetailRumahKos';
 import DashboardOwner from './DashboardOwner';
 import Checkout from './Checkout';
 import Isidata from './Isidata';
@@ -47,6 +48,8 @@ export default function RouterPage() {
                     <Route path="/owner" component={DashboardOwner} />
                     {/* <Route path="/login" component={Login}/>  */}
                     <Route path="/DetailKamar" component={DetailKamar}/>
+                    <Route path="/DetailRumahKos" component={DetailRumahKos} />
+                    <Route path="/DetailRumahKos/DetailKamar" component={DetailRumahKos} />
                     {/* <Route path="/login" component={Login}/> */}
                     <Route path="/near-campus/DetailKamar" component={DetailKamar}/>
                     <Route path="/Checkout" component={Checkout}/>

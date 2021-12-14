@@ -6259,9 +6259,32 @@ ul.breadcrumb {
 	  border-radius: 8px;
   }
 
+  .image-kamar{
+	  width: 60%;
+  }
+
+  .keterangan-kamar{
+	  width: 40%;
+	  padding-left: 5%;
+  }
+
+  .gray{
+	  color:gray;
+  }
+  
+
   @media (max-width: 540px){
 	  .box-rumah-kos{
 		  width: 100%;
+	  }
+
+	  .image-kamar{
+		  width: 100%!important;
+	  }
+
+	  .keterangan-kamar{
+		  width: 100%;
+		  padding-top:5%;
 	  }
   }
   /*-----------------------------chiller-theme-------------------------------------------------*/

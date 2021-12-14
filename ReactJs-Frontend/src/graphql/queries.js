@@ -143,6 +143,8 @@ export const GET_ALL_RUMAH_KOS = gql`
   }
 `;
 
+
+
 export const GET_LAST_RUMAH_KOS = gql`
   query getLastRumahKos($limit: Int!) {
     getLastRumahKos(limit: $limit){
@@ -189,16 +191,31 @@ export const GET_ONE_RUMAH_KOS = gql`
       id
       nama
       alamat
-      kode_pos
       keterangan
+      kode_pos
       kota{
         id
         nama
       }
-      provinsi
       total_kamar
       sisa_kamar
       status
+      listingRumahKos{
+        id
+        nama
+        jenis
+        panjang
+        lebar
+        harga_bulanan
+        harga_tahunan
+        keterangan
+        status
+        successful
+        fasilitas_koss{
+          id
+          nama
+        }
+      }
     }
   }
 `;

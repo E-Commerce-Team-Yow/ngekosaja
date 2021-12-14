@@ -97,6 +97,14 @@ export const GET_ALL_RUMAH_KOS = gql`
   }
 `;
 
+export const GET_ONE_RUMAH_KOS = gql`
+  query getOneRumahKos($id: String!) {
+    getOneRumahKos(id : $id){
+
+    }
+  }
+`;
+
 export const GET_ALL_TESTIMONI = gql`
   query getAllTestimoni {
     getAllTestimoni{

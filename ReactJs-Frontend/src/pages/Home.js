@@ -342,7 +342,7 @@ export default function Home() {
                                         getLastRumahKos.getLastRumahKos.map(rumah_kos => 
                                            
                                       
-                                <div className='box-rumah-kos' key={rumah_kos.id}>
+                                <Link className='box-rumah-kos' key={rumah_kos.id} to={"/DetailRumahKos?id="+rumah_kos.id}>
                                    <div className='row'>
                                        <div className='col-12'>
                                              <img className='img-box-rumah-kos' src={Source.room} />
@@ -361,7 +361,7 @@ export default function Home() {
                                         {rumah_kos.sisa_kamar} kamar tersisa
                                        </div>
                                    </div>
-                                </div>
+                                </Link>
                                 
                                     )
                                 )
