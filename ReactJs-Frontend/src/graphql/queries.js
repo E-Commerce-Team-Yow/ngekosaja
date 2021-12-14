@@ -1,8 +1,25 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_LISTING = gql`
-  query getAllListing {
-    getAllListing{
+  query getAllListing ($vmin :Int $vmax :Int) {
+    getAllListing(vmin: $vmin, vmax: $vmax){
+        id
+        nama
+        panjang
+        lebar
+        harga_bulanan
+        status
+        fasilitas_koss{
+          id
+          nama
+        }
+    }
+  }
+`;
+
+export const GET_LISTING_BETWEEN_EXPECTED_PRICE = gql`
+  query getListingBetweenExpectedPrice($vmin :Int! $vmax :Int!) {
+    getListingBetweenExpectedPrice(vmin : $vmin, vmax : $vmax){
         id
         nama
         panjang

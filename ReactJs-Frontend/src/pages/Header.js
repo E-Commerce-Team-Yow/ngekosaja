@@ -54,7 +54,7 @@ export default function Header() {
 				<div className="row">
 					<div className="col-lg-2 col-md-2 col-12">
 						<div className="logo">
-							<Link to="/" replace><img src={Source['logo']} alt="logo"/></Link>
+							<Link to="/" replace><img src={Source['ngekosAjalogo']} alt="logo"/></Link>
 						</div>
 						<div className="search-top">
 							<div className="top-search"><a href="#0"><i className="ti-bell"></i></a></div>
@@ -125,25 +125,18 @@ export default function Header() {
 											<li className="disable"><h5>Hello, {dataUser.googleId ? dataUser.givenName : dataUser.nama_depan}</h5></li>
 											<li className="divider"></li> 
 											<li><a href="/profile">My Profile</a></li>
-											{
-												dataUser.googleId ?
+											
 											<li>
 													<GoogleLogout
-														clientId={clientId}
-														buttonText="Sign Out"
-														onLogoutSuccess={onSignoutSuccess}
+													render={renderProps => (
+														<a onClick={renderProps.onClick} disabled={renderProps.disabled}>Keluar</a>
+													)}
+													clientId={clientId}
+													buttonText="Log Out"
+													onLogoutSuccess={onSignoutSuccess}
 													>
 													</GoogleLogout>
 											</li>
-											:
-											<li>
-												<a href=""  onClick={(e) =>
-													{ 
-														removeCookie('userLogin');
-													}
-												}>Log Out</a>
-											</li>
-											}
 										</ul>
 									
 									</label>

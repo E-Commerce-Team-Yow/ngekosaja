@@ -74,9 +74,9 @@ export default function RegisterUserSecond({ prevPage, ...props }) {
                                     />
                                 </div>
                                 <button type="submit" className="mb-2" onClick={prevPage}>
-                                    Previous Page
+                                    Sebelumnya
                                 </button>
-                                <button type="submit" id="btnSubmit">Submit</button>
+                                <button type="submit" id="btnSubmit">Daftar</button>
                                 {/* <button type="submit" id="load2">Submit</button> */}
                             </Form>
                         </div>

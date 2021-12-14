@@ -58,7 +58,6 @@ export default function DetailUser() {
                                        <div className="row">
                                            <div className="col-8">
                                            <h2 className="inline">{dataUser.nama_depan} {dataUser.nama_belakang}</h2>
-                                       
                                            </div>
                                            <div className="col-4">
                                                 <button className=" edit-btn" data-toggle="modal"  data-target="#ModalEditUser" data-placement="top" title="Edit Button"> <i className="fas fa-pencil fa-2x"></i></button>
@@ -79,7 +78,13 @@ export default function DetailUser() {
                                 <div className="row mt-5">
                                     <div className="col-lg-12 col-sm-12">
                                         <div className="row">
-                                            <div className="col-6 info-user"> <i className="fas fa-phone  mr-2"></i> <h6 className="inline">{dataUser.no_tlp}</h6></div>
+                                            {
+                                                dataUser.no_nik ?
+                                                
+                                                <div className="col-6 info-user"> <i className="fas fa-phone  mr-2"></i> <h6 className="inline">{dataUser.no_tlp}</h6></div>
+                                                :
+                                                <div className="col-6 info-user"> <i className="fas fa-phone  mr-2"></i> <h6 className="inline">Belum ada data</h6></div>
+                                            }
                                             <div className="col-6 info-user" > <i className="fas fa-envelope  mr-2"></i> <h6 className="inline">{dataUser.email}</h6></div>
                                           
                                         </div>
@@ -108,7 +113,7 @@ export default function DetailUser() {
                                 </div>
                                 <div className="row mt-5">
                                     <div className="col-lg-12 col-sm-12">
-                                        <h3>keterangan Tempat Tinggal</h3>
+                                        <h3>Keterangan Tempat Tinggal</h3>
                                     </div>
                                 </div>
                                 <hr className="border-black"/>
@@ -143,11 +148,9 @@ export default function DetailUser() {
                                 </div>
                                 <hr/>
                             </div>
-                            
                         </div>
                     </div>
                 </section>
-           
                 :
              <div></div>
            }

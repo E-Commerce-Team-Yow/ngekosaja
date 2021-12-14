@@ -15,5 +15,5 @@ export class Kota extends BaseEntity {
 
   @OneToMany(() => Rumah_kos, rumah_kos => rumah_kos.kota)
   rumah_kos!: Rumah_kos;
-  
+
 }

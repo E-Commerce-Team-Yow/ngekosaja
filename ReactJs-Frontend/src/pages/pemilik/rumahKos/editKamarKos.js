@@ -86,7 +86,7 @@ export default function EditsKamarKos({kamar_kos}) {
                                 </button>
                             </Modal.Header>
                             <div className="container p-4">
-                                <h4>Edits Kamar Kos</h4>
+                                <h4>Edit Kamar Kos</h4>
                                 <hr/>
                                 <div className="row">
                                     <div className="col-12">
@@ -104,7 +104,7 @@ export default function EditsKamarKos({kamar_kos}) {
                                         >
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Rumah Kos</label>
-                                                <select name="kota_kos" id="kota_kos" className="form-control" 
+                                                <select name="rumah_kos" id="kota_kos" className="form-control" 
                                             defaultValue={formState.rumah_kos}
                                             onChange={(e) =>
                                                 setFormState({
@@ -134,7 +134,7 @@ export default function EditsKamarKos({kamar_kos}) {
                                                         })
                                                     }
                                                 
-                                                placeholder="Kamar 1" name="nama_kamar" />
+                                                placeholder="Kamar 1" name="nama_kos" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Jenis Kamar</label>

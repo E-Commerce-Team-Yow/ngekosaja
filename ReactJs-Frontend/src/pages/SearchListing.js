@@ -5,6 +5,7 @@ import Source from './Source';
 import { Link, useLocation } from 'react-router-dom';
 import { GET_ALL_RUMAH_KOS } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
+import Loading from './Loading';
 
 export default function SearchListing(){
     const search = useLocation().search;
@@ -24,7 +25,7 @@ export default function SearchListing(){
     // }, []);
     
     if(loading){
-        return "Loading..."
+        return <Loading/>
     }
     if(error){
         return "Error..."

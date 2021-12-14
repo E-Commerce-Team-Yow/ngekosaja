@@ -116,7 +116,7 @@ export default function EditRumahKos({rumah_kos}) {
                                                         })
                                                     }
                                                 
-                                                placeholder="kos SUka Suka" name="nama_kos" />
+                                                placeholder="Kos Suka Suka" name="nama_kos" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Alamat Kos</label>

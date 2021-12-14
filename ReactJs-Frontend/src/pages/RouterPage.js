@@ -23,6 +23,7 @@ import DetailRumahKos from './DetailRumahKos';
 import DashboardOwner from './DashboardOwner';
 import Checkout from './Checkout';
 import Isidata from './Isidata';
+import FilterKamarKos from './FilterKamarKos';
 
 
 export default function RouterPage() {
@@ -52,6 +53,7 @@ export default function RouterPage() {
                     <Route path="/DetailRumahKos/DetailKamar" component={DetailRumahKos} />
                     {/* <Route path="/login" component={Login}/> */}
                     <Route path="/near-campus/DetailKamar" component={DetailKamar}/>
+                    <Route path="/near-campus/FilterKamarKos" component={FilterKamarKos}/>
                     <Route path="/Checkout" component={Checkout}/>
                     <Route path="/Isidata" component={Isidata}/>
                     {/* <Route

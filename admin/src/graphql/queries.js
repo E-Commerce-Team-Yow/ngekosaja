@@ -134,4 +134,24 @@ export const GET_ONE_MEDIA = gql`
   }
 `;
 
+export const GET_ALL_KOTA = gql`
+  query getAllKota{
+    getAllKota{
+      id
+      nama
+      gambar
+    }
+  }
+`;
+
+export const GET_ONE_KOTA = gql`
+  query getOneKota($id: Int!){
+    getOneKota(id: $id){
+      id
+      nama
+      gambar 
+    }
+  }
+`;
+
 

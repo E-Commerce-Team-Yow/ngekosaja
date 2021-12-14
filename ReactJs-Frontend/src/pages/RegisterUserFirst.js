@@ -8,6 +8,8 @@ export default function RegisterUserFirst(props) {
     script.async = true;
     document.body.appendChild(script);
 
+    console.log(props);
+
     const search = useLocation().search;
     const role = new URLSearchParams(search).get('role');
     const linkLogin = "/loginUser?role="+role;
@@ -19,7 +21,8 @@ export default function RegisterUserFirst(props) {
             <div className="register-page" >
                 <div className="form-register">
                     <center><h2 className="mb-2">Register {title}</h2></center>
-                    <Link to="/" className="mb-4 link-home">Home</Link>
+                    <Link to="/" className="mb-4 link-home m-1"><button className="w-25"><i class="fas fa-home"></i></button></Link>
+                    
                     <Form name="page1" {...props} id="quickForm" className="login-form mt-3 needs-validation" 
                     > 
                         <Input type="text" name="role" type="hidden" value={role}/>
@@ -38,8 +41,9 @@ export default function RegisterUserFirst(props) {
                             <Input type="password" name="cpassword" className="form-control" id="cpassword" placeholder="Konfirmasi Pasword"
                             />
                         </div>
-                        <button type="submit">Next Page</button>
+                        <button type="submit">Selanjutnya</button>
                     </Form>
+                        <p className="message">Sudah punya akun?<Link to={linkLogin}> Masuk</Link></p>
                 </div>
             </div>  
         </div>
