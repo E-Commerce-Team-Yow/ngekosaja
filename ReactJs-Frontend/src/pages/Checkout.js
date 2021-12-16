@@ -6,7 +6,8 @@ import Footer from './Footer';
 import { Link, useRouteMatch } from 'react-router-dom';
 import React, {useEffect, useState} from 'react';
 import { useLocation } from 'react-router';
-import { GET_ALL_LISTING, GET_ONE_LISTING} from '../graphql/queries';
+import { GET_ONE_LISTING} from '../graphql/queries';
+import { ADD_PENYEWAAN} from '../graphql/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { useCookies } from 'react-cookie';
@@ -18,55 +19,69 @@ export default function Checkout() {
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const [formState, setFormState] = useState({
-        nama_depan : '',
-        nama_belakang : '',
-        nik : '',
-        no_tlp : '',
-        no_rek : '',
-        id : '',
+        tanggal_transaksi : '',
+        status_pembayaran : 0,
+        id_penyewa : '',
+        id_pemilik : '',
+        id_kamar : '',
     });
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-        // props.onChange(inputMinMax);
-        //document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
-        //alert(`min price ${inputMinMax.vmin} - max price ${inputMinMax.vmax}`)
-    }
-    useEffect(() =>{
-        if(!data.loading ){
-            if(data.data && data.data?.updateUser != null){
-                NotificationManager.success('', "Berhasil mengubah profil user", 2000);
-                setCookie('userLogin', data.data?.updateUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
-                setTimeout(() => {
-                    window.location.replace("/profile");
-                }, 2000); 
-            }
-        }
-    },[!data.loading])
+
+    // useEffect(() =>{
+    //     if(!data.loading ){
+    //         if(data.data && data.data?.updateUser != null){
+    //             NotificationManager.success('', "Berhasil mengubah profil user", 2000);
+    //             setCookie('userLogin', data.data?.updateUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
+    //             setTimeout(() => {
+    //                 window.location.replace("/profile");
+    //             }, 2000); 
+    //         }
+    //     }
+    // },[!data.loading])
     
     useEffect(() => {
 
 		if(cookies.userLogin){
             
-            setFormState({
-                nama_depan : cookies.userLogin.nama_depan,
-                nama_belakang : cookies.userLogin.nama_belakang,
-                nik : cookies.userLogin.nik,
-                no_rek : cookies.userLogin.no_rek,
-                no_tlp : cookies.userLogin.no_tlp,
-                id  : cookies.userLogin.id,
-            });
-			setdataUser(cookies.userLogin);
-            console.log(cookies.userLogin);
+            // setFormState({
+            //     nama_depan : cookies.userLogin.nama_depan,
+            //     nama_belakang : cookies.userLogin.nama_belakang,
+            //     nik : cookies.userLogin.nik,
+            //     no_rek : cookies.userLogin.no_rek,
+            //     no_tlp : cookies.userLogin.no_tlp,
+            //     id  : cookies.userLogin.id,
+            // });
+			// setdataUser(cookies.userLogin);
+            // console.log(cookies.userLogin);
+            // alert('proses')
 		} else{
            window.location.replace("/");
         } 
-
     }, []);
     const search = useLocation().search;
     const id_kamar = new URLSearchParams(search).get('id');
     const lama = new URLSearchParams(search).get('lama');
     console.log(id_kamar)
+
     const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
+    const total = lama * dataGetOne.getOneListing[0].harga_bulanan
+
+    const today = new Date();
+    console.log(today)
+    const [add_sewa, data] = useMutation(ADD_PENYEWAAN);
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        alert('proses');
+        add_sewa({ variables: { 
+            bulan : parseInt(lama), 
+            tanggal_transaksi : today, 
+            status_pembayaran : 0, 
+            total : parseInt(total) , 
+            id_penyewa : cookies.userLogin.id,
+            id_kamar : id_kamar 
+        }});
+        // alert('sukses');
+        console.log(data)
+    }
     if(loading){
       return "Loading..."
     }
@@ -74,7 +89,6 @@ export default function Checkout() {
       return "Error..."
     }
     console.log(dataGetOne)
-    const total = lama * dataGetOne.getOneListing[0].harga_bulanan
     return (
         <div>
         <Header/>
@@ -92,8 +106,8 @@ export default function Checkout() {
                     </div>
                 </div>
             </div>
-            <form>
-            {/* <form onSubmit={handleSubmit}> */}
+            {/* <form> */}
+            <form onSubmit={handleSubmit}>
                 <section className="shop checkout section">
                     <div className="container">
                     <div className="row"> 
@@ -442,7 +456,7 @@ export default function Checkout() {
                             <div className="content">
                                 <ul>
                                 <li>Sub Total<span>{dataGetOne.getOneListing[0].harga_bulanan}</span></li>
-                                <li>jumlah bulan<span></span></li>
+                                <li>jumlah bulan<span>{lama}</span></li>
                                 <li className="last">Total<span>{total}</span></li>
                                 </ul>
                             </div>
@@ -465,7 +479,7 @@ export default function Checkout() {
                             <div className="single-widget get-button">
                             <div className="content">
                                 <div className="button">
-                                <a href="#" className="btn">proceed to checkout</a>
+                                    <button type='submit' className="btn" >proceed to checkout</button>
                                 </div>
                             </div>
                             </div>
@@ -474,7 +488,6 @@ export default function Checkout() {
                     </div>
                     </div>
                 </section>
-
             </form>
             <section className="shop-services section home">
                 <div className="container">

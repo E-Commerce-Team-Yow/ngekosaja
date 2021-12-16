@@ -104,7 +104,6 @@ export const ADD_RUMAH_KOS = gql `
   }
 `;
 
-
 export const ADD_LISTING = gql `
   mutation addListing($nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){
     addListing(nama : $nama, jenis: $jenis, harga_bulanan : $harga_bulanan, harga_tahunan : $harga_tahunan, panjang: $panjang, lebar : $lebar, rumah_kos: $rumah_kos, keterangan : $keterangan){
@@ -114,6 +113,17 @@ export const ADD_LISTING = gql `
     }
   }
 `;
+
+export const ADD_PENYEWAAN = gql `
+  mutation addpenyewaan($bulan : Int!, $tanggal_transaksi: String!, $status_pembayaran: Int!, $total: Int!, $id_penyewa: String!, $id_kamar: String!){
+    addpenyewaan(bulan : $bulan, tanggal_transaksi : $tanggal_transaksi, status_pembayaran : $status_pembayaran, total : $total, id_penyewa : $id_penyewa, id_kamar : $id_kamar){
+      id
+      message
+      successful
+    }
+  }
+`;
+
 
 export const EDIT_LISTING = gql `
 mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){
