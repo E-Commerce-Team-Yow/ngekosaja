@@ -40,6 +40,15 @@ mutation updateUser($nama_depan: String!, $nama_belakang: String!, $id: String!,
 }
 `;
 
+export const UPDATE_PASSWORD = gql`
+  mutation updatePassword($id: String!, $password: String!){
+    updatePassword(id: $id, password: $password){
+      successful
+      message
+    }
+  }
+`;
+
 export const UPDATE_FASILITAS_KOS = gql`
   mutation updateFasilitasKos($id: String!, $nama: String!, $keterangan: String!) {
     updateFasilitasKos(id: $id, nama: $nama keterangan: $keterangan){
@@ -86,8 +95,8 @@ export const DELRES_TESTIMONI = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!) {
-    createUser(email: $email, password: $password, nama_depan: $nama_depan, nama_belakang: $nama_belakang, no_tlp: $no_tlp, id_role: $id_role) {
+  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!, $foto: String!) {
+    createUser(email: $email, password: $password, nama_depan: $nama_depan, nama_belakang: $nama_belakang, no_tlp: $no_tlp, id_role: $id_role, foto: $foto) {
       successful
       message
     }
@@ -152,6 +161,8 @@ export const LOGIN_USER = gql`
       email
       nik
       no_rek
+      isPassword
+      created_at
     }
   }
 `;

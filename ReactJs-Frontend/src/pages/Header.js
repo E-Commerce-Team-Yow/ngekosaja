@@ -22,9 +22,7 @@ export default function Header() {
 		removeCookie('userLogin');
 		window.location.reload();
     };
-
-	console.log(dataUser);
-
+	console.log(cookies.userLogin);
     return (
         <header className="header shop">
             <div className="topbar">
@@ -111,8 +109,8 @@ export default function Header() {
 							 
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
-										{dataUser.googleId ?
-										<img src={dataUser.imageUrl} alt="Profil Pict" className="img-round"/>
+										{dataUser.foto ?
+										<img src={dataUser.foto} alt="Profil Pict" className="img-round"/>
 										
 										:
 										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>

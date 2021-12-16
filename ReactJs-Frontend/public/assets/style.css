@@ -148,16 +148,16 @@ Version:1.0
   transform: translate(-50%,-50%);
 }
 .preloader-icon {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   display: inline-block;
   padding: 0px;
 }
 .preloader-icon span {
   position: absolute;
   display: inline-block;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
   background:#F7941D;
   -webkit-animation: preloader-fx 1.6s linear infinite;
