@@ -8,6 +8,7 @@ import Source from './Source';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_LAST_RUMAH_KOS } from '../graphql/queries';
+import Loading from './Loading';
 
 export default function Home() {
     
@@ -27,13 +28,12 @@ export default function Home() {
 
     
     if(loadingrumahKos){
-        return "Loading..."
+        return <Loading/>
     }
     if(errorrumahKos){
         return "Error..."
     }
-    console.log(getLastRumahKos.getLastRumahKos);
-
+    
     return (
         <div className="js">
             {

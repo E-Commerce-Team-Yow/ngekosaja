@@ -12,6 +12,13 @@ $(function () {
         required: true,
         equalTo: "#password"
       },
+      password2: {
+        required: true
+      },
+      cpassword2: {
+        required: true,
+        equalTo: "#password2"
+      },
       depan:{
         required: true
       },
@@ -71,7 +78,15 @@ $(function () {
         required: "Harap isi password",
       },
       cpassword: {
+        required: "Harap isi konfirmasi password",
+        equalTo: "Konfirmasi password tidak sama"
+      },
+
+      password2: {
         required: "Harap isi password",
+      },
+      cpassword2: {
+        required: "Harap isi konfirmasi password",
         equalTo: "Konfirmasi password tidak sama"
       },
       depan: {

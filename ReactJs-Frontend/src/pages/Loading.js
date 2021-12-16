@@ -6,8 +6,8 @@ const Loading = () => {
         <div>
             <div className="preloader">
             <div className="preloader-inner">
-                <div className="preloader-icon">
-                <img src={Source.logo} alt="#"/>
+                <div className="preloader-icon logo">
+                <img src={Source['ngekosAjalogo']} alt="#"/>
                 <span />
                 <span />
                 </div>
