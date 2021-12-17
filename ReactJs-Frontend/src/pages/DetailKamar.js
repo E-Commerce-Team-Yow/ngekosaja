@@ -8,29 +8,55 @@ import { Link, useRouteMatch } from 'react-router-dom';
 // import {Helmet} from "react-helmet";
 import React, {useEffect, useState} from 'react';
 import { useLocation } from 'react-router';
+import { ADD_TESTIMONI } from '../graphql/mutation';
+import { useCookies } from 'react-cookie';
+import { NotificationManager } from 'react-notifications';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 export default function DetailKamar() {
-    let { path, url } = useRouteMatch();
+    const search = useLocation().search;
+    const id_kamar = new URLSearchParams(search).get('id');
     const [inputBulan, setBulan] = useState({
         bulan: 1,
     });
-    console.log(url);
+    const [formState, setFormState] = useState({
+        bintang: '',
+        isi: ''
+    });
+    const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 
+    const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
+    const [testimoni, data] = useMutation(ADD_TESTIMONI);
     
     useEffect(() => {
+        console.log(data.data?.addTestimoni);
+        if(!data.loading){
+            if(data.data && data.data?.addTestimoni != null){
+                NotificationManager.success('', data.data?.addTestimoni.message, 2000);
+                // setTimeout(() => {
+                //     setCookie('userLogin', data.data?.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
+                //     if(data.data.loginUser.isPassword == 0){
+                //         window.location.replace("/password?role="+role)
+                //     }else{
+                //         if(data.data.loginUser.role.id == 2){
+                //             window.location.replace("/owner");
+                //         }else{
+                //             window.location.replace("/");
+                //         }
+                //     }
+                //     console.log(cookies.userLogin);
+                // }, 2000);
+            }
+        }
+    }, [!data.loading]);
 
-    }, []);
-    const search = useLocation().search;
-    const id_kamar = new URLSearchParams(search).get('id');
-    console.log(id_kamar)
-    const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
     if(loading){
       return "Loading..."
     }
     if(error){
       return "Error..."
     }
-    console.log(dataGetOne)
+    console.log(formState)
     return (
         <div>
             <Header/>
@@ -583,9 +609,52 @@ export default function DetailKamar() {
                         </div>
                         </div>
                     </div>
-                    </div>
+                    { 
+                        cookies.userLogin ?
+                        <div className="col-12">			
+                        <div className="reply">
+                            <div className="reply-head">
+                            <h2 className="reply-title">Review</h2>
+                            {/* Comment Form */}
+                            
+                            <form className="form"
+                                onSubmit={e => {
+                                e.preventDefault();
+                                    testimoni({ variables: { nilai: 5, isi: formState.isi, id_user: cookies.userLogin.id, id_listing: id_kamar }});
+                                }}
+                            >
+                                <div className="row">
+                                <div className="col-12">
+                                    <div className="form-group">
+                                    <label>Your Review<span>*</span></label>
+                                    <textarea name="message" placeholder
+                                    defaultValue={formState.isi}
+                                    onChange={(e) =>
+                                        setFormState({
+                                        ...formState,
+                                        isi: e.target.value
+                                        })
+                                    }
+                                    />
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="form-group button">
+                                    <button type="submit" className="btn">Post review</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                            {/* End Comment Form */}
+                            </div>
+                        </div>			
+                        </div>	
+                        :
+                        <div></div>
+                    }
+                </div>  
             }
-            
+            <NotificationContainer/>
             <Footer/>
         </div>
     )
