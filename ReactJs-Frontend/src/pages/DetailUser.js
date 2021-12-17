@@ -25,8 +25,11 @@ export default function DetailUser() {
            window.location.replace("/");
         }
 	},[]);
+    
 
     console.log(dataUser);
+    var date = new Date(parseInt(dataUser.created_at) * 1000);
+    console.log(date.toUTCString())
 
     return (
         <div className="js">
@@ -50,7 +53,11 @@ export default function DetailUser() {
                     <div className="container">
                         <div className="row mb-5">
                             <div className="col-lg-4 col-sm-12 image-detail">
-                                <img src={Source['profil']} alt="profil" className="img-profile"/>
+                            {dataUser.foto ?
+                                <img src={dataUser.foto} alt="Profil Pict" className="img-profile"/>
+                            :
+                                <img src={Source['profil']} alt="Profil Pict" className="img-profile"/>
+                            }
                             </div>
                             <div className="col-lg-8 col-sm-12 user-detail">
                                 <div className="row mt-3">

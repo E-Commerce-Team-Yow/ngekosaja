@@ -40,6 +40,15 @@ mutation updateUser($nama_depan: String!, $nama_belakang: String!, $id: String!,
 }
 `;
 
+export const UPDATE_PASSWORD = gql`
+  mutation updatePassword($id: String!, $password: String!){
+    updatePassword(id: $id, password: $password){
+      successful
+      message
+    }
+  }
+`;
+
 export const UPDATE_FASILITAS_KOS = gql`
   mutation updateFasilitasKos($id: String!, $nama: String!, $keterangan: String!) {
     updateFasilitasKos(id: $id, nama: $nama keterangan: $keterangan){
@@ -86,8 +95,8 @@ export const DELRES_TESTIMONI = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!) {
-    createUser(email: $email, password: $password, nama_depan: $nama_depan, nama_belakang: $nama_belakang, no_tlp: $no_tlp, id_role: $id_role) {
+  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!, $foto: String!) {
+    createUser(email: $email, password: $password, nama_depan: $nama_depan, nama_belakang: $nama_belakang, no_tlp: $no_tlp, id_role: $id_role, foto: $foto) {
       successful
       message
     }
@@ -104,7 +113,6 @@ export const ADD_RUMAH_KOS = gql `
   }
 `;
 
-
 export const ADD_LISTING = gql `
   mutation addListing($nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){
     addListing(nama : $nama, jenis: $jenis, harga_bulanan : $harga_bulanan, harga_tahunan : $harga_tahunan, panjang: $panjang, lebar : $lebar, rumah_kos: $rumah_kos, keterangan : $keterangan){
@@ -114,6 +122,17 @@ export const ADD_LISTING = gql `
     }
   }
 `;
+
+export const ADD_PENYEWAAN = gql `
+  mutation addpenyewaan($bulan : Int!, $tanggal_transaksi: String!, $status_pembayaran: Int!, $total: Int!, $id_penyewa: String!, $id_kamar: String!){
+    addpenyewaan(bulan : $bulan, tanggal_transaksi : $tanggal_transaksi, status_pembayaran : $status_pembayaran, total : $total, id_penyewa : $id_penyewa, id_kamar : $id_kamar){
+      id
+      message
+      successful
+    }
+  }
+`;
+
 
 export const EDIT_LISTING = gql `
 mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){
@@ -152,6 +171,8 @@ export const LOGIN_USER = gql`
       email
       nik
       no_rek
+      isPassword
+      created_at
     }
   }
 `;

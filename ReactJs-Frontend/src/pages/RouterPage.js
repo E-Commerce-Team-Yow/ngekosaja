@@ -24,6 +24,7 @@ import DashboardOwner from './DashboardOwner';
 import Checkout from './Checkout';
 import Isidata from './Isidata';
 import FilterKamarKos from './FilterKamarKos';
+import GooglePassword from './googlePassword';
 
 
 export default function RouterPage() {
@@ -44,6 +45,7 @@ export default function RouterPage() {
                     <Route path="/search" exact component={SearchListing}/>
                     <Route path="/near-campus" exact component={NearByCampus}/>
                     <Route path="/loginUser" component={LoginUser} />
+                    <Route path="/password" component={GooglePassword} />
                     <Route path="/registerUser" component={RegisterUser} />
                     <Route path="/profile" component={DetailUser} />
                     <Route path="/owner" component={DashboardOwner} />

@@ -30,43 +30,53 @@ export default function LoginUser() {
     var title = "Penyewa";
 
     if(role==2) title = "Pemilik";
-
-   
+    
+    const [showloginButton, setShowloginButton] = useState(true);
+    
     //prosessing login
     const [login, data] = useMutation(LOGIN_USER);
     const [register, data2] = useMutation(CREATE_USER);
     const [cookies, setCookie] = useCookies(['userLogin']);
     
     useEffect(() => {
-        if(!data.loading ){
+        if(!data.loading){
             if(data.data && data.data?.loginUser != null){
                 //set user login
                 NotificationManager.success('', "Berhasil login", 2000);
                 setTimeout(() => {
-                    console.log(data);
+                 /*   console.log(data);
                     setCookie('userLogin', data.data.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
                     window.location.replace("/admin/userTable")
                     if(data.data.loginUser.role.id == 2){
-                        window.location.replace("/owner/LaporanRumahKos");
+                        window.location.replace("/owner/LaporanRumahKos"); */
+                    console.log(data.data?.loginUser);
+                    setCookie('userLogin', data.data?.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
+                    if(data.data.loginUser.isPassword == 0){
+                        window.location.replace("/password?role="+role)
                     }else{
-                        window.location.replace("/");
+                        if(data.data.loginUser.role.id == 2){
+                            window.location.replace("/owner");
+                        }else{
+                            window.location.replace("/");
+                        }
                     }
+                    console.log(cookies.userLogin);
                 }, 2000);
             }else if(data.data && data.data?.loginUser == null){
                 NotificationManager.error('', "User tidak ditemukan", 2000);
                 document.getElementById("btnSubmit").disabled = false;
                 document.getElementById("btnSubmit").innerHTML = "Login";
+                setShowloginButton(false);
             }
         }
-    }, [!data.loading])
+    }, [!data.data?.loginUser])
 
-    const [showloginButton, setShowloginButton] = useState(true);
 
     const onLoginSuccess = (res) => {
         register({ variables: { email: res.profileObj.email, password: "", 
             nama_depan: res.profileObj.givenName, nama_belakang: res.profileObj.familyName, 
             no_tlp: "", 
-            id_role: parseInt(role) }})
+            id_role: parseInt(role), foto: res.profileObj.imageUrl }})
         login({ variables: { email: res.profileObj.email, password: "" }});
         setShowloginButton(false);
         console.log(res);
@@ -81,7 +91,7 @@ export default function LoginUser() {
             <div className="login-page" >
                 <div className="form-login">
                     <center><h2 className="mb-2">Login {title}</h2></center>
-                    <Link to="/" className="mb-4 link-home m-1"><button className="w-25"><i class="fas fa-home"></i></button></Link>
+                    <Link to="/" className="mb-4 link-home m-1"><button className="w-25"><i className="fas fa-home"></i></button></Link>
                     <form id="quickForm"
                         onSubmit={e => {
                         e.preventDefault();
@@ -91,7 +101,7 @@ export default function LoginUser() {
                         <div className="card-body">
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Email</label>
-                                <input type="email" name="email" className="form-control" id="exampleInputEmail1" placeholder="Enter email"
+                                <input type="email" name="email" className="form-control" id="email" placeholder="Enter email"
                                     defaultValue={formState.email}
                                     onChange={(e) =>
                                         setFormState({
@@ -103,7 +113,7 @@ export default function LoginUser() {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInputPassword1">Password</label>
-                                <input type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" 
+                                <input type="password" name="password" className="form-control" id="password" placeholder="Password" 
                                     defaultValue={formState.password}
                                     onChange={(e) =>
                                         setFormState({
@@ -121,7 +131,7 @@ export default function LoginUser() {
                             { showloginButton ?
                                 <GoogleLogin
                                 render={renderProps => (
-                                    <button onClick={renderProps.onClick} disabled={renderProps.disabled}><i class="fab fa-google"></i></button>
+                                    <button onClick={renderProps.onClick} disabled={renderProps.disabled}><i className="fab fa-google"></i></button>
                                 )}
                                 clientId={clientId}
                                 buttonText="Sign In"
