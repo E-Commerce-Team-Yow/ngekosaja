@@ -44,12 +44,6 @@ export default function LoginUser() {
                 //set user login
                 NotificationManager.success('', "Berhasil login", 2000);
                 setTimeout(() => {
-                 /*   console.log(data);
-                    setCookie('userLogin', data.data.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
-                    window.location.replace("/admin/userTable")
-                    if(data.data.loginUser.role.id == 2){
-                        window.location.replace("/owner/LaporanRumahKos"); */
-                    console.log(data.data?.loginUser);
                     setCookie('userLogin', data.data?.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
                     if(data.data.loginUser.isPassword == 0){
                         window.location.replace("/password?role="+role)

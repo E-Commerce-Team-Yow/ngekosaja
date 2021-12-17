@@ -294,8 +294,6 @@ Version:1.0
 			scrollSpeed: 900,
 			animation: 'fade'
 		});  
-
-
 		
 	/*====================================
 		 Sidebar owner

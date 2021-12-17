@@ -266,8 +266,6 @@ export default function DetailRumahKos() {
                                                         )
                                                     }
                                     </div>
-                                  
-                                    
                                     </div>
                                 </div>
                                 </div>
