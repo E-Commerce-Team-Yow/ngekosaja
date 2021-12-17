@@ -132,6 +132,17 @@ export default function AddRumahKos() {
                                                     }
                                                 placeholder="xxxxxx" name="kode_pos" />
                                             </div>
+
+                                            <div className="form-group">
+                                                <label>Peraturan Rumah Kos</label>
+                                            <select class="form-select form-control" multiple aria-label="multiple select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+
                                             <div className="form-group">
                                                 <label>Keterangan</label>
                                                 <CKEditor

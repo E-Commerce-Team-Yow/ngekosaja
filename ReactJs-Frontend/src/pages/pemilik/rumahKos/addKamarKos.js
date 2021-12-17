@@ -195,6 +195,11 @@ export default function AddKamarKos() {
                                                         }
                                                     placeholder="1200000" name="hrgBulanan" />
                                                 </div>
+
+
+                                               
+
+
                                             </div>
                                             <div className="form-group">
                                                 <label>Keterangan</label>
