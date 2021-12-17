@@ -17,6 +17,9 @@ export default function DetailUser() {
     let history = useHistory();
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
+  
+
+    let tanggal = "";
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
@@ -25,11 +28,17 @@ export default function DetailUser() {
            window.location.replace("/");
         }
 	},[]);
-    
+    if(dataUser){       
+        const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        tanggal = new Date(parseInt(dataUser.created_at)).getDate() + "-" + (new Date(parseInt(dataUser.created_at)).getMonth()+1)
+        + "-" + new Date(parseInt(dataUser.created_at)).getFullYear();
+        let a = parseInt(new Date(parseInt(dataUser.created_at)).getMonth()+1);
 
-    console.log(dataUser);
-    var date = new Date(parseInt(dataUser.created_at) * 1000);
-    console.log(date.toUTCString())
+        
+    }
+
+    // var date = new Date(parseInt(dataUser.created_at) * 1000);
+    // console.log(date.toUTCString())
 
     return (
         <div className="js">
@@ -129,7 +138,7 @@ export default function DetailUser() {
                                        
                                         <div className="row mt-2">
                                             <div className="col-6 info-user"> <b>NAMA TEMPAT TINGGAL : </b> </div>
-                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : </b> </div>
+                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : </b>{tanggal} </div>
                                             
                                         </div>
                                         <div className="row mt-2">
