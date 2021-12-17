@@ -160,8 +160,6 @@ export const GET_ALL_RUMAH_KOS = gql`
   }
 `;
 
-
-
 export const GET_LAST_RUMAH_KOS = gql`
   query getLastRumahKos($limit: Int!) {
     getLastRumahKos(limit: $limit){
@@ -272,6 +270,29 @@ export const GET_ALL_TESTIMONI = gql`
       id
       isi
       status
+    }
+  }
+`;
+
+export const GET_AVG_TESTIMONI = gql`
+  query getAverageTestimoni($id_rumah_kos: String!) {
+    getAverageTestimoni(id_rumah_kos: $id_rumah_kos){
+      average
+    }
+  }
+`;
+
+export const GET_ALL_TESTIMONI_RUMAH_KOS = gql`
+  query getAllTestimoniRumahKos($id_rumah_kos: String!) {
+    getAllTestimoniRumahKos(id_rumah_kos: $id_rumah_kos){
+      id
+      nilai
+      isi
+      user{
+        nama_depan
+        nama_belakang
+        foto
+      }
     }
   }
 `;
