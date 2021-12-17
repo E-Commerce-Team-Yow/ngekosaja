@@ -183,8 +183,8 @@ export const GET_LAST_RUMAH_KOS = gql`
 
 
 export const GET_RUMAH_KOS_USER = gql`
-  query getAllRumahKosUser($id_user: String!) {
-    getAllRumahKosUser(id_user: $id_user){
+  query getAllRumahKosUser($id_user: String!, $type : Int!) {
+    getAllRumahKosUser(id_user: $id_user, type : $type){
       id
       nama
       alamat
@@ -235,6 +235,25 @@ export const GET_ONE_RUMAH_KOS = gql`
       }
     }
   }
+`;
+
+
+export const GET_JUM_RUMAH_KOS_USER = gql `
+  query getJumlahRumahKos($id_user : String!){
+    getJumlahRumahKos(id_user : $id_user){
+      count
+      message
+    }
+  } 
+`;
+
+export const GET_JUM_LISTING_PEMILIK = gql `
+  query getJumlahListingPemilik($id_user : String!){
+    getJumlahListingPemilik(id_user : $id_user){
+      count
+      message
+    }
+  } 
 `;
 
 

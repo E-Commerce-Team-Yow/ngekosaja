@@ -8,6 +8,8 @@ import EditRumahKos from './editRumahKos';
 import { DELRES_RUMAH_KOS } from '../../../graphql/mutation';
 import NotificationManager from 'react-notifications/lib/NotificationManager';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import {CSVLink, CSVDownload} from 'react-csv';
+
 
 export default function ListRumahKos() {
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
@@ -21,7 +23,7 @@ export default function ListRumahKos() {
 		} 
 	},[value]);
     console.log(value);
-    const {loading, data: dataGetAll, error} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value}});
+    const {loading, data: dataGetAll, error} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value, type : 0}});
 
 
      //deklarasi delete kos
@@ -58,6 +60,16 @@ export default function ListRumahKos() {
             sortable:true
         },
         {
+            name: "Total Kamar",
+            selector: row => row.total_kamar,
+            sortable:true
+        },
+        {
+            name: "Sisa Kamar",
+            selector: row => row.sisa_kamar,
+            sortable:true
+        },
+        {
             name: 'Status',
             cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> : <span className="badge badge-danger">Non Available</span>  
         },
@@ -68,12 +80,12 @@ export default function ListRumahKos() {
                 {
                     row.status == 1 ?  <button className="btnOwnerRed p-2"  onClick={
                        function(){
-                        delete_rumah_kos({variables: {id: row.id}, refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
+                        delete_rumah_kos({variables: {id: row.id}, refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value, type : 0}}]});
                        }
                     }> <i className="fas fa-times" /></button> :
                     <button className="btnOwnerGreen p-2"  onClick={
                         function(){
-                         delete_rumah_kos({variables: {id: row.id},  refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value}}]});
+                         delete_rumah_kos({variables: {id: row.id},  refetchQueries:[{query: GET_RUMAH_KOS_USER, variables: {id_user:value, type : 0}}]});
                         }
                      }> <i className="fas fa-check" /></button>
                 }
@@ -99,6 +111,7 @@ export default function ListRumahKos() {
             </div>
             <div className="row">
                 <div className="col-12">
+                <CSVLink data={dataGetAll.getAllRumahKosUser} className='btnOwner'>Download(CSV)</CSVLink>
                         <DataTable
                             columns={columns}
                             data={dataGetAll.getAllRumahKosUser}

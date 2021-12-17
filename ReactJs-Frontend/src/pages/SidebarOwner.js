@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
 import Source from './Source';
 import { useCookies } from 'react-cookie';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
+
+const clientId = "568661146363-eo0s56tv59nsj9cfl416s7nvu7d2k9c9.apps.googleusercontent.com";
 
 
 export default function SidebarOwner() {
@@ -14,8 +17,18 @@ export default function SidebarOwner() {
 	useEffect(()=>{
 		if(cookies.userLogin){
 			setdataUser(cookies.userLogin);
-		} 
+		} else{
+      window.location.replace("/loginUser");
+    }
+
+    
 	},[]);
+
+  const onSignoutSuccess = () => {
+		removeCookie('userLogin');
+  	window.location.href = "/loginUser";
+	//	window.location.reload();
+    };
 
 	
 
@@ -67,22 +80,15 @@ export default function SidebarOwner() {
               <li className="sidebar-dropdown">
                 <a href="#">
                   <i className="fas fa-chart-line" />
-                  <span>Dashboard</span>
-                  <span className="badge badge-pill badge-warning">New</span>
+                  <span>Laporan</span>
+                 
                 </a>
                 <div className="sidebar-submenu">
                   <ul>
                     <li>
-                      <a href="#">Dashboard 1
-                        <span className="badge badge-pill badge-success">Pro</span>
-                      </a>
+                        <a href="/owner/LaporanRumahKos" >Laporan Rumah Kos</a>
                     </li>
-                    <li>
-                      <a href="#">Dashboard 2</a>
-                    </li>
-                    <li>
-                      <a href="#">Dashboard 3</a>
-                    </li>
+                    
                   </ul>
                 </div>
               </li>
@@ -103,82 +109,7 @@ export default function SidebarOwner() {
                   </ul>
                 </div>
               </li>
-              <li className="sidebar-dropdown">
-                <a href="#">
-                  <i className="fas fa-home" />
-                  <span>Kamar Kos</span>
-                </a>
-                <div className="sidebar-submenu">
-                  <ul>
-                    <li>
-                      <a href="#">Tambah Kamar Kos</a>
-                    </li>
-                    <li>
-                      <a href="#">Lihat Rumah Kos</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li className="sidebar-dropdown">
-                <a href="#">
-                  <i className="fa fa-chart-line" />
-                  <span>Charts</span>
-                </a>
-                <div className="sidebar-submenu">
-                  <ul>
-                    <li>
-                      <a href="#">Pie chart</a>
-                    </li>
-                    <li>
-                      <a href="#">Line chart</a>
-                    </li>
-                    <li>
-                      <a href="#">Bar chart</a>
-                    </li>
-                    <li>
-                      <a href="#">Histogram</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li className="sidebar-dropdown">
-                <a href="#">
-                  <i className="fa fa-globe" />
-                  <span>Maps</span>
-                </a>
-                <div className="sidebar-submenu">
-                  <ul>
-                    <li>
-                      <a href="#">Google maps</a>
-                    </li>
-                    <li>
-                      <a href="#">Open street map</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li className="header-menu">
-                <span>Extra</span>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-book" />
-                  <span>Documentation</span>
-                  <span className="badge badge-pill badge-primary">Beta</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-calendar" />
-                  <span>Calendar</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-folder" />
-                  <span>Examples</span>
-                </a>
-              </li>
+             
             </ul>
           </div>
           {/* sidebar-menu  */}
@@ -186,20 +117,20 @@ export default function SidebarOwner() {
         {/* sidebar-content  */}
         <div className="sidebar-footer">
           <a href="#">
-            <i className="fa fa-bell" />
-            <span className="badge badge-pill badge-warning notification">3</span>
+          <NavLink to="/profile" >  <i className="fas fa-info-circle" /></NavLink>
+           
           </a>
-          <a href="#">
-            <i className="fa fa-envelope" />
-            <span className="badge badge-pill badge-success notification">7</span>
-          </a>
-          <a href="#">
-            <i className="fa fa-cog" />
-            <span className="badge-sonar" />
-          </a>
-          <a href="#">
-            <i className="fa fa-power-off" />
-          </a>
+         
+          <GoogleLogout
+													render={renderProps => (
+														<a onClick={renderProps.onClick} disabled={renderProps.disabled}> <i className="fa fa-power-off" /></a>
+													)}
+													clientId={clientId}
+													buttonText="Log Out"
+													onLogoutSuccess={onSignoutSuccess}
+													>
+													</GoogleLogout>
+          
         </div>
       </nav>
       :

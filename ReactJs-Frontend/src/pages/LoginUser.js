@@ -47,7 +47,7 @@ export default function LoginUser() {
                     setCookie('userLogin', data.data.loginUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
                     window.location.replace("/admin/userTable")
                     if(data.data.loginUser.role.id == 2){
-                        window.location.replace("/owner");
+                        window.location.replace("/owner/LaporanRumahKos");
                     }else{
                         window.location.replace("/");
                     }

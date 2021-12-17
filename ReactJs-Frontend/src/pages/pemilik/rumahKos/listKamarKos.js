@@ -10,7 +10,8 @@ import EditRumahKos from './editRumahKos';
 import AddKamarKos from './addKamarKos';
 import EditsKamarKos from './editKamarKos';
 import { DELRES_LISTING } from '../../../graphql/mutation';
-
+import { Button } from 'react-bootstrap';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 
 export default function ListKamarKos() {
@@ -83,7 +84,7 @@ export default function ListKamarKos() {
     ];
 
     
-    
+    //const actionsMemo = React.useMemo(() => <Button onExport={() => downloadCSV(dataGetAllListing.getAllListingUserOwner)} />, []);
     
 
     return (
@@ -97,9 +98,11 @@ export default function ListKamarKos() {
             </div>
             <div className="row">
                 <div className="col-12">
+                <CSVLink data={dataGetAllListing.getAllListingUserOwner} className='btnOwner'>Download(CSV)</CSVLink>
                         <DataTable
                             columns={columns}
                             data={dataGetAllListing.getAllListingUserOwner}
+                           // action = {actionsMemo}
                             pagination
                            
                         />

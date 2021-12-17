@@ -59,7 +59,7 @@ export default function AddKamarKos() {
 
     console.log(value);
 
-    const {loading, data:getAllRumahKosUser, error} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value}});
+    const {loading, data:getAllRumahKosUser, error} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
    
 
     if(loading){
