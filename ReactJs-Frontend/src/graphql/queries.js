@@ -288,6 +288,9 @@ export const GET_ALL_TESTIMONI_RUMAH_KOS = gql`
       id
       nilai
       isi
+      listing{
+        nama
+      }
       user{
         nama_depan
         nama_belakang

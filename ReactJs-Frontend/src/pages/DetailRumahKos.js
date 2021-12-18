@@ -145,7 +145,7 @@ export default function DetailRumahKos() {
                                                         <div className="single-comment">
                                                         <img src={testi.user.foto ? testi.user.foto : Source['profil']} alt="#" />
                                                         <div className="content">
-                                                            <h4>{testi.user.nama_depan}<span>{tanggal}</span></h4>
+                                                            <h4>{testi.user.nama_depan} {testi.user.nama_belakang} - {testi.listing.nama}<span>{tanggal}</span></h4>
                                                             <p>{testi.isi}</p>
                                                             {/* <div className="button">
                                                             <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
