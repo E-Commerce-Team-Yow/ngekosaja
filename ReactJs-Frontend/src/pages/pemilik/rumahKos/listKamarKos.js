@@ -58,7 +58,7 @@ export default function ListKamarKos() {
         },
         {
             name: 'status',
-            cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> : <span className="badge badge-danger">Non Available</span>  
+            cell: row => row.status == 1 ? row.status ==2 ?<span className="badge badge-info">Available</span> : <span className="badge badge-danger">Terisi</span> :<span className="badge badge-danger">Non Available</span>  
         },
         {
 			name: 'Actions',

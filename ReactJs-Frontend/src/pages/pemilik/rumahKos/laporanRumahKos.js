@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_JUM_RUMAH_KOS_USER, GET_RUMAH_KOS_USER, GET_JUM_LISTING_PEMILIK, GET_ONE_RUMAH_KOS, } from '../../../graphql/queries';
+import { GET_JUM_RUMAH_KOS_USER, GET_RUMAH_KOS_USER, GET_JUM_LISTING_PEMILIK, GET_ONE_RUMAH_KOS, GET_ALL_LISTING_OWNER} from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
 import { ADD_LISTING, ADD_RUMAH_KOS } from '../../../graphql/mutation';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+
+
+import DataTable from 'react-data-table-component';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -20,7 +23,7 @@ export default function LaporanRumahKos() {
 	const [dataUser,setdataUser] = useState(null);
     const [value,setValue] = useState(null);
 
-   
+    const [dataRumah, setDataRumah] = useState([]);
 
     //deklarasi add Kos
     const [add_kamar_kos, data] = useMutation(ADD_LISTING);
@@ -30,7 +33,9 @@ export default function LaporanRumahKos() {
 
     const {loading:loadAllRumahKosUser, data:getAllRumahKosUser, error:errorAllRumahKosUser} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
     
+    const {loading:loadAllListing, data:getAllListing, error:errorAllListing} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
 
+    //const {loading:loadTesti, data:getAllTesti, error:errorTesti} = useQuery(GET_A)
 
     //check data user
 	useEffect(()=>{
@@ -66,23 +71,55 @@ export default function LaporanRumahKos() {
         ],
       });
 
+      const columns = [
+        {
+            name: 'Nama',
+            selector: row => row.nama,
+            sortable: true
+        },
+        {
+            name: 'Harga(bln)',
+            selector: row => row.harga_bulanan,
+            sortable: true
+        },
+        {
+            name: 'status',
+            cell: row => row.status == 1 ? row.status ==2 ?<span className="badge badge-info">Available</span> : <span className="badge badge-danger">Terisi</span> :<span className="badge badge-danger">Non Available</span>  
+        },
+      ];
+
 
       console.log(dataChart);
 
 
-
+      console.log(getAllListing)
 
     function funcSetData(id){
         let kamar_sisa = null;
         let total_kamar = null;
         let dt = getAllRumahKosUser.getAllRumahKosUser;
+        let listings = getAllListing.getAllListingUserOwner
+
+        let kamar_kos = [];
+        let ctr =0;
 
         for(let i=0; i< dt.length; i++){
             if(dt[i].id == id){
                 total_kamar = parseInt(dt[i].total_kamar);
                 kamar_sisa = parseInt(dt[i].sisa_kamar);
             }
+
+        
         }
+
+        for(let j=0; j< listings.length; j++){
+            if(listings[j].rumah_kos.id == id){
+                kamar_kos[ctr] = listings[j];
+                ctr++;
+            }
+        }
+
+       setDataRumah(kamar_kos);
 
         setdataChart(
             {
@@ -203,7 +240,15 @@ export default function LaporanRumahKos() {
                                     <Doughnut data={dataChart} />
                             </div>
                             <div className='col-6 chart'>
-                                    <Doughnut data={dataChart} />
+                                <div className='card'>
+                              <DataTable
+                                        columns={columns}
+                                        data={dataRumah}
+                                    // action = {actionsMemo}
+                                     //   pagination
+                                    
+                                    />  
+                                </div>
                             </div>
                         </div>
                     </div>

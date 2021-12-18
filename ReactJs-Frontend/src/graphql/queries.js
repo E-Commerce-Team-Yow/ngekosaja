@@ -156,6 +156,10 @@ export const GET_ALL_RUMAH_KOS = gql`
       total_kamar
       sisa_kamar
       status
+      ketentuan_peraturan{
+        id
+        isi
+      }
     }
   }
 `;
@@ -177,6 +181,10 @@ export const GET_LAST_RUMAH_KOS = gql`
       total_kamar
       sisa_kamar
       status
+      ketentuan_peraturan{
+        id
+        isi
+      }
     }
   }
 `;
@@ -197,6 +205,10 @@ export const GET_RUMAH_KOS_USER = gql`
       total_kamar
       sisa_kamar
       status
+      ketentuan_peraturan{
+        id
+        isi
+      }
     }
   }
 `;
@@ -232,6 +244,10 @@ export const GET_ONE_RUMAH_KOS = gql`
           id
           nama
         }
+        ketentuan_peraturan{
+          id
+          isi
+        }
       }
     }
   }
@@ -242,7 +258,7 @@ export const GET_JUM_RUMAH_KOS_USER = gql `
   query getJumlahRumahKos($id_user : String!){
     getJumlahRumahKos(id_user : $id_user){
       count
-      message
+      
     }
   } 
 `;
@@ -251,7 +267,7 @@ export const GET_JUM_LISTING_PEMILIK = gql `
   query getJumlahListingPemilik($id_user : String!){
     getJumlahListingPemilik(id_user : $id_user){
       count
-      message
+     
     }
   } 
 `;

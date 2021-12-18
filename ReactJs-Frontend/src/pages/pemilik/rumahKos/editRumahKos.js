@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA } from '../../../graphql/queries';
+import { GET_ALL_KOTA, GET_ALL_KEPER } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { UPDATE_RUMAH_KOS } from '../../../graphql/mutation';
+import { UPDATE_RUMAH_KOS, APPEND_KEPER } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
@@ -19,8 +19,11 @@ export default function EditRumahKos({rumah_kos}) {
 
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
-    const {loading, data: getAllKota, error} = useQuery(GET_ALL_KOTA);
+    const [arrKeper, setArrKeper] = useState([]);
+    const {loading:loadAllKota, data: getAllKota, error:errorAllKota} = useQuery(GET_ALL_KOTA);
    
+    const {loading:loadingKeper, data : getKeper, error:errorKeper} = useQuery(GET_ALL_KEPER);
+
   
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -33,23 +36,35 @@ export default function EditRumahKos({rumah_kos}) {
         id_kota: 1,
         id_user : '',
         keterangan : '',
+        keper : []
     });
 
 
     //deklarasi add Kos
     const [edit_rumah_kos, data] = useMutation(UPDATE_RUMAH_KOS);
 
+    
+    //deklarasi add peraturan
+    const [apend_keper, dataKeper] = useMutation(APPEND_KEPER);
+
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
+            var tmp = [];
 
+            for(let i=0; i< rumah_kos.ketentuan_peraturan.length; i++){
+                tmp[i] = rumah_kos.ketentuan_peraturan[i].id;
+            }
+
+            setArrKeper(tmp);
             setFormState({
                 name_kos: rumah_kos.nama,
                 kode_pos: rumah_kos.kode_pos,
                 alamat_kos : rumah_kos.alamat,
                 id_kota: rumah_kos.kota.id,
                id_user : cookies.userLogin.id,
-               keterangan : rumah_kos.keterangan
+               keterangan : rumah_kos.keterangan,
+               keper : tmp
             });
 
 			setdataUser(cookies.userLogin);
@@ -65,14 +80,14 @@ export default function EditRumahKos({rumah_kos}) {
         }
 	},[!data.loading]);
 
-    if(loading){
+    if(loadAllKota && loadingKeper){
         return "Loading..."
       }
-      if(error){
+      if(errorAllKota && errorKeper){
         return "Error..."
       }
 
-
+      console.log(formState)
 
     return ( 
         <div>          
@@ -98,7 +113,17 @@ export default function EditRumahKos({rumah_kos}) {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                    console.log( edit_rumah_kos({ variables: { id : rumah_kos.id, nama : formState.name_kos, alamat : formState.alamat_kos, id_kota : parseInt(formState.id_kota), kode_pos : formState.kode_pos, total_kamar:rumah_kos.total_kamar, sisa_kamar: rumah_kos.sisa_kamar, keterangan: formState.keterangan }}));
+                                                    edit_rumah_kos({ variables: { id : rumah_kos.id, nama : formState.name_kos, alamat : formState.alamat_kos, id_kota : parseInt(formState.id_kota), kode_pos : formState.kode_pos, total_kamar:rumah_kos.total_kamar, sisa_kamar: rumah_kos.sisa_kamar, keterangan: formState.keterangan }}).then(result =>
+                                                        {
+                                                           let id_rmh = result.data.updateRumahKos.id
+
+                                                             for(let i=0; i< formState.keper.length; i++){
+                                                                 console.log(formState.keper[i]);
+                                                                console.log(apend_keper({variables : {id_rumah_kos : id_rmh, id_keper : formState.keper[i]}}))
+                                                             }
+                                                        }   
+                                                        
+                                                    );
                                                     setTimeout(() => {
                                                         window.location.replace("/owner/ListRumahKos");
                                                     }, 2000); 
@@ -142,6 +167,54 @@ export default function EditRumahKos({rumah_kos}) {
                                                     }
                                                 placeholder="xxxxxx" name="kode_pos" />
                                             </div>
+
+
+                                            <div className="form-group">
+                                                <label>Peraturan Rumah Kos</label>
+                                            <select className="form-select form-control" multiple aria-label="multiple select example"
+                                                name='keper[]'
+                                                defaultValue={arrKeper}
+                                            onChange={(e) =>
+
+                                               // console.log(e.target.options.selectedIndex)
+
+                                               {
+                                                var options = e.target.options;
+                                                var value = [];
+                                                for (var i = 0, l = options.length; i < l; i++) {
+                                                  if (options[i].selected) {
+                                                    value.push(options[i].value);
+                                                  }
+                                                }
+
+                                               
+
+                                                 setFormState({
+                                                ...formState,
+                                                keper: value
+                                                })
+                                               }
+                                                // setFormState({
+                                                // ...formState,
+                                                // keper: e.target.value
+                                                // })
+                                            }
+                                            
+                                            >
+                                                 {
+                                                    getKeper && (
+                                                        getKeper.getAllKeper.map(keper => 
+                                                            <option value={keper.id} key={keper.id}>{keper.isi} 
+                                                            
+                                                                - {keper.tipe == 1? "Ketentuan" : "Peraturan"}
+                                                            
+                                                            </option>
+                                                        )
+                                                    )
+                                                }   
+                                                </select>
+                                            </div>
+
                                             <div className="form-group">
                                                 <label>Keterangan</label>
                                                 <CKEditor

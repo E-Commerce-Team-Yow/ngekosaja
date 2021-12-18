@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER, GET_ALL_FASILITAS_KOS } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { ADD_LISTING, ADD_RUMAH_KOS, EDIT_LISTING } from '../../../graphql/mutation';
+import { ADD_LISTING, ADD_RUMAH_KOS, EDIT_LISTING, APPEND_FASILITAS } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
@@ -19,20 +19,24 @@ export default function EditsKamarKos({kamar_kos}) {
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const [value,setValue] = useState(null);
+    const [arrFasilitas, setArrFasilitas] = useState([]);
   
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+   
+
     const [formState, setFormState] = useState({
-        nama_kamar : kamar_kos.nama,
-        rumah_kos : kamar_kos.rumah_kos.id,
-        panjang : kamar_kos.panjang,
-        lebar : kamar_kos.lebar,
-        harga_bulanan : kamar_kos.harga_bulanan,
-        harga_tahunan : kamar_kos.harga_tahunan,
-        keterangan : kamar_kos.keterangan,
-        jenis : kamar_kos.jenis,
+        nama_kamar : '',
+        rumah_kos : '',
+        panjang : 0,
+        lebar : 0,
+        harga_bulanan : 0,
+        harga_tahunan : 0,
+        keterangan : '',
+        jenis : 1,
+        fasilitas : []
     });
 
     console.log(formState)
@@ -41,14 +45,40 @@ export default function EditsKamarKos({kamar_kos}) {
     //deklarasi add Kos
     const [edit_kamar_kos, data] = useMutation(EDIT_LISTING);
 
+    const [append_fasilitas, data_append] = useMutation(APPEND_FASILITAS);
+
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
 			setdataUser(cookies.userLogin);
             setValue(cookies.userLogin.id);
+
+
+            var tmp = [];
+
+            for(let i=0; i< kamar_kos.fasilitas_koss.length; i++){
+                tmp[i]= kamar_kos.fasilitas_koss[i].id;
+            }
+        
+            
+            setArrFasilitas(tmp);
+            setFormState({
+                nama_kamar : kamar_kos.nama,
+                rumah_kos : kamar_kos.rumah_kos.id,
+                panjang : kamar_kos.panjang,
+                lebar : kamar_kos.lebar,
+                harga_bulanan : kamar_kos.harga_bulanan,
+                harga_tahunan : kamar_kos.harga_tahunan,
+                keterangan : kamar_kos.keterangan,
+                jenis : kamar_kos.jenis,
+                fasilitas : tmp
+            });
+        
+
 		} else{
             window.location.replace(`/loginUser?role=2`);
         }
+
         if(!data.loading ){
             if(data.data && data.data?.updateListing != null){
                 NotificationManager.success('', data.data?.updateListing.message, 2000);
@@ -61,13 +91,13 @@ export default function EditsKamarKos({kamar_kos}) {
 
     console.log(value);
 
-    const {loading, data:getAllRumahKosUser, error} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
-   
+    const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
+    const {loading:loadFasilitas, data:getAllFasilitas, error:errorFasilitas} = useQuery(GET_ALL_FASILITAS_KOS);
 
-    if(loading){
+    if(loadAllRumahKos){
         return "Loading..."
     }
-    if(error){
+    if(errorAllRumahKos){
         return "Error..."
     }
     return (
@@ -95,7 +125,18 @@ export default function EditsKamarKos({kamar_kos}) {
                                                 e.preventDefault();
                                                     console.log(formState);
                                                     console.log(kamar_kos.id);
-                                                    console.log(edit_kamar_kos({ variables: {id: kamar_kos.id, nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}}));
+                                                    edit_kamar_kos({ variables: {id: kamar_kos.id, nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}})
+                                                    .then(result=> {
+                                                        let id_rmh = result.data.updateListing.id
+                                                        console.log(id_rmh)
+                                                        console.log(result)
+                                                        for(let i=0; i< formState.fasilitas.length; i++){
+                                                            console.log(formState.fasilitas[i]);
+                                                           console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
+                                                        }
+                                                       })
+                                                    
+                                                    
                                                     setTimeout(() => {
                                                         window.location.replace("/owner/ListKamarKos");
                                                     }, 2000); 
@@ -123,6 +164,47 @@ export default function EditsKamarKos({kamar_kos}) {
                                                 }
                                             </select>
                                             </div>
+
+
+                                            <div className="form-group">
+                                                <label>Fasilitas Kos</label>
+                                            <select className="form-select form-control" multiple aria-label="multiple select example"
+                                                name='fasilitas[]'
+
+                                                defaultValue={arrFasilitas}
+                                            onChange={(e) =>
+
+                                               // console.log(e.target.options.selectedIndex)
+
+                                               {
+                                                var options = e.target.options;
+                                                var value = [];
+                                                for (var i = 0, l = options.length; i < l; i++) {
+                                                  if (options[i].selected) {
+                                                    value.push(options[i].value);
+                                                  }
+                                                }
+
+                                                 setFormState({
+                                                ...formState,
+                                                fasilitas: value
+                                                })
+                                               }
+                                            }
+                                            
+                                            >
+                                                 {
+                                                    getAllFasilitas && (
+                                                        getAllFasilitas.getAllFasilitasKos.map(fasilitas => 
+                                                            <option value={fasilitas.id} key={fasilitas.id}>{fasilitas.nama} 
+                                                            </option>
+                                                        )
+                                                    )
+                                                }   
+                                                </select>
+                                            </div>
+
+
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Nama Kamar</label>
                                                 <input type="text" className="form-control" id="nama_kamar"

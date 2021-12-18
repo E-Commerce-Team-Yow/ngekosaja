@@ -107,6 +107,7 @@ export const CREATE_USER = gql`
 export const ADD_RUMAH_KOS = gql `
   mutation addRumahKos($id_user: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String! ){
     addRumahKos(id_user : $id_user, nama: $nama, alamat:$alamat, id_kota: $id_kota, kode_pos:$kode_pos, total_kamar:$total_kamar, sisa_kamar:$sisa_kamar, keterangan: $keterangan){
+      id
       successful
       message
     }
@@ -144,15 +145,35 @@ mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulan
 }
 `;
 
+
+export const APPEND_FASILITAS = gql `
+  mutation appendListFas ($id_listing : String!, $id_fasilitas_kos : String!){
+    appendListFas (id_listing : $id_listing, id_fasilitas_kos : $id_fasilitas_kos){
+      message
+      successful
+    }
+  }
+`;
+
 export const UPDATE_RUMAH_KOS = gql `
   mutation updateRumahKos($id: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!){
     updateRumahKos(id: $id, nama: $nama, alamat: $alamat, id_kota: $id_kota, kode_pos : $kode_pos, total_kamar : $total_kamar, sisa_kamar : $sisa_kamar, keterangan : $keterangan){
+      id
       successful
       message
     }
   }
 `;
 
+
+export const APPEND_KEPER = gql `
+  mutation appendRumahKosKeper($id_rumah_kos : String!, $id_keper : String!){
+    appendRumahKosKeper(id_rumah_kos : $id_rumah_kos, id_keper : $id_keper){
+      successful
+      message
+    }
+  }
+`;
 
 export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
