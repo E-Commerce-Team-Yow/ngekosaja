@@ -7,34 +7,64 @@ import Header from './Header';
 import Source from './Source';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_LAST_RUMAH_KOS, GET_ONE_RUMAH_KOS } from '../graphql/queries';
+import { GET_ALL_TESTIMONI_RUMAH_KOS, GET_AVG_TESTIMONI, GET_ONE_RUMAH_KOS } from '../graphql/queries';
 import { useLocation } from 'react-router-dom';
+import Loading from './Loading';
+import { useCookies } from 'react-cookie';
 
 export default function DetailRumahKos() {
-  
-
     const search = useLocation().search;
     const id_rumah = new URLSearchParams(search).get('id');
-    let { path, url } = useRouteMatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
+	const [dataUser,setdataUser] = useState(null);
 
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let tanggal = "";
+    let avg = 0;
+	//check data user
+	useEffect(()=>{
+		if(cookies.userLogin){
+			setdataUser(cookies.userLogin);
+		} else{
+           window.location.replace("/");
+        }
+
+	},[]);
     const {loading, data: dataGetOneRumahKos, error} = useQuery(GET_ONE_RUMAH_KOS, {variables: {id : id_rumah}});
-   if(loading){
-       return (
-                <div className="preloader">
-                    <div className="preloader-inner">
-                        <div className="preloader-icon">
-                            <span />
-                            <span />
-                        </div>
-                    </div>
-                </div>
-
-            )
-   }
-
-   if(error){
-       return "error.."
-   }
+    const {loading: loadingGetAllTesti, data: dataGetAllTestimoni, error: errorGetAllTesti} = useQuery(GET_ALL_TESTIMONI_RUMAH_KOS, {variables: {id_rumah_kos : id_rumah}});
+    const {loading: loadingGetAvg, data: dataGetAvg, error: errorGetAvg} = useQuery(GET_AVG_TESTIMONI, {variables: {id_rumah_kos : id_rumah}});
+    if(dataUser){       
+        const d = new Date(parseInt(dataUser.created_at));
+        let name = month[d.getMonth()];
+        tanggal = d.getDate() + " " + name + " " + d.getFullYear() + " "+ d.getHours() +":"+ d.getMinutes() +":"+ d.getSeconds();
+    }
+    if(loading){
+        return (
+            <Loading/>
+        )
+    }
+    if(error){
+        return "error.."
+    }
+    if(loadingGetAllTesti){
+        return (
+            <Loading/>
+        )
+    }
+    if(errorGetAllTesti){
+        return "error.."
+    }
+    if(loadingGetAvg){
+        return (
+            <Loading/>
+        )
+    }
+    if(errorGetAvg){
+        return "error.."
+    }
+    
+    console.log(avg);
+    console.log(dataGetAllTestimoni.getAllTestimoniRumahKos)
     return (
         <div className="js">
             {
@@ -96,7 +126,7 @@ export default function DetailRumahKos() {
                                         <div className="blog-detail">
                                           
                                             <div className="blog-meta mt-4">
-                                             <span className="author"><a href="#"><i className="fa fa-user" />By Admin</a><a href="#"><i className="fa fa-calendar" />{dataGetOneRumahKos.getOneRumahKos.created_at}</a><a href="#"><i className="fa fa-comments" />Testimony (5)</a><a href="#"><i className="fa fa-star" />Rating : (5)</a></span>
+                                             <span className="author"><a href="#"><i className="fa fa-user" />By Admin</a><a href="#"><i className="fa fa-calendar" />{dataGetOneRumahKos.getOneRumahKos.created_at}</a><a href="#"><i className="fa fa-comments" />Testimoni ({dataGetAllTestimoni.getAllTestimoniRumahKos.length})</a><a href="#"><i className="fa fa-star" />Rating : ({dataGetAvg.getAverageTestimoni.average})</a></span>
                                             </div>
                                             <div className="content" dangerouslySetInnerHTML={{ __html: dataGetOneRumahKos.getOneRumahKos.keterangan }}>
                                             </div>
@@ -105,81 +135,31 @@ export default function DetailRumahKos() {
                                         </div>
                                         <div className="col-12">
                                         <div className="comments">
-                                            <h3 className="comment-title">Comments (3)</h3>
+                                            <h3 className="comment-title">Comments ({dataGetAllTestimoni.getAllTestimoniRumahKos.length})</h3>
+                                            
+                                            {
+                                                dataGetAllTestimoni && (
+                                                dataGetAllTestimoni.getAllTestimoniRumahKos.map(testi =>
+                                                   <div key={testi.id}>
+                                                       {
+                                                        <div className="single-comment">
+                                                        <img src={testi.user.foto ? testi.user.foto : Source['profil']} alt="#" />
+                                                        <div className="content">
+                                                            <h4>{testi.user.nama_depan} {testi.user.nama_belakang} - {testi.listing.nama}<span>{tanggal}</span></h4>
+                                                            <p>{testi.isi}</p>
+                                                            {/* <div className="button">
+                                                            <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
+                                                            </div> */}
+                                                        </div>
+                                                        </div>
+                                                       }
+                                                   </div> 
+                                                ))
+                                            }
                                             {/* Single Comment */}
-                                            <div className="single-comment">
-                                            <img src="https://via.placeholder.com/80x80" alt="#" />
-                                            <div className="content">
-                                                <h4>Alisa harm <span>At 8:59 pm On Feb 28, 2018</span></h4>
-                                                <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee  Phosfluorescently leverage.</p>
-                                                <div className="button">
-                                                <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            {/* End Single Comment */}
-                                            {/* Single Comment */}
-                                            <div className="single-comment left">
-                                            <img src="https://via.placeholder.com/80x80" alt="#" />
-                                            <div className="content">
-                                                <h4>john deo <span>Feb 28, 2018 at 8:59 pm</span></h4>
-                                                <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee  Phosfluorescently leverage.</p>
-                                                <div className="button">
-                                                <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            {/* End Single Comment */}
-                                            {/* Single Comment */}
-                                            <div className="single-comment">
-                                            <img src="https://via.placeholder.com/80x80" alt="#" />
-                                            <div className="content">
-                                                <h4>megan mart <span>Feb 28, 2018 at 8:59 pm</span></h4>
-                                                <p>Enthusiastically leverage existing premium quality vectors with enterprise-wide innovation collaboration Phosfluorescently leverage others enterprisee  Phosfluorescently leverage.</p>
-                                                <div className="button">
-                                                <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
-                                                </div>
-                                            </div>
-                                            </div>
                                             {/* End Single Comment */}
                                         </div>									
                                         </div>											
-                                        <div className="col-12">			
-                                        <div className="reply">
-                                            <div className="reply-head">
-                                            <h2 className="reply-title">Leave a Comment</h2>
-                                            {/* Comment Form */}
-                                            <form className="form" action="#">
-                                                <div className="row">
-                                                <div className="col-lg-6 col-md-6 col-12">
-                                                    <div className="form-group">
-                                                    <label>Your Name<span>*</span></label>
-                                                    <input type="text" name="name" placeholder required="required" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-6 col-md-6 col-12">
-                                                    <div className="form-group">
-                                                    <label>Your Email<span>*</span></label>
-                                                    <input type="email" name="email" placeholder required="required" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-12">
-                                                    <div className="form-group">
-                                                    <label>Your Message<span>*</span></label>
-                                                    <textarea name="message" placeholder defaultValue={""} />
-                                                    </div>
-                                                </div>
-                                                <div className="col-12">
-                                                    <div className="form-group button">
-                                                    <button type="submit" className="btn">Post comment</button>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </form>
-                                            {/* End Comment Form */}
-                                            </div>
-                                        </div>			
-                                        </div>			
                                     </div>
                                     </div>
                                 </div>
@@ -271,13 +251,9 @@ export default function DetailRumahKos() {
                                 </div>
                             </div>
                             </section>
-
-
                        :
                        <div></div>
                        }
-
-
                     <Footer/>
                 </div>
             }

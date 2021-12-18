@@ -17,6 +17,9 @@ export default function DetailUser() {
     let history = useHistory();
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
+  
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let tanggal = "";
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
@@ -25,11 +28,14 @@ export default function DetailUser() {
            window.location.replace("/");
         }
 	},[]);
-    
+    if(dataUser){       
+        const d = new Date(parseInt(dataUser.created_at));
+        let name = month[d.getMonth()];
+        tanggal = d.getDate() + " " + name + " " + d.getFullYear();
+    }
 
-    console.log(dataUser);
-    var date = new Date(parseInt(dataUser.created_at) * 1000);
-    console.log(date.toUTCString())
+    // var date = new Date(parseInt(dataUser.created_at) * 1000);
+    // console.log(date.toUTCString())
 
     return (
         <div className="js">
@@ -129,7 +135,7 @@ export default function DetailUser() {
                                        
                                         <div className="row mt-2">
                                             <div className="col-6 info-user"> <b>NAMA TEMPAT TINGGAL : </b> </div>
-                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : </b> </div>
+                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : {tanggal}</b> </div>
                                             
                                         </div>
                                         <div className="row mt-2">
