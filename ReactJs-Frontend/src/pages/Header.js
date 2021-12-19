@@ -110,7 +110,7 @@ export default function Header() {
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
 										{dataUser.foto ?
-										<img src={dataUser.foto} alt="Profil Pict" className="img-round"/>
+										<img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+cookies.userLogin.foto} alt="Profil Pict" className="img-round"/>
 										
 										:
 										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>

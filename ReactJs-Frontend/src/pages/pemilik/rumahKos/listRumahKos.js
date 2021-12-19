@@ -25,7 +25,7 @@ export default function ListRumahKos() {
     console.log(value);
     const {loading, data: dataGetAll, error} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value, type : 0}});
 
-
+    
      //deklarasi delete kos
     const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
 

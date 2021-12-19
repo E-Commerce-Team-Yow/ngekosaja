@@ -9,6 +9,24 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import { NotificationManager } from 'react-notifications';
+import axios from 'axios';
+
+function generateFormData(data) {
+  const formData = new FormData();
+  const dataValue = Object.values(data);
+  const dataKeys = Object.keys(data);
+
+  for (let i = 0; i < dataValue.length; i++) {
+    if (dataValue[i]) {
+      formData.append(dataKeys[i], dataValue[i] || "");
+    }
+  }
+
+  return formData;
+}
+let banyak;
+let namafoto;
+
 
 export default function AddRumahKos() {
     const script = document.createElement("script");
@@ -18,9 +36,14 @@ export default function AddRumahKos() {
 
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
+<<<<<<< Updated upstream
     const {loading:loadKota, data: getAllKota, error:errorKota} = useQuery(GET_ALL_KOTA);
     const {loading:loadingKeper, data : getKeper, error:errorKeper} = useQuery(GET_ALL_KEPER);
    
+=======
+    const {loading, data: getAllKota, error} = useQuery(GET_ALL_KOTA);
+    banyak = getAllKota.getAllKota.length;
+>>>>>>> Stashed changes
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -35,7 +58,60 @@ export default function AddRumahKos() {
         keper : []
     });
 
+    const [uploadedFile, setUploadedImage] = useState(null);
+    
+    //banyakMedia = dataGetAll.getAllMedia.length;
 
+    const onUploadImage = (e) =>  {  
+        setUploadedImage(e.target.files[0]);
+        console.log(banyak);
+        let kode = "R"+String(banyak+1).padStart(3, '0');
+        namafoto = kode;
+        console.log(namafoto);
+    }
+
+    const doUploadImage = () => {    
+        const formData = generateFormData({
+            foto: uploadedFile,
+          });
+          
+          axios
+            .post(
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ namafoto,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            )
+            .then((res) => {
+              //success
+              console.log(res.data);
+              console.log( 
+                  add_rumah_kos({ 
+                      variables: { 
+                          id_user : formState.id_user, 
+                          nama : formState.name_kos, 
+                          alamat : formState.alamat_kos, 
+                          id_kota : parseInt(formState.id_kota), 
+                          kode_pos : formState.kode_pos, 
+                          total_kamar:0, 
+                          sisa_kamar: 0, 
+                          keterangan: formState.keterangan 
+                        }
+                    })
+                );
+            })
+            .catch((err) => {
+              //error
+              if (err.response) {
+                console.log("res error", err.response.data);
+              } else if (err.request) {
+                console.log("req error", err.request.data);
+              } else {
+                console.log("Error", err.message);
+              }
+            });
+    }
     //deklarasi add Kos
     const [add_rumah_kos, data] = useMutation(ADD_RUMAH_KOS);
 
@@ -97,6 +173,7 @@ export default function AddRumahKos() {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
+<<<<<<< Updated upstream
                                                     add_rumah_kos({ variables: { id_user : formState.id_user, nama : formState.name_kos, alamat : formState.alamat_kos, id_kota : parseInt(formState.id_kota), kode_pos : formState.kode_pos, total_kamar:0, sisa_kamar: 0, keterangan: formState.keterangan }}).then(result =>
                                                         {
                                                            let id_rmh = result.data.addRumahKos.id
@@ -113,6 +190,12 @@ export default function AddRumahKos() {
                                                    setTimeout(() => {
                                                         window.location.replace("/owner/ListRumahKos");
                                                     }, 2000); 
+=======
+                                                    doUploadImage();
+                                                    // setTimeout(() => {
+                                                    //     window.location.replace("/owner/ListRumahKos");
+                                                    // }, 2000); 
+>>>>>>> Stashed changes
                                                 }}
                                         
                                         >
@@ -236,7 +319,12 @@ export default function AddRumahKos() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="media">Media</label> <br/>
-                                                <input type="file" className="form-control" placeholder="kos SUka Suka" name="mediaKos" />
+                                                <input  type="file"
+                                                        id="upload"
+                                                        name="upload"
+                                                        onChange={(e) => onUploadImage(e)}
+                                                        type="file"
+                                                />
                                             </div>
                                             <button type="submit" className="btnOwner w-100 p-3">Simpan</button>
                                         </form>

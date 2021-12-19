@@ -28,11 +28,12 @@ export default function ListKamarKos() {
 	},[value]);
     console.log(value);
     const {loading, data: dataGetAllListing, error} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
-
+    console.log(dataGetAllListing);
     //deklarasi delete kos
     const [delete_kamar_kos, data] = useMutation(DELRES_LISTING);
 
-    console.log(dataGetAllListing);
+
+    //console.log(dataGetAllListing);
     if(loading){
         return "Loading..."
     }
