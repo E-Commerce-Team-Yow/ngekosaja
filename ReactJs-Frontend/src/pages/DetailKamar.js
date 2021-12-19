@@ -12,10 +12,13 @@ import { ADD_TESTIMONI } from '../graphql/mutation';
 import { useCookies } from 'react-cookie';
 import { NotificationManager } from 'react-notifications';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import { Rating } from 'react-simple-star-rating'
 
 export default function DetailKamar() {
     const search = useLocation().search;
     const id_kamar = new URLSearchParams(search).get('id');
+    const [rating, setRating] = useState(0) // initial rating value
+
     const [inputBulan, setBulan] = useState({
         bulan: 1,
     });
@@ -23,6 +26,12 @@ export default function DetailKamar() {
         bintang: '',
         isi: ''
     });
+
+    const handleRating = (rate) => {
+        setRating(rate)
+        // other logic
+      }
+
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
     console.log(id_kamar)
     const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
@@ -46,6 +55,9 @@ export default function DetailKamar() {
                 //     }
                 //     console.log(cookies.userLogin);
                 // }, 2000);
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
             }
         }
     }, [!data.loading]);
@@ -57,6 +69,7 @@ export default function DetailKamar() {
       return "Error..."
     }
     console.log(dataGetOne.getOneListing)
+    console.log(rating);
     return (
         <div>
             <Header/>
@@ -620,13 +633,14 @@ export default function DetailKamar() {
                             <form className="form"
                                 onSubmit={e => {
                                 e.preventDefault();
-                                    testimoni({ variables: { nilai: 5, isi: formState.isi, id_user: cookies.userLogin.id, id_listing: id_kamar, id_rumah_kos: dataGetOne.getOneListing.rumah_kos.id }});
+                                    testimoni({ variables: { nilai: parseInt(rating/20), isi: formState.isi, id_user: cookies.userLogin.id, id_listing: id_kamar, id_rumah_kos: dataGetOne.getOneListing.rumah_kos.id }});
                                 }}
                             >
                                 <div className="row">
                                 <div className="col-12">
                                     <div className="form-group">
                                     <label>Your Review<span>*</span></label>
+                                    <Rating onClick={handleRating} ratingValue={rating} /* Available Props */ />
                                     <textarea name="message" placeholder
                                     defaultValue={formState.isi}
                                     onChange={(e) =>

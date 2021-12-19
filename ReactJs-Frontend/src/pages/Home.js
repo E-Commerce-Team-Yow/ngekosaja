@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_LAST_RUMAH_KOS } from '../graphql/queries';
 import Loading from './Loading';
+import { Rating } from 'react-simple-star-rating';
 
 export default function Home() {
     
@@ -355,14 +356,13 @@ export default function Home() {
                                            <p className='mt-2' dangerouslySetInnerHTML={{ __html: rumah_kos.keterangan }}></p>
                                        </div>
                                        <div className='col-6 mt-5'>
-                                           <i>Rating : </i>
+                                       <Rating size={20} ratingValue={100} /* Available Props */ />
                                        </div>
                                        <div className='col-6 mt-5'>
                                         {rumah_kos.sisa_kamar} kamar tersisa
                                        </div>
                                    </div>
                                 </Link>
-                                
                                     )
                                 )
                             }

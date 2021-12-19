@@ -326,6 +326,7 @@ export const GET_ALL_TESTIMONI_RUMAH_KOS = gql`
         nama_belakang
         foto
       }
+      created_at
     }
   }
 `;
