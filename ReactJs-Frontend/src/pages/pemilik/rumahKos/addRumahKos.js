@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA } from '../../../graphql/queries';
+import { GET_ALL_KEPER, GET_ALL_KOTA, GET_ALL_RUMAH_KOS } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { ADD_RUMAH_KOS } from '../../../graphql/mutation';
+import { ADD_RUMAH_KOS, APPEND_KEPER } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import { NotificationManager } from 'react-notifications';
+
 import axios from 'axios';
 
 function generateFormData(data) {
@@ -24,7 +25,7 @@ function generateFormData(data) {
 
   return formData;
 }
-let banyak;
+let banyakRumah;
 let namafoto;
 
 
@@ -36,12 +37,15 @@ export default function AddRumahKos() {
 
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
-    const {loading, data: getAllKota, error} = useQuery(GET_ALL_KOTA);
-    banyak = getAllKota.getAllKota.length;
+    const {loading:loadKota, data: getAllKota, error:errorKota} = useQuery(GET_ALL_KOTA);
+    const {loading:loadingKeper, data : getKeper, error:errorKeper} = useQuery(GET_ALL_KEPER);
+    const {loading:loadingRumah, data: getRumah, error: errorRumah} = useQuery(GET_ALL_RUMAH_KOS);
+    console.log(getRumah);
+    //banyakRumah = getRumah.getAllRumahKos.length
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
+    
     const [formState, setFormState] = useState({
        name_kos: '',
         kode_pos: '',
@@ -49,6 +53,7 @@ export default function AddRumahKos() {
         id_kota: 1,
         id_user : '',
         keterangan : '',
+        keper : []
     });
 
     const [uploadedFile, setUploadedImage] = useState(null);
@@ -57,8 +62,9 @@ export default function AddRumahKos() {
 
     const onUploadImage = (e) =>  {  
         setUploadedImage(e.target.files[0]);
-        console.log(banyak);
-        let kode = "R"+String(banyak+1).padStart(3, '0');
+        banyakRumah = getRumah.getAllRumahKos.length;
+        console.log(banyakRumah);
+        let kode = "R"+String(banyakRumah+1).padStart(3, '0');
         namafoto = kode;
         console.log(namafoto);
     }
@@ -80,18 +86,25 @@ export default function AddRumahKos() {
               //success
               console.log(res.data);
               console.log( 
-                  add_rumah_kos({ 
-                      variables: { 
-                          id_user : formState.id_user, 
-                          nama : formState.name_kos, 
-                          alamat : formState.alamat_kos, 
-                          id_kota : parseInt(formState.id_kota), 
-                          kode_pos : formState.kode_pos, 
-                          total_kamar:0, 
-                          sisa_kamar: 0, 
-                          keterangan: formState.keterangan 
-                        }
-                    })
+                    add_rumah_kos({ 
+                        variables: { 
+                            id_user : formState.id_user, 
+                            nama : formState.name_kos, 
+                            alamat : formState.alamat_kos, 
+                            id_kota : parseInt(formState.id_kota), 
+                            kode_pos : formState.kode_pos, 
+                            total_kamar:0, 
+                            sisa_kamar: 0, 
+                            keterangan: formState.keterangan,
+                            foto: ''+res.data 
+                        }}).then(result =>{
+                        let id_rmh = result.data.addRumahKos.id
+
+                            for(let i=0; i< formState.keper.length; i++){
+                                console.log(formState.keper[i]);
+                                console.log(apend_keper({variables : {id_rumah_kos : id_rmh, id_keper : formState.keper[i]}}))
+                            }
+                        }   )
                 );
             })
             .catch((err) => {
@@ -107,6 +120,8 @@ export default function AddRumahKos() {
     }
     //deklarasi add Kos
     const [add_rumah_kos, data] = useMutation(ADD_RUMAH_KOS);
+    //deklarasi add peraturan
+    const [apend_keper, dataKeper] = useMutation(APPEND_KEPER);
 
 	//check data user
 	useEffect(()=>{
@@ -118,13 +133,17 @@ export default function AddRumahKos() {
                 alamat_kos : '',
                 id_kota: 1,
                 id_user : cookies.userLogin.id,
-                keterangan : ''
+                keterangan : '',
+                keper : []
             });
 			setdataUser(cookies.userLogin);
 		} 
         if(!data.loading ){
             if(data.data && data.data?.addRumahKos != null){
                 NotificationManager.success('', data.data?.addRumahKos.message, 2000);
+                setTimeout(() => {
+                    window.location.replace("/owner/ListRumahKos");
+                }, 2000);
                 
             }else if(data.data && data.data?.addRumahKos == null){
                 NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
@@ -132,12 +151,13 @@ export default function AddRumahKos() {
         }
 	},[!data.loading]);
 
-    if(loading){
+    if(loadKota && loadingKeper && loadingRumah){
         return "Loading..."
     }
-    if(error){
+    if(errorKota && errorKeper && errorRumah){
         return "Error..."
     }
+    
     return (
         <div>   
             {
@@ -162,10 +182,8 @@ export default function AddRumahKos() {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                    
-                                                    // setTimeout(() => {
-                                                    //     window.location.replace("/owner/ListRumahKos");
-                                                    // }, 2000); 
+                                                    doUploadImage();
+                                                    //  
                                                 }}
                                         
                                         >
@@ -206,12 +224,40 @@ export default function AddRumahKos() {
 
                                             <div className="form-group">
                                                 <label>Peraturan Rumah Kos</label>
-                                            <select class="form-select form-control" multiple aria-label="multiple select example">
-                                                    <option selected>Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
+                                                <select className="form-select form-control" multiple aria-label="multiple select example"
+                                                    name='keper[]'
+                                                    onChange={(e) =>
+                                               // console.log(e.target.options.selectedIndex)
+                                                        {   
+                                                            var options = e.target.options;
+                                                            var value = [];
+                                                            for (var i = 0, l = options.length; i < l; i++) {
+                                                                if (options[i].selected) {
+                                                                    value.push(options[i].value);
+                                                                }
+                                                            }
+                                                            setFormState({
+                                                            ...formState,
+                                                            keper: value
+                                                            })
+                                                        }
+                                                // setFormState({
+                                                // ...formState,
+                                                // keper: e.target.value
+                                                // })
+                                                }>
+                                                    {
+                                                        getKeper && (
+                                                            getKeper.getAllKeper.map(keper => 
+                                                                <option value={keper.id} key={keper.id}>{keper.isi} 
+                                                                
+                                                                    - {keper.tipe == 1? "Ketentuan" : "Peraturan"}
+                                                                
+                                                                </option>
+                                                            )
+                                                        )
+                                                    }   
+                                                </select>    
                                             </div>
 
                                             <div className="form-group">
