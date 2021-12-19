@@ -190,7 +190,7 @@ export default function NearByCampus(){
                                                                                     <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" style={{borderRadius:100+'%'}}>
                                                                                         <div className="carousel-inner carousel-rounded">
                                                                                             <div className="carousel-item active">
-                                                                                                <img className="d-block w-100" src={Source['room']} alt="First slide" />
+                                                                                                <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com/%27+listing.foto%7D'} alt="First slide" />
                                                                                             </div>
                                                                                             <div className="carousel-item">
                                                                                                     <img className="d-block w-100" src={Source['room']} alt="Second slide" />

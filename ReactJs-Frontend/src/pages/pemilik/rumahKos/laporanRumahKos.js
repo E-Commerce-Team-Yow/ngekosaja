@@ -143,7 +143,8 @@ export default function LaporanRumahKos() {
         },
         {
             name: 'status',
-            cell: row => row.status == 1 ?<span className="badge badge-info">Available</span> :<span className="badge badge-danger">Non Available</span>  
+           
+            cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> : row.status == 2 ? <span className="badge badge-warning">Terisi</span> :<span className="badge badge-danger">Non Available</span>  
         },
       ];
 
@@ -279,7 +280,7 @@ export default function LaporanRumahKos() {
                                             <div className="icon">
                                                  <i className="ion ion-person" />
                                             </div>
-                                            <a href="supplier" className="small-box-footer">Info lengkap <i className="fa fa-arrow-circle-right" /></a>
+                                            <NavLink to="/owner/ListPenyewaKos" className="small-box-footer">Info lengkap <i className="fa fa-arrow-circle-right" /></NavLink>
                                         </div>
                                     </div>
                                    <div className="col-lg-4 col-xs-12">

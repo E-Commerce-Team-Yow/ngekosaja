@@ -97,13 +97,13 @@ export default function DetailRumahKos() {
                                             <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                                                 <div className="carousel-inner">
                                                     <div className="carousel-item active">
-                                                    <img className="d-block w-100" src={Source['kamar_kos']} alt="First slide" />
+                                                    <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOneRumahKos.getOneRumahKos.foto} alt="First slide" />
                                                     </div>
                                                     <div className="carousel-item">
-                                                    <img className="d-block w-100" src={Source['kamar_kos']} alt="Second slide" />
+                                                    <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOneRumahKos.getOneRumahKos.foto} alt="Second slide" />
                                                     </div>
                                                     <div className="carousel-item">
-                                                    <img className="d-block w-100" src={Source['kamar_kos']} alt="Third slide" />
+                                                    <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOneRumahKos.getOneRumahKos.foto} alt="Third slide" />
                                                     </div>
                                                 </div>
                                                 <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -123,6 +123,16 @@ export default function DetailRumahKos() {
                                              <span className="author"><a href="#"><i className="fa fa-user" />By Admin</a><a href="#"><i className="fa fa-calendar" />{dataGetOneRumahKos.getOneRumahKos.created_at}</a><a href="#"><i className="fa fa-comments" />Testimoni ({dataGetAllTestimoni.getAllTestimoniRumahKos.length})</a><a href="#"><i className="fa fa-star" />Rating : ({dataGetAvg.getAverageTestimoni.average})</a></span>
                                             </div>
                                             <div className="content" dangerouslySetInnerHTML={{ __html: dataGetOneRumahKos.getOneRumahKos.keterangan }}>
+                                            </div>
+                                            <div className='content'>
+                                                <h4>Ketentuan dan Peraturan</h4>
+                                                    <ul>
+{
+                                                    dataGetOneRumahKos.getOneRumahKos.ketentuan_peraturan.map(item => 
+                                                            <li key={item.id}>- <b>{item.isi}</b></li>
+                                                        )
+                                                    }
+                                                    </ul>
                                             </div>
                                         </div>
                                        
@@ -190,13 +200,13 @@ export default function DetailRumahKos() {
                                                                                     <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" style={{borderRadius:100+'%'}}>
                                                                                         <div className="carousel-inner carousel-rounded">
                                                                                             <div className="carousel-item active">
-                                                                                                <img className="d-block w-100" src={Source['room']} alt="First slide" />
+                                                                                                <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+listing.foto} alt="First slide" />
                                                                                             </div>
                                                                                             <div className="carousel-item">
-                                                                                                    <img className="d-block w-100" src={Source['room']} alt="Second slide" />
+                                                                                                    <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+listing.foto} alt="Second slide" />
                                                                                             </div>
                                                                                             <div className="carousel-item">
-                                                                                                <img className="d-block w-100" src={Source['room']} alt="Third slide" />
+                                                                                                <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+listing.foto} alt="Third slide" />
                                                                                             </div>
                                                                                         </div>
                                                                                         <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

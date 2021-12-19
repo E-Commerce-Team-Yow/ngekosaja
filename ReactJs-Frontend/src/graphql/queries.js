@@ -9,6 +9,7 @@ export const GET_ALL_LISTING = gql`
         lebar
         harga_bulanan
         status
+        foto
         fasilitas_koss{
           id
           nama
@@ -24,6 +25,7 @@ export const GET_LISTING_BETWEEN_EXPECTED_PRICE = gql`
         nama
         panjang
         lebar
+        foto
         harga_bulanan
         status
         fasilitas_koss{
@@ -45,6 +47,7 @@ export const GET_ALL_LISTING_OWNER = gql`
       harga_bulanan
       harga_tahunan
       keterangan
+      foto
       status
       successful
       fasilitas_koss{
@@ -148,6 +151,7 @@ export const GET_ALL_RUMAH_KOS = gql`
       id
       nama
       alamat
+      foto
       keterangan
       kode_pos
       kota{
@@ -177,6 +181,7 @@ export const GET_LAST_RUMAH_KOS = gql`
         id
         nama
       }
+      foto
       total_kamar
       sisa_kamar
       status
@@ -197,6 +202,7 @@ export const GET_RUMAH_KOS_USER = gql`
       alamat
       kode_pos
       keterangan
+      foto
       kota{
         id
         nama
@@ -228,9 +234,11 @@ export const GET_ONE_RUMAH_KOS = gql`
       total_kamar
       sisa_kamar
       status
+      foto
       listingRumahKos{
         id
         nama
+        foto
         jenis
         panjang
         lebar
@@ -339,6 +347,28 @@ export const GET_ALL_PENYEWAAN = gql`
         id
       }
       isi
+      status
+    }
+  }
+`;
+export const GET_ALL_PENYEWAAN_kos = gql`
+  query getPenyewaanPemilik($id_pemilik : String!){
+    getPenyewaanPemilik(id_pemilik : $id_pemilik){
+      id
+      status_pembayaran
+      bulan
+      total
+      tanggal_transaksi
+      user{
+        id
+        nama_depan
+        nama_belakang
+        no_tlp
+      }
+      listing{
+        id
+      }
+      
       status
     }
   }
