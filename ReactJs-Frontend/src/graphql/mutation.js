@@ -107,6 +107,7 @@ export const CREATE_USER = gql`
 export const ADD_RUMAH_KOS = gql `
   mutation addRumahKos($id_user: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!, $foto : String!){
     addRumahKos(id_user : $id_user, nama: $nama, alamat:$alamat, id_kota: $id_kota, kode_pos:$kode_pos, total_kamar:$total_kamar, sisa_kamar:$sisa_kamar, keterangan: $keterangan, foto: $foto){
+      id
       successful
       message
     }
@@ -133,6 +134,15 @@ export const ADD_PENYEWAAN = gql `
   }
 `;
 
+export const PENYEWAAN_LUNAS = gql `
+  mutation penyewaanLunas($id_penyewaan: String!, $status_pembayaran : Int!, ){
+    penyewaanLunas(id_penyewaan : $id_penyewaan, status_pembayaran : $status_pembayaran){
+      id
+      message
+      successful
+    }
+  }
+`;
 
 export const EDIT_LISTING = gql `
 mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!, $foto: String!){

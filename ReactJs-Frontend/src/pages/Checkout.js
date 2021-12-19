@@ -25,34 +25,11 @@ export default function Checkout() {
         id_pemilik : '',
         id_kamar : '',
     });
-
-    // useEffect(() =>{
-    //     if(!data.loading ){
-    //         if(data.data && data.data?.updateUser != null){
-    //             NotificationManager.success('', "Berhasil mengubah profil user", 2000);
-    //             setCookie('userLogin', data.data?.updateUser, { expires: new Date(new Date().getTime() + 24 * 60 * 1000)});
-    //             setTimeout(() => {
-    //                 window.location.replace("/profile");
-    //             }, 2000); 
-    //         }
-    //     }
-    // },[!data.loading])
     
     useEffect(() => {
 
 		if(cookies.userLogin){
             
-            // setFormState({
-            //     nama_depan : cookies.userLogin.nama_depan,
-            //     nama_belakang : cookies.userLogin.nama_belakang,
-            //     nik : cookies.userLogin.nik,
-            //     no_rek : cookies.userLogin.no_rek,
-            //     no_tlp : cookies.userLogin.no_tlp,
-            //     id  : cookies.userLogin.id,
-            // });
-			// setdataUser(cookies.userLogin);
-            // console.log(cookies.userLogin);
-            // alert('proses')
 		} else{
            window.location.replace("/");
         } 
@@ -63,14 +40,13 @@ export default function Checkout() {
     console.log(id_kamar)
 
     const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
-    const total = lama * dataGetOne.getOneListing[0].harga_bulanan
+    console.log(dataGetOne)
 
     const today = new Date();
     console.log(today)
-    const [add_sewa, data] = useMutation(ADD_PENYEWAAN);
+    const [add_sewa, data_sewa] = useMutation(ADD_PENYEWAAN);
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        alert('proses');
         add_sewa({ variables: { 
             bulan : parseInt(lama), 
             tanggal_transaksi : today, 
@@ -79,16 +55,21 @@ export default function Checkout() {
             id_penyewa : cookies.userLogin.id,
             id_kamar : id_kamar 
         }});
-        // alert('sukses');
-        console.log(data)
     }
+    useEffect(() => {
+        if(!data_sewa.loading ){
+            if ( data_sewa.data && data_sewa.data?.addpenyewaan != null){
+                window.location.replace("/payment?id_kamar="+id_kamar+"&total="+total+"&id_penyewaan="+data_sewa.data.addpenyewaan.id);
+            }
+        }
+    }, [!data_sewa.loading])
     if(loading){
       return "Loading..."
     }
     if(error){
       return "Error..."
     }
-    console.log(dataGetOne)
+    const total = lama * dataGetOne.getOneListing.harga_bulanan
     return (
         <div>
         <Header/>
@@ -106,7 +87,6 @@ export default function Checkout() {
                     </div>
                 </div>
             </div>
-            {/* <form> */}
             <form onSubmit={handleSubmit}>
                 <section className="shop checkout section">
                     <div className="container">
@@ -455,7 +435,7 @@ export default function Checkout() {
                             <h2>CART  TOTALS</h2>
                             <div className="content">
                                 <ul>
-                                <li>Sub Total<span>{dataGetOne.getOneListing[0].harga_bulanan}</span></li>
+                                <li>Sub Total<span>{dataGetOne.getOneListing.harga_bulanan}</span></li>
                                 <li>jumlah bulan<span>{lama}</span></li>
                                 <li className="last">Total<span>{total}</span></li>
                                 </ul>

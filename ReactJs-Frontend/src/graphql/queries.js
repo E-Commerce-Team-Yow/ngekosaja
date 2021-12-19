@@ -286,6 +286,10 @@ export const GET_ALL_TESTIMONI = gql`
       id
       isi
       status
+      nilai
+      listing{
+        id
+      }
     }
   }
 `;
@@ -316,5 +320,24 @@ export const GET_ALL_TESTIMONI_RUMAH_KOS = gql`
   }
 `;
 
-
-
+export const GET_ALL_PENYEWAAN = gql`
+  query getAllPenyewaan($id_user : String!){
+    getAllPenyewaan(id_user : $id_user){
+      id
+      status_pembayaran
+      bulan
+      total
+      tanggal_transaksi
+      user{
+        id
+        nama_depan
+        nama_belakang
+      }
+      listing{
+        id
+      }
+      isi
+      status
+    }
+  }
+`;

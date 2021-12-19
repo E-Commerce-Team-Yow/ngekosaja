@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router';
-import { LOGIN_USER } from '../graphql/mutation';
+import { GET_ALL_PENYEWAAN } from '../graphql/queries';
+import { LOGIN_USER } from '../graphql/queries';
 import { useCookies } from 'react-cookie';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -30,11 +31,14 @@ export default function DetailUser() {
         }
 	},[]);
     if(dataUser){       
-        const d = new Date(parseInt(dataUser.created_at));
-        let name = month[d.getMonth()];
-        tanggal = d.getDate() + " " + name + " " + d.getFullYear();
+        const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        tanggal = new Date(parseInt(dataUser.created_at)).getDate() + "-" + (new Date(parseInt(dataUser.created_at)).getMonth()+1)
+        + "-" + new Date(parseInt(dataUser.created_at)).getFullYear();
+        let a = parseInt(new Date(parseInt(dataUser.created_at)).getMonth()+1);
     }
-
+    console.log(dataUser)
+    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_PENYEWAAN,{variables: {id_user: dataUser.id}});
+    console.log(dataGetAll)
     // var date = new Date(parseInt(dataUser.created_at) * 1000);
     // console.log(date.toUTCString())
 
@@ -159,6 +163,17 @@ export default function DetailUser() {
                                     <div className="col-12">
                                         <h6>History Pembayaran</h6>
                                     </div>
+                                </div>
+                                <div className="row">
+                                    {
+                                        dataGetAll && (
+                                            dataGetAll.getAllPenyewaan.map(penyewaan => 
+                                                <div className="col-12">
+                                                    {penyewaan.status_pembayaran}
+                                                </div>
+                                            )
+                                        )
+                                    }
                                 </div>
                                 <hr/>
                             </div>

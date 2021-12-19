@@ -85,7 +85,7 @@ export default function AddRumahKos() {
             .then((res) => {
               //success
               console.log(res.data);
-              console.log( 
+               
                     add_rumah_kos({ 
                         variables: { 
                             id_user : formState.id_user, 
@@ -99,13 +99,13 @@ export default function AddRumahKos() {
                             foto: ''+res.data 
                         }}).then(result =>{
                         let id_rmh = result.data.addRumahKos.id
-
+                            console.log(result)
                             for(let i=0; i< formState.keper.length; i++){
                                 console.log(formState.keper[i]);
                                 console.log(apend_keper({variables : {id_rumah_kos : id_rmh, id_keper : formState.keper[i]}}))
                             }
                         }   )
-                );
+                
             })
             .catch((err) => {
               //error
@@ -141,9 +141,9 @@ export default function AddRumahKos() {
         if(!data.loading ){
             if(data.data && data.data?.addRumahKos != null){
                 NotificationManager.success('', data.data?.addRumahKos.message, 2000);
-                setTimeout(() => {
-                    window.location.replace("/owner/ListRumahKos");
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.replace("/owner/ListRumahKos");
+                // }, 2000);
                 
             }else if(data.data && data.data?.addRumahKos == null){
                 NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);

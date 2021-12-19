@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 
 import DataTable from 'react-data-table-component';
+
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ALL_LISTING_OWNER, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
@@ -27,19 +28,30 @@ export default function ListKamarKos() {
 		} 
 	},[value]);
     console.log(value);
-    const {loading, data: dataGetAllListing, error} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
-    console.log(dataGetAllListing);
+    const {loading: loadAllListing, data: dataGetAllListing, error: errorAllListing} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
+
+    
+    const [filteredItem,setFilteredItem] = useState([])
+	
+	useEffect(()=>{
+        if(dataGetAllListing){
+            setFilteredItem(dataGetAllListing?.getAllListingUserOwner)
+        }
+    },[!loadAllListing]);
+
+    
     //deklarasi delete kos
     const [delete_kamar_kos, data] = useMutation(DELRES_LISTING);
 
-
-    //console.log(dataGetAllListing);
-    if(loading){
+    console.log(dataGetAllListing);
+    if(loadAllListing){
         return "Loading..."
     }
-    if(error){
+    if(errorAllListing){
         return "Error..."
     }
+
+
 
     const columns = [
         {
@@ -59,7 +71,7 @@ export default function ListKamarKos() {
         },
         {
             name: 'status',
-            cell: row => row.status == 1 ? row.status ==2 ?<span className="badge badge-info">Available</span> : <span className="badge badge-danger">Terisi</span> :<span className="badge badge-danger">Non Available</span>  
+            cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> :<span className="badge badge-danger">Non Available</span>  
         },
         {
 			name: 'Actions',
@@ -97,15 +109,38 @@ export default function ListKamarKos() {
                    <AddKamarKos />
                 </div>
             </div>
+            <div className='row mb-5'>
+                <div className='col-3'>
+                    <input type="text" 
+                        className='w-100' 
+                        placeholder='Search By Name...'
+                        onChange={(e)=>{
+                            if(e.target.value != ''){
+                               setFilteredItem( filteredItem.filter(
+                                item => item.nama && item.nama.toLowerCase().includes(e.target.value.toLowerCase()),
+                            ))
+                            }else{
+                                setFilteredItem( dataGetAllListing.getAllListingUserOwner)
+                            }
+                        }}
+                    />
+                </div>
+                <div className='col-3'>
+                    
+                </div>
+                
+            </div>
             <div className="row">
+             
                 <div className="col-12">
-                <CSVLink data={dataGetAllListing.getAllListingUserOwner} className='btnOwner'>Download(CSV)</CSVLink>
+                <CSVLink data={filteredItem} className='btnOwner'>Download(CSV)</CSVLink>
                         <DataTable
                             columns={columns}
-                            data={dataGetAllListing.getAllListingUserOwner}
+                           // data={dataGetAllListing.getAllListingUserOwner}
+                           data = {filteredItem}
                            // action = {actionsMemo}
                             pagination
-                           
+                          
                         />
                 </div>
             </div>

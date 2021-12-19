@@ -24,7 +24,7 @@ export default function DetailKamar() {
         isi: ''
     });
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
-
+    console.log(id_kamar)
     const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
     const [testimoni, data] = useMutation(ADD_TESTIMONI);
     
