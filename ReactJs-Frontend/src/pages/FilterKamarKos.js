@@ -13,23 +13,31 @@ export default function FilterKamarKos(props) {
     script.src = `../../js/validation.js`;
     script.async = true;
     document.body.appendChild(script);
-
 	useEffect(()=>{
         
 	},[]);
-
-    // const [vmin, setVmin] = useState("");
-    // const [vmax, setVmax] = useState("");
     const [inputMinMax, setInputMinMax] = useState({
         vmin : '',
         vmax : '',
+        kota : []
     });
   
     const handleSubmit = (evt) => {
         evt.preventDefault();
         props.onChange(inputMinMax);
-        //document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
-        //alert(`min price ${inputMinMax.vmin} - max price ${inputMinMax.vmax}`)
+        alert(inputMinMax.kota);
+    }
+    const handleInputChange = (event) => {
+        const target = event.target;
+        var value = target.value;
+        
+        if(target.checked){
+            // inputMinMax.kota[value] = value;   
+            inputMinMax.kota.push(value)
+        }else{
+            const index = inputMinMax.kota.indexOf(value);
+            inputMinMax.kota.splice(index, 1);
+        }
     }
     
     const {loading, data: allkota, error} = useQuery(GET_ALL_KOTA);
@@ -64,7 +72,7 @@ export default function FilterKamarKos(props) {
                                         allkota && (
                                             allkota.getAllKota.map(kota =>
                                                 <div className="col-3 form-check jarak-row">
-                                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" value={kota.id} onChange={ (e) => {handleInputChange(e)}}/>
                                                     <label className="form-check-label" htmlfor="exampleCheck1">{kota.nama}</label>
                                                 </div>
                                             )

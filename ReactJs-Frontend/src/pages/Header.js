@@ -22,7 +22,6 @@ export default function Header() {
 		removeCookie('userLogin');
 		window.location.reload();
     };
-	console.log(cookies.userLogin);
     return (
         <header className="header shop">
             <div className="topbar">
@@ -110,7 +109,7 @@ export default function Header() {
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
 										{dataUser.foto ?
-										<img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+cookies.userLogin.foto} alt="Profil Pict" className="img-round"/>
+										<img src={dataUser.foto} alt="Profil Pict" className="img-round"/>
 										
 										:
 										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>

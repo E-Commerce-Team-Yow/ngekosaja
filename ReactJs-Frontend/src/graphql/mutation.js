@@ -95,7 +95,7 @@ export const DELRES_TESTIMONI = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!, $foto: String!) {
+  mutation createUser($email: String!, $password: String!, $nama_depan: String!, $nama_belakang: String!, $no_tlp: String!, $id_role: Int!, $foto: String) {
     createUser(email: $email, password: $password, nama_depan: $nama_depan, nama_belakang: $nama_belakang, no_tlp: $no_tlp, id_role: $id_role, foto: $foto) {
       successful
       message
@@ -134,6 +134,15 @@ export const ADD_PENYEWAAN = gql `
   }
 `;
 
+export const PENYEWAAN_LUNAS = gql `
+  mutation penyewaanLunas($id_penyewaan: String!, $status_pembayaran : Int!, ){
+    penyewaanLunas(id_penyewaan : $id_penyewaan, status_pembayaran : $status_pembayaran){
+      id
+      message
+      successful
+    }
+  }
+`;
 
 export const EDIT_LISTING = gql `
 mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!, $foto: String!){
@@ -199,8 +208,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_TESTIMONI = gql`
-  mutation addTestimoni($nilai: Int! $isi: String! $id_user: String! $id_listing: String!) {
-    addTestimoni(nilai: $nilai, isi: $isi, id_user: $id_user, id_listing: $id_listing) {
+  mutation addTestimoni($nilai: Int! $isi: String! $id_user: String! $id_listing: String! $id_rumah_kos: String!) {
+    addTestimoni(nilai: $nilai, isi: $isi, id_user: $id_user, id_listing: $id_listing, id_rumah_kos: $id_rumah_kos) {
       successful
       message
     }

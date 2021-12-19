@@ -25,6 +25,7 @@ import Checkout from './Checkout';
 import Isidata from './Isidata';
 import FilterKamarKos from './FilterKamarKos';
 import GooglePassword from './googlePassword';
+import Payment from './Payment';
 
 
 export default function RouterPage() {
@@ -58,6 +59,7 @@ export default function RouterPage() {
                     <Route path="/near-campus/FilterKamarKos" component={FilterKamarKos}/>
                     <Route path="/Checkout" component={Checkout}/>
                     <Route path="/Isidata" component={Isidata}/>
+                    <Route path="/payment" component={Payment}/>
                     {/* <Route
                         path="/admin"
                         render={({ match: { url } }) => (

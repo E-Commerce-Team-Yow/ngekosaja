@@ -71,7 +71,10 @@ export default function LoginUser() {
             nama_depan: res.profileObj.givenName, nama_belakang: res.profileObj.familyName, 
             no_tlp: "", 
             id_role: parseInt(role), foto: res.profileObj.imageUrl }})
-        login({ variables: { email: res.profileObj.email, password: "" }});
+
+        setTimeout(() => {
+            login({ variables: { email: res.profileObj.email, password: "" }});
+        }, 2000);  
         setShowloginButton(false);
         console.log(res);
     };
