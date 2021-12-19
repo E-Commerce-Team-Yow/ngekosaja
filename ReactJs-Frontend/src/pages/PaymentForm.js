@@ -1,6 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import axios from "axios"
-import { PENYEWAAN_LUNAS } from '../graphql/mutation';
+import { PENYEWAAN_LUNAS, LISTING_RENTED } from '../graphql/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 
@@ -30,6 +30,7 @@ export default function PaymentForm(data) {
     const elements = useElements()
     console.log(data.data.id_penyewaan)
     const [pembayaran_lunas, data_bayar] = useMutation(PENYEWAAN_LUNAS);
+    const [status_listing, data_listing] = useMutation(LISTING_RENTED);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -53,6 +54,9 @@ export default function PaymentForm(data) {
                         id_penyewaan : data.data.id_penyewaan, 
                         status_pembayaran : 1,
                     }});
+                    status_listing({ variables: { 
+                        id_kamar : data.data.id_kamar, 
+                    }});
                 }
 
             } catch (error) {
@@ -70,6 +74,15 @@ export default function PaymentForm(data) {
             }
         }
     }, [!data_bayar.loading])
+
+    useEffect(() => {
+        if(!data_listing.loading ){
+            if ( data_listing.data && data_listing.data?.listingRented != null){
+                console.log("status kamar berhasil diupdate")
+                alert(data_listing.data.listingRented.message)
+            }
+        }
+    }, [!data_listing.loading])
 
     const backToHome = async (e) => {
         e.preventDefault()
