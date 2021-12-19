@@ -178,6 +178,7 @@ export default function ListKamarKos() {
                         <option value={''}>Filter By Status</option>
                         <option value={1}>Aktif</option>
                         <option value={0}>Non Aktif</option>
+                        <option value={2}>terisi</option>
                     </select>
                 </div>
             </div>

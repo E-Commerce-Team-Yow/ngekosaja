@@ -40,7 +40,7 @@ export default function ListPenyewaKos() {
         if(getPenyewa){
             setFilteredItem(getPenyewa?.getPenyewaanPemilik)
         }
-    },[!loadAllListing]);
+    },[!loadPenyewa]);
 
     
     //deklarasi delete kos
@@ -96,7 +96,8 @@ export default function ListPenyewaKos() {
 
     
     //const actionsMemo = React.useMemo(() => <Button onExport={() => downloadCSV(dataGetAllListing.getAllListingUserOwner)} />, []);
-    
+    console.log(getPenyewa)
+    console.log(filteredItem)
 
     return (
         <div>
@@ -113,7 +114,7 @@ export default function ListPenyewaKos() {
                         onChange={(e)=>{
                             if(e.target.value != ''){
                                setFilteredItem( filteredItem.filter(
-                                item => item.nama && item.nama.toLowerCase().includes(e.target.value.toLowerCase()),
+                                item => item.user.nama_depan && item.user.nama_depan.toLowerCase().includes(e.target.value.toLowerCase()),
                             ))
                             }else{
                                 setFilteredItem( dataGetAllListing.getAllListingUserOwner)
@@ -126,10 +127,10 @@ export default function ListPenyewaKos() {
                         onChange={(e)=>{
                             if(e.target.value != ''){
                                setFilteredItem( filteredItem.filter(
-                                item => item.nama && item.listing.id.toLowerCase().includes(e.target.value.toLowerCase()),
+                                item => item.listing && item.listing.id.toLowerCase().includes(e.target.value.toLowerCase()),
                             ))
                             }else{
-                                setFilteredItem( dataGetAllListing.getAllListingUserOwner)
+                                setFilteredItem( getPenyewa.getPenyewaanPemilik)
                             }
                         }}
                     
@@ -154,7 +155,7 @@ export default function ListPenyewaKos() {
                                     ))
                                  }
                                  else{
-                                     setFilteredItem( dataGetAllListing.getAllListingUserOwner)
+                                     setFilteredItem( getPenyewa.getPenyewaanPemilik)
                                  }
                             }
                         }
@@ -163,7 +164,7 @@ export default function ListPenyewaKos() {
                         <option value={''}>Filter By Status</option>
                         <option value={1}>Aktif</option>
                         <option value={0}>Non Aktif</option>
-                        <option value={2}>terisi</option>
+
                     </select>
                 </div>
             </div>
