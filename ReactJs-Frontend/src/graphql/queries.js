@@ -71,6 +71,7 @@ export const GET_ONE_LISTING = gql`
         jenis
         panjang
         lebar
+        foto
         harga_bulanan
         harga_tahunan
         keterangan

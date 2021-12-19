@@ -85,13 +85,13 @@ export default function DetailKamar() {
                             </ol>
                             <div className="carousel-inner carousel-foto" style={{}}>
                             <div className="carousel-item active">
-                                <img className="d-block w-100" src={Source["kamar_kos"]} alt="First slide" />
+                                <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOne.getOneListing.foto} alt="First slide" />
                             </div>
                             <div className="carousel-item">
-                                <img className="d-block w-100" src={Source["kamar_kos"]} alt="First slide" />
+                                <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOne.getOneListing.foto} alt="second slide" />
                             </div>
                             <div className="carousel-item">
-                                <img className="d-block w-100" src={Source["kamar_kos"]} alt="First slide" />
+                                <img className="d-block w-100" src={"https://uploadgambar-ngekosaja.herokuapp.com"+dataGetOne.getOneListing.foto} alt="third slide" />
                             </div>
                             </div>
                         </div>
