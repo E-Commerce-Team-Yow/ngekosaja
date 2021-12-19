@@ -49,7 +49,7 @@ export default function LoginUser() {
                         window.location.replace("/password?role="+role)
                     }else{
                         if(data.data.loginUser.role.id == 2){
-                            window.location.replace("/owner");
+                            window.location.replace("/owner/laporanRumahKos");
                         }else{
                             window.location.replace("/");
                         }

@@ -109,7 +109,13 @@ export default function SidebarOwner() {
                   </ul>
                 </div>
               </li>
-            
+              <li className='sidebar-dropdown'>
+                <a href="#">
+                  <i className="fas fa-user" />
+                  <span>Penyewa Kos</span>
+                 
+                </a>
+              </li>
             </ul>
           </div>
           {/* sidebar-menu  */}

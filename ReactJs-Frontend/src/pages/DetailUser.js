@@ -19,7 +19,11 @@ export default function DetailUser() {
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
   
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     let tanggal = "";
+
+    console.log(cookies.userLogin.foto);
+
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
@@ -63,9 +67,9 @@ export default function DetailUser() {
                         <div className="row mb-5">
                             <div className="col-lg-4 col-sm-12 image-detail">
                             {dataUser.foto ?
-                                <img src={dataUser.foto} alt="Profil Pict" className="img-profile"/>
+                                <img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+cookies.userLogin.foto} alt="Profil Pict" className="img-profile"/>
                             :
-                                <img src={Source['profil']} alt="Profil Pict" className="img-profile"/>
+                                <img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+cookies.userLogin.foto} alt="Profil Pict" className="img-profile"/>
                             }
                             </div>
                             <div className="col-lg-8 col-sm-12 user-detail">
@@ -138,7 +142,7 @@ export default function DetailUser() {
                                        
                                         <div className="row mt-2">
                                             <div className="col-6 info-user"> <b>NAMA TEMPAT TINGGAL : </b> </div>
-                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : </b>{tanggal} </div>
+                                            <div className="col-6 info-user"> <b>TANGGAL GABUNG : {tanggal}</b> </div>
                                             
                                         </div>
                                         <div className="row mt-2">
