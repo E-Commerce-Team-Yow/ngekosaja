@@ -85,7 +85,7 @@ export default function RegisterUser() {
         if(data.data && data.data?.createUser != null){
             console.log(data);
               NotificationManager.success('', data.data?.createUser.message, 2000);
-            if(data.data?.createUser.successfull){
+            if(data.data?.createUser.successful){
               setTimeout(() => {
                 window.location.replace(`/loginUser?role=${getWizardState().role}`);
               }, 2000); 

@@ -21,23 +21,26 @@ export default function DetailUser() {
   
     const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     let tanggal = "";
-
+    let result = null;
 	//check data user
 	useEffect(()=>{
-		if(cookies.userLogin){
-			setdataUser(cookies.userLogin);
+        if(cookies.userLogin){
+            setdataUser(cookies.userLogin);
 		} else{
-           window.location.replace("/");
+            window.location.replace("/");
         }
 	},[]);
+    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_PENYEWAAN,{variables: {id_user: cookies.userLogin.id}});
     if(dataUser){       
         const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         tanggal = new Date(parseInt(dataUser.created_at)).getDate() + "-" + (new Date(parseInt(dataUser.created_at)).getMonth()+1)
         + "-" + new Date(parseInt(dataUser.created_at)).getFullYear();
         let a = parseInt(new Date(parseInt(dataUser.created_at)).getMonth()+1);
+        let text = dataUser.foto;
+        result = text.includes("http");
+        console.log(result)
     }
     console.log(dataUser)
-    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_PENYEWAAN,{variables: {id_user: dataUser.id}});
     console.log(dataGetAll)
     // var date = new Date(parseInt(dataUser.created_at) * 1000);
     // console.log(date.toUTCString())
@@ -64,11 +67,16 @@ export default function DetailUser() {
                     <div className="container">
                         <div className="row mb-5">
                             <div className="col-lg-4 col-sm-12 image-detail">
-                            {dataUser.foto ?
+                            {
+                                result ?
                                 <img src={dataUser.foto} alt="Profil Pict" className="img-profile"/>
-                            :
-                                <img src={Source['profil']} alt="Profil Pict" className="img-profile"/>
+                                :
+                                dataUser.foto ?
+                                    <img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+dataUser.foto} alt="Profil Pict" className="img-profile"/>
+                                :
+                                    <img src={Source['profil']} alt="Profil Pict" className="img-profile"/>
                             }
+                            
                             </div>
                             <div className="col-lg-8 col-sm-12 user-detail">
                                 <div className="row mt-3">

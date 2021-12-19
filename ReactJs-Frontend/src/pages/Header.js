@@ -11,13 +11,20 @@ export default function Header() {
 	let history = useHistory();
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
+	let result = null;
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
 			setdataUser(cookies.userLogin);
 		} 
+		if(dataUser){
+			let text = dataUser.foto;
+			result = text.includes("http");
+			console.log(result)
+	
+		}
 	},[]);
-
+	
 	const onSignoutSuccess = () => {
 		removeCookie('userLogin');
 		window.location.reload();
@@ -108,12 +115,14 @@ export default function Header() {
 							 
 							   <span className="single-bar ml-3">
 									<label className="dropdown">
-										{dataUser.foto ?
-										<img src={dataUser.foto} alt="Profil Pict" className="img-round"/>
-										
-										:
-										<img src={Source['profil']} alt="Profil Pict" className="img-round"/>
-										
+										{
+											result ?
+											<img src={dataUser.foto} alt="Profil Pict" className="img-round"/>
+											:
+											dataUser.foto ?
+												<img src={"https://uploadgambar-ngekosaja.herokuapp.com/"+dataUser.foto} alt="Profil Pict" className="img-round"/>
+											:
+												<img src={Source['profil']} alt="Profil Pict" className="img-round"/>
 										}
 										<input name="" type="checkbox" className="dd-input" id="test" />
    
