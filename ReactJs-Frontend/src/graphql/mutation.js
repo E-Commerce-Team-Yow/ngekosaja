@@ -155,8 +155,8 @@ export const APPEND_FASILITAS = gql `
 `;
 
 export const UPDATE_RUMAH_KOS = gql `
-  mutation updateRumahKos($id: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!){
-    updateRumahKos(id: $id, nama: $nama, alamat: $alamat, id_kota: $id_kota, kode_pos : $kode_pos, total_kamar : $total_kamar, sisa_kamar : $sisa_kamar, keterangan : $keterangan){
+  mutation updateRumahKos($id: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!, $foto: String!){
+    updateRumahKos(id: $id, nama: $nama, alamat: $alamat, id_kota: $id_kota, kode_pos : $kode_pos, total_kamar : $total_kamar, sisa_kamar : $sisa_kamar, keterangan : $keterangan, foto: $foto){
       id
       successful
       message
