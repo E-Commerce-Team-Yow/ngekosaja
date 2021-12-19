@@ -11,6 +11,7 @@ import { GET_ALL_TESTIMONI_RUMAH_KOS, GET_AVG_TESTIMONI, GET_ONE_RUMAH_KOS } fro
 import { useLocation } from 'react-router-dom';
 import Loading from './Loading';
 import { useCookies } from 'react-cookie';
+import { Rating } from 'react-simple-star-rating';
 
 export default function DetailRumahKos() {
     const search = useLocation().search;
@@ -19,25 +20,18 @@ export default function DetailRumahKos() {
 	const [dataUser,setdataUser] = useState(null);
 
     const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    let tanggal = "";
     let avg = 0;
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
 			setdataUser(cookies.userLogin);
-		} else{
-           window.location.replace("/");
-        }
+		}
 
 	},[]);
     const {loading, data: dataGetOneRumahKos, error} = useQuery(GET_ONE_RUMAH_KOS, {variables: {id : id_rumah}});
     const {loading: loadingGetAllTesti, data: dataGetAllTestimoni, error: errorGetAllTesti} = useQuery(GET_ALL_TESTIMONI_RUMAH_KOS, {variables: {id_rumah_kos : id_rumah}});
     const {loading: loadingGetAvg, data: dataGetAvg, error: errorGetAvg} = useQuery(GET_AVG_TESTIMONI, {variables: {id_rumah_kos : id_rumah}});
-    if(dataUser){       
-        const d = new Date(parseInt(dataUser.created_at));
-        let name = month[d.getMonth()];
-        tanggal = d.getDate() + " " + name + " " + d.getFullYear() + " "+ d.getHours() +":"+ d.getMinutes() +":"+ d.getSeconds();
-    }
+
     if(loading){
         return (
             <Loading/>
@@ -143,9 +137,20 @@ export default function DetailRumahKos() {
                                                    <div key={testi.id}>
                                                        {
                                                         <div className="single-comment">
-                                                        <img src={testi.user.foto ? testi.user.foto : Source['profil']} alt="#" />
+                                                        <img src={testi.user.foto.includes('http') ? 
+                                                        testi.user.foto
+                                                        : testi.user.foto ? 
+                                                        "https://uploadgambar-ngekosaja.herokuapp.com/"+testi.user.foto 
+                                                        : Source['profil']} alt="#" />
                                                         <div className="content">
-                                                            <h4>{testi.user.nama_depan} {testi.user.nama_belakang} - {testi.listing.nama}<span>{tanggal}</span></h4>
+                                                            <h4 className='mb-1'>{testi.user.nama_depan} {testi.user.nama_belakang} - {testi.listing.nama}
+                                                            <span>{
+                                                            new Date(parseInt(testi.created_at)).getDate() + " " + month[new Date(parseInt(testi.created_at)).getMonth()] + " " + new Date(parseInt(testi.created_at)).getFullYear() + " "+ 
+                                                            new Date(parseInt(testi.created_at)).getHours() +":"+ new Date(parseInt(testi.created_at)).getMinutes() +":"+ new Date(parseInt(testi.created_at)).getSeconds()}</span>
+                                                            </h4>
+                                                            <div>
+                                                                <Rating size={20} ratingValue={testi.nilai * 20} /* Available Props */ />
+                                                            </div>
                                                             <p>{testi.isi}</p>
                                                             {/* <div className="button">
                                                             <a href="#" className="btn"><i className="fa fa-reply" aria-hidden="true" />Reply</a>
