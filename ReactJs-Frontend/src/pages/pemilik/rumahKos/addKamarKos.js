@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-<<<<<<< Updated upstream
-import { GET_ALL_FASILITAS_KOS, GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
-=======
-import { GET_ALL_KOTA,GET_ALL_LISTING, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
->>>>>>> Stashed changes
+import { GET_ALL_FASILITAS_KOS, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_KOTA,GET_ALL_LISTING } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
 import { ADD_LISTING, ADD_RUMAH_KOS, APPEND_FASILITAS } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -82,19 +79,28 @@ export default function AddKamarKos() {
             )
             .then((res) => {
               //success
-              console.log(res.data);
-              console.log( add_kamar_kos({ 
-                variables: { 
-                    nama : formState.nama_kamar, 
-                    jenis: parseInt(formState.jenis), 
-                    harga_bulanan : parseInt(formState.harga_bulanan), 
-                    harga_tahunan : parseInt(formState.harga_tahunan), 
-                    panjang: parseInt(formState.panjang), 
-                    lebar : parseInt(formState.lebar), 
-                    rumah_kos: formState.rumah_kos, 
-                    keterangan : formState.keterangan,
-                    foto: ''+res.data
-                }}));
+                console.log(res.data);
+                add_kamar_kos({ 
+                  variables: { 
+                      nama : formState.nama_kamar, 
+                      jenis: parseInt(formState.jenis), 
+                      harga_bulanan : parseInt(formState.harga_bulanan), 
+                      harga_tahunan : parseInt(formState.harga_tahunan), 
+                      panjang: parseInt(formState.panjang), 
+                      lebar : parseInt(formState.lebar), 
+                      rumah_kos: formState.rumah_kos, 
+                      keterangan : formState.keterangan,
+                      foto : ''+res.data
+                    }
+                }).then(result=> {
+                    let id_rmh = result.data.addListing.id
+                    console.log(id_rmh)
+                    console.log(result)
+                    for(let i=0; i< formState.fasilitas.length; i++){
+                        console.log(formState.fasilitas[i]);
+                        console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
+                    }
+                })
             })
             .catch((err) => {
               //error
@@ -134,14 +140,10 @@ export default function AddKamarKos() {
 
     console.log(value);
 
-<<<<<<< Updated upstream
     const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
    
     const {loading:loadFasilitas, data:getAllFasilitas, error:errorFasilitas} = useQuery(GET_ALL_FASILITAS_KOS);
-=======
-    const {loading, data:getAllRumahKosUser, error} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
     const {loading: loadinglisting, data: dataGetAllListing, error: errorlisting} = useQuery(GET_ALL_LISTING, {variables : {vmin: -1, vmax: -1}});
->>>>>>> Stashed changes
 
     if(loadAllRumahKos){
         return "Loading..."
@@ -184,24 +186,8 @@ export default function AddKamarKos() {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-<<<<<<< Updated upstream
-                                                   add_kamar_kos({ variables: { nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}}).then(result=> {
-                                                    let id_rmh = result.data.addListing.id
-                                                    console.log(id_rmh)
-                                                    console.log(result)
-                                                    for(let i=0; i< formState.fasilitas.length; i++){
-                                                        console.log(formState.fasilitas[i]);
-                                                       console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
-                                                    }
-                                                   })
-                                                    setTimeout(() => {
-                                                        window.location.replace("/owner/ListKamarKos");
-                                                    }, 2000); 
-=======
                                                     doUploadImage();
-                                                    //uploadImage();
                                                     
->>>>>>> Stashed changes
                                                 }}
                                         
                                         >
