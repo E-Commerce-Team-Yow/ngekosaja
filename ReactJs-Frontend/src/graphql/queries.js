@@ -53,6 +53,7 @@ export const GET_ALL_LISTING_OWNER = gql`
       }
       rumah_kos{
         id
+        nama
       }
     }
   }
