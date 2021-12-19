@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import DataTable from 'react-data-table-component';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_ALL_LISTING_OWNER, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_LISTING_OWNER, GET_ALL_PENYEWAAN_kos, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
 import EditRumahKos from './editRumahKos';
 import AddKamarKos from './addKamarKos';
@@ -15,7 +15,7 @@ import { Button } from 'react-bootstrap';
 import {CSVLink, CSVDownload} from 'react-csv';
 
 
-export default function ListKamarKos() {
+export default function ListPenyewaKos() {
 	let history = useHistory();
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
@@ -28,14 +28,17 @@ export default function ListKamarKos() {
 		} 
 	},[value]);
     console.log(value);
+   
     const {loading: loadAllListing, data: dataGetAllListing, error: errorAllListing} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
     const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
-    
+    const {loading:loadPenyewa, data:getPenyewa, error : errorPenyewa} = useQuery(GET_ALL_PENYEWAAN_kos, {variables : {id_pemilik : value}})
+
+
     const [filteredItem,setFilteredItem] = useState([])
 	
 	useEffect(()=>{
-        if(dataGetAllListing){
-            setFilteredItem(dataGetAllListing?.getAllListingUserOwner)
+        if(getPenyewa){
+            setFilteredItem(getPenyewa?.getPenyewaanPemilik)
         }
     },[!loadAllListing]);
 
@@ -44,10 +47,10 @@ export default function ListKamarKos() {
     const [delete_kamar_kos, data] = useMutation(DELRES_LISTING);
 
     console.log(dataGetAllListing);
-    if(loadAllListing){
+    if(loadPenyewa){
         return "Loading..."
     }
-    if(errorAllListing){
+    if(errorPenyewa){
         return "Error..."
     }
 
@@ -55,56 +58,40 @@ export default function ListKamarKos() {
 
     const columns = [
         {
-            name: 'Nama',
-            selector: row => row.nama,
+            name: 'Id',
+            selector: row => row.id,
             sortable: true
         },
         {
-            name: 'Panjang ',
-            selector: row => row.panjang,
+            name: 'Nama',
+            selector: row => row.user.nama_depan,
+            sortable: true
+        },
+        {
+            name:'bulan',
+            selector: row => row.bulan
+        },
+        {
+            name: 'Telepon ',
+            selector: row => row.user.no_tlp,
             sortable:true
         },
         {
-            name: 'Lebar',
-            selector: row => row.lebar,
+            name: 'tanggal transaksi',
+            selector: row => row.tanggal_transaksi,
             sortable:true
         },
         {
-            name: 'Rumah Kos',
-            selector: row => row.rumah_kos.nama,
+            name: 'total',
+            selector: row => row.total,
             sortable:true
         },
-        {
-            name: 'Harga Bulanan',
-            selector: row => row.harga_bulanan,
-            sortable:true
-        },
+      
         {
             name: 'status',
-            cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> :<span className="badge badge-danger">Non Available</span>  
+            cell: row => row.status == 1 ? <span className="badge badge-info">Available</span> : row.status == 2 ? <span className="badge badge-warning">Terisi</span> :<span className="badge badge-danger">Non Available</span>  
         },
-        {
-			name: 'Actions',
-            cell: row => <div className="col-12">  
-                <EditsKamarKos kamar_kos={row}/>
-                {
-                    row.status == 1 ?  <button className="btnOwnerRed p-2"  onClick={
-                       function(){
-                        delete_kamar_kos({variables: {id: row.id}, refetchQueries:[{query: GET_ALL_LISTING_OWNER, variables: {id_user:value}}]});
-                       }
-                    }> <i className="fas fa-times" /></button> :
-                    <button className="btnOwnerGreen p-2"  onClick={
-                        function(){
-                         delete_kamar_kos({variables: {id: row.id},  refetchQueries:[{query: GET_ALL_LISTING_OWNER, variables: {id_user:value}}]});
-                        }
-                     }> <i className="fas fa-check" /></button>
-                }
-                <NavLink to={"/DetailKamar?id="+ row.id} ><i className='fas fa-eye'></i></NavLink>
-            </div>,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-        },
+        
     ];
 
     
@@ -113,12 +100,10 @@ export default function ListKamarKos() {
 
     return (
         <div>
-            <h4>Kamar Rumah Kos</h4>
+            <h4>Penyewa Kos</h4>
             <hr />
             <div className="row">
-                <div className="col-12">
-                   <AddKamarKos />
-                </div>
+               
             </div>
             <div className='row mb-5'>
                 <div className='col-3'>
@@ -141,7 +126,7 @@ export default function ListKamarKos() {
                         onChange={(e)=>{
                             if(e.target.value != ''){
                                setFilteredItem( filteredItem.filter(
-                                item => item.nama && item.rumah_kos.id.toLowerCase().includes(e.target.value.toLowerCase()),
+                                item => item.nama && item.listing.id.toLowerCase().includes(e.target.value.toLowerCase()),
                             ))
                             }else{
                                 setFilteredItem( dataGetAllListing.getAllListingUserOwner)
@@ -149,10 +134,10 @@ export default function ListKamarKos() {
                         }}
                     
                     >
-                                <option value="" key="0">Filter By Rumah Kos</option>
+                                <option value="" key="0">Filter By Kamar Kos</option>
                                                 {
-                                                    getAllRumahKosUser && (
-                                                        getAllRumahKosUser.getAllRumahKosUser.map(rmh_kos => 
+                                                    dataGetAllListing && (
+                                                        dataGetAllListing.getAllListingUserOwner.map(rmh_kos => 
                                                             <option value={rmh_kos.id} key={rmh_kos.id}>{rmh_kos.nama}</option>
                                                         )
                                                     )
@@ -178,6 +163,7 @@ export default function ListKamarKos() {
                         <option value={''}>Filter By Status</option>
                         <option value={1}>Aktif</option>
                         <option value={0}>Non Aktif</option>
+                        <option value={2}>terisi</option>
                     </select>
                 </div>
             </div>

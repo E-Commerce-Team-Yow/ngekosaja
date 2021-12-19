@@ -110,11 +110,12 @@ export default function SidebarOwner() {
                 </div>
               </li>
               <li className='sidebar-dropdown'>
-                <a href="#">
+               
+                <NavLink to="/owner/ListPenyewaKos" >
                   <i className="fas fa-user" />
-                  <span>Penyewa Kos</span>
+                  <span>Penyewa Kos</span> </NavLink>
                  
-                </a>
+               
               </li>
             </ul>
           </div>

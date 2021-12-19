@@ -345,7 +345,7 @@ export default function Home() {
                                 <Link className='box-rumah-kos' key={rumah_kos.id} to={"/DetailRumahKos?id="+rumah_kos.id}>
                                    <div className='row'>
                                        <div className='col-12'>
-                                             <img className='img-box-rumah-kos' src={Source.room} />
+                                             <img className='img-box-rumah-kos' src={"https://uploadgambar-ngekosaja.herokuapp.com"+rumah_kos.foto} />
                                        </div>
                                    </div>
                                    <div className='row p-2'>

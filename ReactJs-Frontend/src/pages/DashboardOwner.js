@@ -6,6 +6,7 @@ import SidebarOwner from './SidebarOwner';
 import ListRumahKos from './pemilik/rumahKos/listRumahKos';
 import ListKamarKos from './pemilik/rumahKos/listKamarKos';
 import LaporanRumahKos from './pemilik/rumahKos/laporanRumahKos';
+import ListPenyewaKos from './pemilik/rumahKos/listPenyewaKos';
 
 export default function DashboardOwner() {
 	let history = useHistory();
@@ -36,6 +37,7 @@ export default function DashboardOwner() {
                 <Route exact path="/owner/laporanRumahKos" component={LaporanRumahKos} />
                 <Route path="/owner/listRumahKos" component={ListRumahKos}/>
                 <Route path="/owner/listKamarKos" component={ListKamarKos}/>
+                <Route path="/owner/listPenyewaKos" component={ListPenyewaKos}/>
             </div>
           </main>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import Source from './Source';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { GET_ALL_RUMAH_KOS } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 import Loading from './Loading';
@@ -183,19 +183,20 @@ export default function SearchListing(){
                                                 dataGetAll && (
                                                     dataGetAll.getAllRumahKos.map(rumahKos => 
                                                     <div key={rumahKos.id}>
+                                                        <NavLink to={"/DetailRumahKos?id="+ rumahKos.id} > 
                                                         <div className="card mb-1 card-room">
                                                                 <div className="row">
                                                                     <div className="col-5">
                                                                         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" style={{borderRadius:100+'%'}}>
                                                                             <div className="carousel-inner carousel-rounded">
                                                                                 <div className="carousel-item active">
-                                                                                    <img className="d-block w-100" src={Source['room']} alt="First slide" />
+                                                                                    <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+rumahKos.foto} alt="First slide" />
                                                                                 </div>
                                                                                 <div className="carousel-item">
-                                                                                    <img className="d-block w-100" src={Source['room']} alt="Second slide" />
+                                                                                    <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+rumahKos.foto} alt="Second slide" />
                                                                                 </div>
                                                                                 <div className="carousel-item">
-                                                                                    <img className="d-block w-100" src={Source['room']} alt="Third slide" />
+                                                                                    <img className="d-block w-100" src={'https://uploadgambar-ngekosaja.herokuapp.com'+rumahKos.foto} alt="Third slide" />
                                                                                 </div>
                                                                             </div>
                                                                             <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -252,6 +253,8 @@ export default function SearchListing(){
                                                                         </div>
                                                                 </div>
                                                         </div>
+                                                       
+                                                    </NavLink>
                                                     <hr/>
                                                     </div>
                                                     )

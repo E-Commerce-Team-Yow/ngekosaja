@@ -9,7 +9,7 @@ import { DELRES_RUMAH_KOS } from '../../../graphql/mutation';
 import NotificationManager from 'react-notifications/lib/NotificationManager';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import {CSVLink, CSVDownload} from 'react-csv';
-
+import { Link, NavLink, useHistory } from 'react-router-dom'
 
 export default function ListRumahKos() {
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
@@ -102,6 +102,7 @@ export default function ListRumahKos() {
                         }
                      }> <i className="fas fa-check" /></button>
                 }
+                 <NavLink to={"/DetailRumahKos?id="+ row.id} ><i className='fas fa-eye'></i></NavLink>
             </div>,
             ignoreRowClick: true,
             allowOverflow: true,
