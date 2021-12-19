@@ -224,3 +224,12 @@ export const ADD_TESTIMONI = gql`
     }
   }
 `;
+
+export const UPDATE_SISA_KAMAR = gql`
+  mutation updateSisaKamar($id_kos: String!) {
+    updateSisaKamar(id_kos: $id_kos,) {
+      successful
+      message
+    }
+  }
+`;

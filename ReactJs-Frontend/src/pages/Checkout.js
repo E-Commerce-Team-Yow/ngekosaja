@@ -7,7 +7,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import React, {useEffect, useState} from 'react';
 import { useLocation } from 'react-router';
 import { GET_ONE_LISTING} from '../graphql/queries';
-import { ADD_PENYEWAAN} from '../graphql/mutation';
+import { ADD_PENYEWAAN,UPDATE_SISA_KAMAR } from '../graphql/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { useCookies } from 'react-cookie';
@@ -45,8 +45,13 @@ export default function Checkout() {
     const today = new Date();
     console.log(today)
     const [add_sewa, data_sewa] = useMutation(ADD_PENYEWAAN);
+    const [update_sisa, data_kos] = useMutation(UPDATE_SISA_KAMAR);
+    console.log(dataGetOne.getOneListing.rumah_kos.id)
     const handleSubmit = (evt) => {
         evt.preventDefault();
+        update_sisa({ variables: { 
+            id_kos : dataGetOne.getOneListing.rumah_kos.id, 
+        }});
         add_sewa({ variables: { 
             bulan : parseInt(lama), 
             tanggal_transaksi : today, 
@@ -63,6 +68,14 @@ export default function Checkout() {
             }
         }
     }, [!data_sewa.loading])
+    useEffect(() => {
+        if(!data_kos.loading ){
+            if ( data_kos.data && data_kos.data?.updateSisaKamar != null){
+                console.log("sisa kamar berhasil dikurangi")
+                alert(data_kos.data.updateSisaKamar.message)
+            }
+        }
+    }, [!data_kos.loading])
     if(loading){
       return "Loading..."
     }
