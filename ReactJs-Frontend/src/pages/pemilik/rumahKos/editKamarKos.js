@@ -84,6 +84,7 @@ export default function EditsKamarKos({kamar_kos}) {
               console.log(formState);
               edit_kamar_kos({ 
                 variables: { 
+                    id : kamar_kos.id,
                     nama : formState.nama_kamar, 
                     jenis: parseInt(formState.jenis), 
                     harga_bulanan : parseInt(formState.harga_bulanan), 
@@ -94,7 +95,7 @@ export default function EditsKamarKos({kamar_kos}) {
                     keterangan : formState.keterangan,
                     foto: ''+res.data
                 }}).then(result=> {
-                    let id_rmh = result.data.addListing.id
+                    let id_rmh = result.data.updateListing.id
                     console.log(id_rmh)
                     console.log(result)
                     for(let i=0; i< formState.fasilitas.length; i++){
@@ -113,6 +114,11 @@ export default function EditsKamarKos({kamar_kos}) {
                 console.log("Error", err.message);
               }
             });
+
+
+            setTimeout(() => {
+                window.location.replace("/owner/ListKamarKos");
+            }, 2000); 
     }  
 	//check data user
 	useEffect(()=>{

@@ -29,7 +29,7 @@ export default function ListKamarKos() {
 	},[value]);
     console.log(value);
     const {loading: loadAllListing, data: dataGetAllListing, error: errorAllListing} = useQuery(GET_ALL_LISTING_OWNER, {variables: {id_user:value}});
-
+    const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
     
     const [filteredItem,setFilteredItem] = useState([])
 	
@@ -67,6 +67,16 @@ export default function ListKamarKos() {
         {
             name: 'Lebar',
             selector: row => row.lebar,
+            sortable:true
+        },
+        {
+            name: 'Rumah Kos',
+            selector: row => row.rumah_kos.nama,
+            sortable:true
+        },
+        {
+            name: 'Harga Bulanan',
+            selector: row => row.harga_bulanan,
             sortable:true
         },
         {
@@ -126,9 +136,49 @@ export default function ListKamarKos() {
                     />
                 </div>
                 <div className='col-3'>
+                    <select className='form-control w-100'
+                        onChange={(e)=>{
+                            if(e.target.value != ''){
+                               setFilteredItem( filteredItem.filter(
+                                item => item.nama && item.rumah_kos.id.toLowerCase().includes(e.target.value.toLowerCase()),
+                            ))
+                            }else{
+                                setFilteredItem( dataGetAllListing.getAllListingUserOwner)
+                            }
+                        }}
                     
+                    >
+                                <option value="" key="0">Filter By Rumah Kos</option>
+                                                {
+                                                    getAllRumahKosUser && (
+                                                        getAllRumahKosUser.getAllRumahKosUser.map(rmh_kos => 
+                                                            <option value={rmh_kos.id} key={rmh_kos.id}>{rmh_kos.nama}</option>
+                                                        )
+                                                    )
+                                                }
+                    </select>
                 </div>
-                
+                <div className='col-3'>
+                    <select className='form-control w-100'
+                        onChange={
+                            (e) => {
+                                if(e.target.value != ''){          
+                                    setFilteredItem( filteredItem.filter(
+                                        item => item.status == parseInt(e.target.value),
+                                    ))
+                                 }
+                                 else{
+                                     setFilteredItem( dataGetAllListing.getAllListingUserOwner)
+                                 }
+                            }
+                        }
+                    
+                    >
+                        <option value={''}>Filter By Status</option>
+                        <option value={1}>Aktif</option>
+                        <option value={0}>Non Aktif</option>
+                    </select>
+                </div>
             </div>
             <div className="row">
              
