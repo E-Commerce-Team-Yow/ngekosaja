@@ -81,7 +81,7 @@ export default function EditRumahKos({rumah_kos}) {
             .then((res) => {
                  //success
                 console.log(res.data);
-                console.log( 
+            
                     edit_rumah_kos({ 
                         variables: { 
                             id : rumah_kos.id, 
@@ -102,7 +102,7 @@ export default function EditRumahKos({rumah_kos}) {
                             }
                         }   
                     )
-                );
+                
             })
             .catch((err) => {
               //error

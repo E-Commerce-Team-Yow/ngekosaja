@@ -107,6 +107,7 @@ export const CREATE_USER = gql`
 export const ADD_RUMAH_KOS = gql `
   mutation addRumahKos($id_user: String!, $nama: String!, $alamat: String!, $id_kota: Int!, $kode_pos : String!, $total_kamar : Int!, $sisa_kamar : Int!, $keterangan : String!, $foto : String!){
     addRumahKos(id_user : $id_user, nama: $nama, alamat:$alamat, id_kota: $id_kota, kode_pos:$kode_pos, total_kamar:$total_kamar, sisa_kamar:$sisa_kamar, keterangan: $keterangan, foto: $foto){
+      id
       successful
       message
     }
