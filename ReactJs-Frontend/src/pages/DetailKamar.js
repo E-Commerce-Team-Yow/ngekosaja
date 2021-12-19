@@ -24,7 +24,7 @@ export default function DetailKamar() {
         isi: ''
     });
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
-
+    console.log(id_kamar)
     const {loading, data: dataGetOne, error} = useQuery(GET_ONE_LISTING, {variables: {id_kamar: id_kamar}});
     const [testimoni, data] = useMutation(ADD_TESTIMONI);
     
@@ -56,7 +56,7 @@ export default function DetailKamar() {
     if(error){
       return "Error..."
     }
-    console.log(formState)
+    console.log(dataGetOne.getOneListing.nama)
     return (
         <div>
             <Header/>
@@ -114,7 +114,7 @@ export default function DetailKamar() {
                         <div className="row">
                             <div className="title-kos">
                             <h2>
-                                <b>{dataGetOne.getOneListing[0].nama}</b>
+                                <b>{dataGetOne.getOneListing.nama}</b>
                                 <img src={Source["icon_man"]} className="icon-v1" />
                                 <img src={Source["icon_woman"]} className="icon-v1" />
                             </h2>
@@ -142,10 +142,10 @@ export default function DetailKamar() {
                             </div>
                         </div>
                         <div className="row jarak-atas">
-                            <div className="harga-besar">Rp. {dataGetOne.getOneListing[0].harga_bulanan}/bulan</div>
+                            <div className="harga-besar">Rp. {dataGetOne.getOneListing.harga_bulanan}/bulan</div>
                         </div>
                         <div className="row jarak-atas">
-                            <div className="harga-sedang"><strike>Rp. {dataGetOne.getOneListing[0].harga_bulanan}/bulan</strike></div>
+                            <div className="harga-sedang"><strike>Rp. {dataGetOne.getOneListing.harga_bulanan}/bulan</strike></div>
                         </div>
                         <div className="row jarak-atas">
                             <div className="kotak-buram">
@@ -227,7 +227,7 @@ export default function DetailKamar() {
                                 <div className="row">
                                 <img src={Source["icon_kamar"]} className="icon-medium-v1" alt />
                                 <span className="keterangan-privilege-mini">
-                                Luas Kamar {dataGetOne.getOneListing[0].panjang} x {dataGetOne.getOneListing[0].lebar}
+                                Luas Kamar {dataGetOne.getOneListing.panjang} x {dataGetOne.getOneListing.lebar}
                                 </span>
                                 </div>
                             </div>

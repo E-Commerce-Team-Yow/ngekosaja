@@ -133,6 +133,15 @@ export const ADD_PENYEWAAN = gql `
   }
 `;
 
+export const PENYEWAAN_LUNAS = gql `
+  mutation penyewaanLunas($id_penyewaan: String!, $status_pembayaran : Int!, ){
+    penyewaanLunas(id_penyewaan : $id_penyewaan, status_pembayaran : $status_pembayaran){
+      id
+      message
+      successful
+    }
+  }
+`;
 
 export const EDIT_LISTING = gql `
 mutation updateListing($id: String!, $nama : String!, $jenis: Int!, $harga_bulanan: Int!, $harga_tahunan: Int!, $panjang: Int!, $lebar:Int!,$rumah_kos : String!, $keterangan: String!){

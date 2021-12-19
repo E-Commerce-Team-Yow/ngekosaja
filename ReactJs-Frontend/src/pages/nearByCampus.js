@@ -14,6 +14,7 @@ export default function NearByCampus(){
     const [inputMinMax, setInputMinMax] = useState({
         vmin : -1,
         vmax : -1,
+        kota : []
     });
     const TransMinMax = (data) => {
         setInputMinMax(data)
@@ -120,8 +121,8 @@ export default function NearByCampus(){
                     </section>
                      {/* end-Kos-di-kota */}
 
-                     min : {inputMinMax.vmin}
-                     max : {inputMinMax.vmax}
+                     {/* min : {inputMinMax.vmin}
+                     max : {inputMinMax.vmax} */}
                      <section>
                          <div className="container ">
                                 <div className="page-flash-deal filter-by">

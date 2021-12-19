@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router';
-import { LOGIN_USER } from '../graphql/mutation';
+import { GET_ALL_PENYEWAAN } from '../graphql/queries';
+import { LOGIN_USER } from '../graphql/queries';
 import { useCookies } from 'react-cookie';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -18,7 +19,6 @@ export default function DetailUser() {
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
   
-
     let tanggal = "";
 	//check data user
 	useEffect(()=>{
@@ -33,10 +33,10 @@ export default function DetailUser() {
         tanggal = new Date(parseInt(dataUser.created_at)).getDate() + "-" + (new Date(parseInt(dataUser.created_at)).getMonth()+1)
         + "-" + new Date(parseInt(dataUser.created_at)).getFullYear();
         let a = parseInt(new Date(parseInt(dataUser.created_at)).getMonth()+1);
-
-        
     }
-
+    console.log(dataUser)
+    const {loading, data: dataGetAll, error} = useQuery(GET_ALL_PENYEWAAN,{variables: {id_user: dataUser.id}});
+    console.log(dataGetAll)
     // var date = new Date(parseInt(dataUser.created_at) * 1000);
     // console.log(date.toUTCString())
 
@@ -161,6 +161,17 @@ export default function DetailUser() {
                                     <div className="col-12">
                                         <h6>History Pembayaran</h6>
                                     </div>
+                                </div>
+                                <div className="row">
+                                    {
+                                        dataGetAll && (
+                                            dataGetAll.getAllPenyewaan.map(penyewaan => 
+                                                <div className="col-12">
+                                                    {penyewaan.status_pembayaran}
+                                                </div>
+                                            )
+                                        )
+                                    }
                                 </div>
                                 <hr/>
                             </div>
