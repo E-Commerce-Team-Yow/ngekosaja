@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER, GET_ALL_FASILITAS_KOS } from '../../../graphql/queries';
+import { GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
-import { ADD_LISTING, ADD_RUMAH_KOS, EDIT_LISTING, APPEND_FASILITAS } from '../../../graphql/mutation';
+import { ADD_LISTING, ADD_RUMAH_KOS, EDIT_LISTING } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import { NotificationManager } from 'react-notifications';
+import axios from 'axios';
+
+function generateFormData(data) {
+    const formData = new FormData();
+    const dataValue = Object.values(data);
+    const dataKeys = Object.keys(data);
+  
+    for (let i = 0; i < dataValue.length; i++) {
+      if (dataValue[i]) {
+        formData.append(dataKeys[i], dataValue[i] || "");
+      }
+    }
+  
+    return formData;
+  }
 
 export default function EditsKamarKos({kamar_kos}) {
     const script = document.createElement("script");
@@ -19,24 +34,20 @@ export default function EditsKamarKos({kamar_kos}) {
 	const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
     const [value,setValue] = useState(null);
-    const [arrFasilitas, setArrFasilitas] = useState([]);
   
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-   
-
     const [formState, setFormState] = useState({
-        nama_kamar : '',
-        rumah_kos : '',
-        panjang : 0,
-        lebar : 0,
-        harga_bulanan : 0,
-        harga_tahunan : 0,
-        keterangan : '',
-        jenis : 1,
-        fasilitas : []
+        nama_kamar : kamar_kos.nama,
+        rumah_kos : kamar_kos.rumah_kos.id,
+        panjang : kamar_kos.panjang,
+        lebar : kamar_kos.lebar,
+        harga_bulanan : kamar_kos.harga_bulanan,
+        harga_tahunan : kamar_kos.harga_tahunan,
+        keterangan : kamar_kos.keterangan,
+        jenis : kamar_kos.jenis
     });
 
     console.log(formState)
@@ -44,60 +55,81 @@ export default function EditsKamarKos({kamar_kos}) {
 
     //deklarasi add Kos
     const [edit_kamar_kos, data] = useMutation(EDIT_LISTING);
+    const [uploadedFile, setUploadedImage] = useState(null);
+    
+    //banyakMedia = dataGetAll.getAllMedia.length;
 
-    const [append_fasilitas, data_append] = useMutation(APPEND_FASILITAS);
-
+    const onUploadImage = (e) =>  {  
+        setUploadedImage(e.target.files[0]);
+    }
+    const doUploadImage = () => {    
+        const formData = generateFormData({
+            foto: uploadedFile,
+          });
+          
+          axios
+            .post(
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+kamar_kos.id,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            )
+            .then((res) => {
+              //success
+              console.log(res.data);
+              console.log(formState);
+              console.log( edit_kamar_kos({ 
+                variables: { 
+                    nama : formState.nama_kamar, 
+                    jenis: parseInt(formState.jenis), 
+                    harga_bulanan : parseInt(formState.harga_bulanan), 
+                    harga_tahunan : parseInt(formState.harga_tahunan), 
+                    panjang: parseInt(formState.panjang), 
+                    lebar : parseInt(formState.lebar), 
+                    rumah_kos: formState.rumah_kos, 
+                    keterangan : formState.keterangan,
+                    foto: ''+res.data
+                }}));
+            })
+            .catch((err) => {
+              //error
+              if (err.response) {
+                console.log("res error", err.response.data);
+              } else if (err.request) {
+                console.log("req error", err.request.data);
+              } else {
+                console.log("Error", err.message);
+              }
+            });
+    }  
 	//check data user
 	useEffect(()=>{
 		if(cookies.userLogin){
 			setdataUser(cookies.userLogin);
             setValue(cookies.userLogin.id);
-
-
-            var tmp = [];
-
-            for(let i=0; i< kamar_kos.fasilitas_koss.length; i++){
-                tmp[i]= kamar_kos.fasilitas_koss[i].id;
-            }
-        
-            
-            setArrFasilitas(tmp);
-            setFormState({
-                nama_kamar : kamar_kos.nama,
-                rumah_kos : kamar_kos.rumah_kos.id,
-                panjang : kamar_kos.panjang,
-                lebar : kamar_kos.lebar,
-                harga_bulanan : kamar_kos.harga_bulanan,
-                harga_tahunan : kamar_kos.harga_tahunan,
-                keterangan : kamar_kos.keterangan,
-                jenis : kamar_kos.jenis,
-                fasilitas : tmp
-            });
-        
-
 		} else{
             window.location.replace(`/loginUser?role=2`);
         }
-
         if(!data.loading ){
             if(data.data && data.data?.updateListing != null){
                 NotificationManager.success('', data.data?.updateListing.message, 2000);
                 
             }else if(data.data && data.data?.updateListing == null){
-                NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
+                NotificationManager.error('', "Gagal mengubah rumah kos", 2000);
             }
         }
 	},[!data.loading]);
 
     console.log(value);
 
-    const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
-    const {loading:loadFasilitas, data:getAllFasilitas, error:errorFasilitas} = useQuery(GET_ALL_FASILITAS_KOS);
+    const {loading, data:getAllRumahKosUser, error} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
+   
 
-    if(loadAllRumahKos){
+    if(loading){
         return "Loading..."
     }
-    if(errorAllRumahKos){
+    if(error){
         return "Error..."
     }
     return (
@@ -124,22 +156,11 @@ export default function EditsKamarKos({kamar_kos}) {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                    console.log(kamar_kos.id);
-                                                    edit_kamar_kos({ variables: {id: kamar_kos.id, nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}})
-                                                    .then(result=> {
-                                                        let id_rmh = result.data.updateListing.id
-                                                        console.log(id_rmh)
-                                                        console.log(result)
-                                                        for(let i=0; i< formState.fasilitas.length; i++){
-                                                            console.log(formState.fasilitas[i]);
-                                                           console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
-                                                        }
-                                                       })
-                                                    
-                                                    
-                                                    setTimeout(() => {
-                                                        window.location.replace("/owner/ListKamarKos");
-                                                    }, 2000); 
+                                                    doUploadImage();
+                                                    //uploadImage();
+                                                    // setTimeout(() => {
+                                                    //     window.location.replace("/owner/ListKamarKos");
+                                                    // }, 2000); 
                                                 }}
                                         
                                         >
@@ -164,47 +185,6 @@ export default function EditsKamarKos({kamar_kos}) {
                                                 }
                                             </select>
                                             </div>
-
-
-                                            <div className="form-group">
-                                                <label>Fasilitas Kos</label>
-                                            <select className="form-select form-control" multiple aria-label="multiple select example"
-                                                name='fasilitas[]'
-
-                                                defaultValue={arrFasilitas}
-                                            onChange={(e) =>
-
-                                               // console.log(e.target.options.selectedIndex)
-
-                                               {
-                                                var options = e.target.options;
-                                                var value = [];
-                                                for (var i = 0, l = options.length; i < l; i++) {
-                                                  if (options[i].selected) {
-                                                    value.push(options[i].value);
-                                                  }
-                                                }
-
-                                                 setFormState({
-                                                ...formState,
-                                                fasilitas: value
-                                                })
-                                               }
-                                            }
-                                            
-                                            >
-                                                 {
-                                                    getAllFasilitas && (
-                                                        getAllFasilitas.getAllFasilitasKos.map(fasilitas => 
-                                                            <option value={fasilitas.id} key={fasilitas.id}>{fasilitas.nama} 
-                                                            </option>
-                                                        )
-                                                    )
-                                                }   
-                                                </select>
-                                            </div>
-
-
                                             <div className="form-group">
                                                 <label htmlFor="name_kos">Nama Kamar</label>
                                                 <input type="text" className="form-control" id="nama_kamar"
@@ -308,7 +288,12 @@ export default function EditsKamarKos({kamar_kos}) {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="media">Media</label> <br/>
-                                                <input type="file" className="form-control" placeholder="kos SUka Suka" name="mediaKos" />
+                                                <input  type="file"
+                                                        id="upload"
+                                                        name="upload"
+                                                        onChange={(e) => onUploadImage(e)}
+                                                        type="file"
+                                                />
                                             </div>
                                             <button type="submit" className="btnOwner w-100 p-3">Simpan</button>
                                         </form>

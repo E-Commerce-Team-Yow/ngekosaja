@@ -9,7 +9,21 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { NotificationManager } from 'react-notifications';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import axios from 'axios';
 
+function generateFormData(data) {
+  const formData = new FormData();
+  const dataValue = Object.values(data);
+  const dataKeys = Object.keys(data);
+
+  for (let i = 0; i < dataValue.length; i++) {
+    if (dataValue[i]) {
+      formData.append(dataKeys[i], dataValue[i] || "");
+    }
+  }
+
+  return formData;
+}
 
 export default function EditRumahKos({rumah_kos}) {
     const script = document.createElement("script");
@@ -39,7 +53,68 @@ export default function EditRumahKos({rumah_kos}) {
         keper : []
     });
 
+    const [uploadedFile, setUploadedImage] = useState(null);
+    
+    //banyakMedia = dataGetAll.getAllMedia.length;
 
+    const onUploadImage = (e) =>  {  
+        setUploadedImage(e.target.files[0]);
+        // banyakRumah = getRumah.getAllRumahKos.length;
+        // console.log(banyakRumah);
+        // let kode = "R"+String(banyakRumah+1).padStart(3, '0');
+        // namafoto = kode;
+        // console.log(namafoto);
+    }
+    const doUploadImage = () => {    
+        const formData = generateFormData({
+            foto: uploadedFile,
+          });
+          
+          axios
+            .post(
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ rumah_kos.id,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            )
+            .then((res) => {
+                 //success
+                console.log(res.data);
+                console.log( 
+                    edit_rumah_kos({ 
+                        variables: { 
+                            id : rumah_kos.id, 
+                            nama : formState.name_kos, 
+                            alamat : formState.alamat_kos, 
+                            id_kota : parseInt(formState.id_kota), 
+                            kode_pos : formState.kode_pos, 
+                            total_kamar:rumah_kos.total_kamar, 
+                            sisa_kamar: rumah_kos.sisa_kamar, 
+                            keterangan: formState.keterangan,
+                            foto : ''+res.data
+                        }
+                    }).then(result =>{
+                            let id_rmh = result.data.updateRumahKos.id;
+                            for(let i=0; i< formState.keper.length; i++){
+                                console.log(formState.keper[i]);
+                                console.log(apend_keper({variables : {id_rumah_kos : id_rmh, id_keper : formState.keper[i]}}))
+                            }
+                        }   
+                    )
+                );
+            })
+            .catch((err) => {
+              //error
+              if (err.response) {
+                console.log("res error", err.response.data);
+              } else if (err.request) {
+                console.log("req error", err.request.data);
+              } else {
+                console.log("Error", err.message);
+              }
+            });
+    }
     //deklarasi add Kos
     const [edit_rumah_kos, data] = useMutation(UPDATE_RUMAH_KOS);
 
@@ -73,6 +148,9 @@ export default function EditRumahKos({rumah_kos}) {
         if(!data.loading ){
             if(data.data && data.data?.updateRumahKos != null){
                 NotificationManager.success('', data.data?.updateRumahKos.message, 2000);
+                setTimeout(() => {
+                    window.location.replace("/owner/ListRumahKos");
+                }, 2000); 
                 
             }else if(data.data && data.data?.updateRumahKos == null){
                 NotificationManager.error('', "Gagal menambahkan rumah kos", 2000);
@@ -113,20 +191,7 @@ export default function EditRumahKos({rumah_kos}) {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                    edit_rumah_kos({ variables: { id : rumah_kos.id, nama : formState.name_kos, alamat : formState.alamat_kos, id_kota : parseInt(formState.id_kota), kode_pos : formState.kode_pos, total_kamar:rumah_kos.total_kamar, sisa_kamar: rumah_kos.sisa_kamar, keterangan: formState.keterangan }}).then(result =>
-                                                        {
-                                                           let id_rmh = result.data.updateRumahKos.id
-
-                                                             for(let i=0; i< formState.keper.length; i++){
-                                                                 console.log(formState.keper[i]);
-                                                                console.log(apend_keper({variables : {id_rumah_kos : id_rmh, id_keper : formState.keper[i]}}))
-                                                             }
-                                                        }   
-                                                        
-                                                    );
-                                                    setTimeout(() => {
-                                                        window.location.replace("/owner/ListRumahKos");
-                                                    }, 2000); 
+                                                    doUploadImage();
                                                 }}
                                         
                                         >
@@ -262,7 +327,12 @@ export default function EditRumahKos({rumah_kos}) {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="media">Media</label> <br/>
-                                                <input type="file" className="form-control" placeholder="kos SUka Suka" name="mediaKos" />
+                                                <input  type="file"
+                                                        id="upload"
+                                                        name="upload"
+                                                        onChange={(e) => onUploadImage(e)}
+                                                        type="file"
+                                                />
                                             </div>
                                             <button type="submit" className="btnOwner w-100 p-3">Ubah</button>
                                         </form>

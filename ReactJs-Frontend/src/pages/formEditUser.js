@@ -6,6 +6,21 @@ import { useCookies } from 'react-cookie';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+function generateFormData(data) {
+    const formData = new FormData();
+    const dataValue = Object.values(data);
+    const dataKeys = Object.keys(data);
+  
+    for (let i = 0; i < dataValue.length; i++) {
+      if (dataValue[i]) {
+        formData.append(dataKeys[i], dataValue[i] || "");
+      }
+    }
+  
+    return formData;
+  }
 
 export default function FormEditUser() { 
     const script = document.createElement("script");
@@ -16,7 +31,8 @@ export default function FormEditUser() {
     let history = useHistory();
     const [cookies, setCookie, removeCookie] = useCookies(['userLogin']);
 	const [dataUser,setdataUser] = useState(null);
-  
+    const [uploadedFile, setUploadedImage] = useState(null);
+
     const [formState, setFormState] = useState({
         nama_depan : '',
         nama_belakang : '',
@@ -26,6 +42,8 @@ export default function FormEditUser() {
         id : '',
     });
      
+    console.log(cookies.userLogin.id);
+
     //deklarasi edit
     const [edit_user, data] = useMutation(UPDATE_USER);
 	//check data user
@@ -48,6 +66,47 @@ export default function FormEditUser() {
 
 	},[]);
 
+    const onUploadImage = (e) =>  {  
+        setUploadedImage(e.target.files[0]);
+    }
+    const doUploadImage = () => {    
+        const formData = generateFormData({
+            foto: uploadedFile,
+          });
+          
+          axios
+            .post(
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ cookies.userLogin.id,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            )
+            .then((res) => {
+              //success
+              console.log(res.data);
+              edit_user({ 
+                  variables: { 
+                      nama_depan : formState.nama_depan, 
+                      nama_belakang : formState.nama_belakang, 
+                      id : formState.id, no_tlp : formState.no_tlp, 
+                      no_rek : formState.no_rek, 
+                      nik : formState.nik,
+                      foto: res.data +''
+                    }});
+                                      
+            })
+            .catch((err) => {
+              //error
+              if (err.response) {
+                console.log("res error", err.response.data);
+              } else if (err.request) {
+                console.log("req error", err.request.data);
+              } else {
+                console.log("Error", err.message);
+              }
+            });
+    }
 
     useEffect(() =>{
         if(!data.loading ){
@@ -77,8 +136,7 @@ export default function FormEditUser() {
                         <form id="quickForm" onSubmit={e => {
                                     e.preventDefault();
                                     console.log(formState);
-                                        edit_user({ variables: { nama_depan : formState.nama_depan, nama_belakang : formState.nama_belakang, id : formState.id, no_tlp : formState.no_tlp, no_rek : formState.no_rek, nik : formState.nik }});
-                                      
+                                    doUploadImage();
                                     }}>
                         <div className="modal-body mt-5 ">
                             <div className="container">
@@ -152,7 +210,12 @@ export default function FormEditUser() {
                                         <div className="row">
                                             <div className="form-group col-6">
                                                 <label htmlFor="exampleInputPassword1">Foto Profil</label>
-                                                <input type="file" className="form-control" />
+                                                <input  type="file"
+                                                        id="upload"
+                                                        name="upload"
+                                                        onChange={(e) => onUploadImage(e)}
+                                                        type="file"
+                                                />
                                             </div>
                                             <div className="form-group col-6">
                                                 <img />

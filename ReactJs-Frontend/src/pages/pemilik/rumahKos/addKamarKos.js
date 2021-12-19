@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
-import { GET_ALL_FASILITAS_KOS, GET_ALL_KOTA, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_FASILITAS_KOS, GET_ALL_LISTING_OWNER, GET_ALL_RUMAH_KOS, GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_ALL_KOTA,GET_ALL_LISTING } from '../../../graphql/queries';
 import { useQuery,useMutation } from '@apollo/client';
 import { ADD_LISTING, ADD_RUMAH_KOS, APPEND_FASILITAS } from '../../../graphql/mutation';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -9,7 +10,23 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import { NotificationManager } from 'react-notifications';
+import axios from 'axios';
 
+function generateFormData(data) {
+  const formData = new FormData();
+  const dataValue = Object.values(data);
+  const dataKeys = Object.keys(data);
+
+  for (let i = 0; i < dataValue.length; i++) {
+    if (dataValue[i]) {
+      formData.append(dataKeys[i], dataValue[i] || "");
+    }
+  }
+
+  return formData;
+}
+let banyak;
+let namafoto;
 export default function AddKamarKos() {
     const script = document.createElement("script");
     script.src = `../../../js/validation.js`;
@@ -36,7 +53,66 @@ export default function AddKamarKos() {
         fasilitas : []
     });
 
+    const [uploadedFile, setUploadedImage] = useState(null);
+    
+    //banyakMedia = dataGetAll.getAllMedia.length;
 
+    const onUploadImage = (e) =>  {  
+        setUploadedImage(e.target.files[0]);
+        console.log(banyak);
+        let kode = "L"+String(banyak+1).padStart(3, '0');
+        namafoto = kode;
+        console.log(namafoto);
+    }
+    const doUploadImage = () => {    
+        const formData = generateFormData({
+            foto: uploadedFile,
+          });
+          
+          axios
+            .post(
+              "https://uploadgambar-ngekosaja.herokuapp.com/upload/"+ namafoto,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            )
+            .then((res) => {
+              //success
+                console.log(res.data);
+                add_kamar_kos({ 
+                  variables: { 
+                      nama : formState.nama_kamar, 
+                      jenis: parseInt(formState.jenis), 
+                      harga_bulanan : parseInt(formState.harga_bulanan), 
+                      harga_tahunan : parseInt(formState.harga_tahunan), 
+                      panjang: parseInt(formState.panjang), 
+                      lebar : parseInt(formState.lebar), 
+                      rumah_kos: formState.rumah_kos, 
+                      keterangan : formState.keterangan,
+                      foto : ''+res.data
+                    }
+                }).then(result=> {
+                    let id_rmh = result.data.addListing.id
+                    console.log(id_rmh)
+                    console.log(result)
+                    for(let i=0; i< formState.fasilitas.length; i++){
+                        console.log(formState.fasilitas[i]);
+                        console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
+                    }
+                })
+            })
+            .catch((err) => {
+              //error
+              if (err.response) {
+                console.log("res error", err.response.data);
+              } else if (err.request) {
+                console.log("req error", err.request.data);
+              } else {
+                console.log("Error", err.message);
+              }
+            });
+    }
     //deklarasi add Kos
     const [add_kamar_kos, data] = useMutation(ADD_LISTING);
     const [append_fasilitas, data_append] = useMutation(APPEND_FASILITAS);
@@ -52,6 +128,9 @@ export default function AddKamarKos() {
         if(!data.loading ){
             if(data.data && data.data?.addListing != null){
                 NotificationManager.success('', data.data?.addListing.message, 2000);
+                setTimeout(() => {
+                    window.location.replace("/owner/ListKamarKos");
+                }, 2000); 
                 
             }else if(data.data && data.data?.addListing == null){
                 NotificationManager.error('', "Gagal menambahkan kamar kos", 2000);
@@ -64,6 +143,7 @@ export default function AddKamarKos() {
     const {loading:loadAllRumahKos, data:getAllRumahKosUser, error:errorAllRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables : {id_user:value, type : 1}});
    
     const {loading:loadFasilitas, data:getAllFasilitas, error:errorFasilitas} = useQuery(GET_ALL_FASILITAS_KOS);
+    const {loading: loadinglisting, data: dataGetAllListing, error: errorlisting} = useQuery(GET_ALL_LISTING, {variables : {vmin: -1, vmax: -1}});
 
     if(loadAllRumahKos){
         return "Loading..."
@@ -71,6 +151,17 @@ export default function AddKamarKos() {
     if(errorAllRumahKos){
         return "Error..."
     }
+
+    
+    if(loadinglisting){
+        return "Loading..."
+    }
+    if(errorlisting){
+        return "Error..."
+    }
+    banyak = dataGetAllListing.getAllListing.length;
+    console.log(banyak);
+
     return (
         <div>   
             {
@@ -95,18 +186,8 @@ export default function AddKamarKos() {
                                             onSubmit={e => {
                                                 e.preventDefault();
                                                     console.log(formState);
-                                                   add_kamar_kos({ variables: { nama : formState.nama_kamar, jenis: parseInt(formState.jenis), harga_bulanan : parseInt(formState.harga_bulanan), harga_tahunan : parseInt(formState.harga_tahunan), panjang: parseInt(formState.panjang), lebar : parseInt(formState.lebar), rumah_kos: formState.rumah_kos, keterangan : formState.keterangan}}).then(result=> {
-                                                    let id_rmh = result.data.addListing.id
-                                                    console.log(id_rmh)
-                                                    console.log(result)
-                                                    for(let i=0; i< formState.fasilitas.length; i++){
-                                                        console.log(formState.fasilitas[i]);
-                                                       console.log(append_fasilitas({variables : {id_listing : id_rmh, id_fasilitas_kos : formState.fasilitas[i]}}))
-                                                    }
-                                                   })
-                                                    setTimeout(() => {
-                                                        window.location.replace("/owner/ListKamarKos");
-                                                    }, 2000); 
+                                                    doUploadImage();
+                                                    
                                                 }}
                                         
                                         >
@@ -274,7 +355,12 @@ export default function AddKamarKos() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="media">Media</label> <br/>
-                                                <input type="file" className="form-control" placeholder="kos SUka Suka" name="mediaKos" />
+                                                <input  type="file"
+                                                        id="upload"
+                                                        name="upload"
+                                                        onChange={(e) => onUploadImage(e)}
+                                                        type="file"
+                                                />
                                             </div>
                                             <button type="submit" className="btnOwner w-100 p-3">Simpan</button>
                                         </form>
