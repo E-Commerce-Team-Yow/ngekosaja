@@ -81,9 +81,9 @@ export default function RegisterUser() {
         id_role: parseInt(getWizardState().role) }})
     }
     useEffect(() => {
-      console.log(data);
       if(!data.loading ){
-          if(data.data && data.data?.createUser != null){
+        if(data.data && data.data?.createUser != null){
+            console.log(data);
               NotificationManager.success('', data.data?.createUser.message, 2000);
             if(data.data?.createUser.successfull){
               setTimeout(() => {
@@ -95,7 +95,7 @@ export default function RegisterUser() {
             }
           }
       }
-    }, [!data.loading])
+    }, [!data.data?.createUser])
 
   return (
    <div className="App">

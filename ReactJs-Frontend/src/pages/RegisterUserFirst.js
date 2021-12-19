@@ -21,7 +21,7 @@ export default function RegisterUserFirst(props) {
             <div className="register-page" >
                 <div className="form-register">
                     <center><h2 className="mb-2">Register {title}</h2></center>
-                    <Link to="/" className="mb-4 link-home m-1"><button className="w-25"><i class="fas fa-home"></i></button></Link>
+                    <Link to="/" className="mb-4 link-home m-1"><button className="w-25"><i className="fas fa-home"></i></button></Link>
                     
                     <Form name="page1" {...props} id="quickForm" className="login-form mt-3 needs-validation" 
                     > 
