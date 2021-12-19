@@ -184,6 +184,15 @@ export const APPEND_KEPER = gql `
   }
 `;
 
+export const LISTING_RENTED = gql `
+  mutation listingRented($id_kamar : String!){
+    listingRented(id_kamar : $id_kamar){
+      successful
+      message
+    }
+  }
+`;
+
 export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {
