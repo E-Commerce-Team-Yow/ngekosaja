@@ -286,6 +286,10 @@ export const GET_ALL_TESTIMONI = gql`
       id
       isi
       status
+      nilai
+      listing{
+        id
+      }
     }
   }
 `;

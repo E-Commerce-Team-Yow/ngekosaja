@@ -6735,6 +6735,15 @@ ul.breadcrumb {
 	text-shadow: 0 0 5px #09f;
   }
 
+
+  .detailKamar{
+	  max-height: 5vh!important;
+  }
+
+  .polar{
+	  text-align: right;
+  }
+
 @media (max-width:540px){
 	.chart{
 		width:100% !important;

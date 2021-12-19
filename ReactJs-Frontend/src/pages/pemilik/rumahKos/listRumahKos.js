@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import DataTable from 'react-data-table-component';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_RUMAH_KOS_USER } from '../../../graphql/queries';
+import { GET_RUMAH_KOS_USER, GET_ALL_KOTA } from '../../../graphql/queries';
 import AddRumahKos from './addRumahKos';
 import EditRumahKos from './editRumahKos';
 import { DELRES_RUMAH_KOS } from '../../../graphql/mutation';
@@ -23,11 +23,22 @@ export default function ListRumahKos() {
 		} 
 	},[value]);
     console.log(value);
-    const {loading, data: dataGetAll, error} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value, type : 0}});
-
+    const {loading:loadRumahKos, data: dataGetAll, error:errorRumahKos} = useQuery(GET_RUMAH_KOS_USER, {variables: {id_user:value, type : 0}});
+    const {loading:loadKota, data: getAllKota, error:errorKota} = useQuery(GET_ALL_KOTA);
 
      //deklarasi delete kos
     const [delete_rumah_kos, data] = useMutation(DELRES_RUMAH_KOS);
+
+    const [filteredItem,setFilteredItem] = useState([])
+
+	
+	useEffect(()=>{
+        if(dataGetAll){
+            setFilteredItem(dataGetAll?.getAllRumahKosUser)
+        }
+    },[!loadRumahKos]);
+
+
 
     useEffect(() => {
         if(!data.loading && data.data?.delresRumah){
@@ -36,12 +47,14 @@ export default function ListRumahKos() {
       }, [!data.loading])
 
     console.log(dataGetAll);
-    if(loading){
+    if(loadRumahKos){
         return "Loading..."
     }
-    if(error){
+    if(errorRumahKos){
     return "Error..."
     }
+
+   
 
     const columns = [
         {
@@ -109,12 +122,97 @@ export default function ListRumahKos() {
                     <AddRumahKos />
                 </div>
             </div>
+            <div className='row mb-5 mt-5'>
+                <div className='col-3 '>
+                    <input type="text"  
+                    className='w-100'
+                        placeholder='Search By Name...'
+                        onChange={(e)=>{
+                            if(e.target.value != ''){
+                               setFilteredItem( filteredItem.filter(
+                                item => item.nama && item.nama.toLowerCase().includes(e.target.value.toLowerCase()),
+
+                                
+                            ))
+                            } 
+                            else{
+                                setFilteredItem( dataGetAll.getAllRumahKosUser)
+                            }
+                        }}
+                    />
+                </div>
+                <div className='col-3'>
+                    <input type="text" 
+                        className='w-100' 
+                        placeholder='Search By Address...'
+                        onChange={(e)=>{
+                            if(e.target.value != ''){
+                               setFilteredItem( filteredItem.filter(
+                                item => item.alamat && item.alamat.toLowerCase().includes(e.target.value.toLowerCase()),
+                            ))
+                            }
+                            else{
+                                setFilteredItem( dataGetAll.getAllRumahKosUser)
+                            }
+                        }}
+                    />
+                </div>
+                <div className='col-3'>
+                    <select className='form-control w-100'
+                        onChange={
+                            (e) => {
+                                if(e.target.value != ''){          
+                                    setFilteredItem( filteredItem.filter(
+                                        item => item.status == parseInt(e.target.value),
+                                    ))
+                                 }
+                                 else{
+                                     setFilteredItem( dataGetAll.getAllRumahKosUser)
+                                 }
+                            }
+                        }
+                    
+                    >
+                        <option value={''}>Filter By Status</option>
+                        <option value={1}>Aktif</option>
+                        <option value={0}>Non Aktif</option>
+                    </select>
+                </div>
+                <div className='col-3'>
+                            <select name="kota_kos" id="kota_kos" className=" form-control w-100" 
+                                            
+                                            onChange={(e) =>
+                                               {
+                                                if(e.target.value != ''){
+
+                                                   
+                                                    setFilteredItem( filteredItem.filter(
+                                                        item => item.kota && item.kota.id == parseInt(e.target.value),
+                                                    ))
+                                                 }
+                                                 else{
+                                                     setFilteredItem( dataGetAll.getAllRumahKosUser)
+                                                 }
+                                               }
+                                            }
+                                            >
+                                                 <option value={''} key={'aaaa'}>Filter By Kota</option>
+                                                {
+                                                    getAllKota && (
+                                                        getAllKota.getAllKota.map(kota => 
+                                                            <option value={kota.id} key={kota.id}>{kota.nama}</option>
+                                                        )
+                                                    )
+                                                }
+                                            </select>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-12">
-                <CSVLink data={dataGetAll.getAllRumahKosUser} className='btnOwner'>Download(CSV)</CSVLink>
+                <CSVLink data={filteredItem} className='btnOwner'>Download(CSV)</CSVLink>
                         <DataTable
                             columns={columns}
-                            data={dataGetAll.getAllRumahKosUser}
+                            data={filteredItem}
                             pagination
                            
                         />
