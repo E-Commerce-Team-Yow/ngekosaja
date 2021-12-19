@@ -198,8 +198,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_TESTIMONI = gql`
-  mutation addTestimoni($nilai: Int! $isi: String! $id_user: String! $id_listing: String!) {
-    addTestimoni(nilai: $nilai, isi: $isi, id_user: $id_user, id_listing: $id_listing) {
+  mutation addTestimoni($nilai: Int! $isi: String! $id_user: String! $id_listing: String! $id_rumah_kos: String!) {
+    addTestimoni(nilai: $nilai, isi: $isi, id_user: $id_user, id_listing: $id_listing, id_rumah_kos: $id_rumah_kos) {
       successful
       message
     }

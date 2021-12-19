@@ -242,10 +242,10 @@ export const GET_ONE_RUMAH_KOS = gql`
           id
           nama
         }
-        ketentuan_peraturan{
-          id
-          isi
-        }
+      }
+      ketentuan_peraturan{
+        id
+        isi
       }
     }
   }
