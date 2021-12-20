@@ -57,7 +57,7 @@ const Login = () => {
         <div className="hold-transition login-page">
             <div className="login-box">
                 <div className="login-logo">
-                    <a href=""><b>Admin</b>Ngekos</a>
+                    <a href=""><b>Admin</b>Ngekosaja</a>
                 </div>
                 {/* /.login-logo */}
                 <form

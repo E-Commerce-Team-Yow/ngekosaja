@@ -94,14 +94,12 @@ export default function Header() {
 							<div className="right-bar" id="allHeaderRight">
 							   <label className="dropdown">
 								   <div className="dd-button">
-									   Dropdown
+									   Lainnya
 								   </div>
    
 								   <input name="" type="checkbox" className="dd-input" id="test" />
 								   <ul className="dd-menu">
-									   <li>Action</li>
-									   <li>Another action</li>
-									   <li>Something else here</li>
+								   		<li><Link to={"/near-campus"}> Kos di dekat kampus</Link></li>
 									   <li className="divider"></li>
 									   <li>
 										   <a href="http://rane.io">Link to Rane.io</a>
@@ -153,14 +151,12 @@ export default function Header() {
 						<div className="right-bar top-20" id="allHeaderRight">
 							<label className="dropdown">
 								<div className="dd-button">
-									Dropdown
+									Lainnya
 								</div>
 
 								<input name="" type="checkbox" className="dd-input" id="test" />
 								<ul className="dd-menu">
-									<li>Action</li>
-									<li>Another action</li>
-									<li>Something else here</li>
+									<li><Link to={"/near-campus"}> Kos di dekat kampus</Link></li>
 									<li className="divider"></li>
 									<li>
 										<a href="http://rane.io">Link to Rane.io</a>

@@ -64,7 +64,6 @@ const RumahTable = () => {
                               <th>Nama</th>
                               <th>Alamat</th>
                               <th>Kota</th>
-                              <th>Provinsi</th>
                               <th>Total Kamar</th>
                               <th>Sisa Kamar</th>
                               <th>Status</th>
@@ -78,8 +77,7 @@ const RumahTable = () => {
                               <tr key={rumah.id}>
                                 <td>{rumah.nama}</td>
                                 <td>{rumah.alamat}</td>
-                                <td>{rumah.kota}</td>
-                                <td>{rumah.provinsi}</td>
+                                <td>{rumah.kota.nama}</td>
                                 <td>{rumah.total_kamar}</td>
                                 <td>{rumah.sisa_kamar}</td>
                                 {rumah.status == 1 
@@ -110,7 +108,6 @@ const RumahTable = () => {
                               <th>Nama</th>
                               <th>Alamat</th>
                               <th>Kota</th>
-                              <th>Provinsi</th>
                               <th>Total Kamar</th>
                               <th>Sisa Kamar</th>
                               <th>Status</th>

@@ -8,7 +8,7 @@ import Header from '../Header';
 import SideNav from '../SideNav';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-  import axios from 'axios';
+import axios from 'axios';
 
 function generateFormData(data) {
     const formData = new FormData();
